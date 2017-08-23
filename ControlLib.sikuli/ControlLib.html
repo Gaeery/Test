@@ -1,0 +1,141 @@
+
+<html>
+   <head>
+      <style type="text/css">
+         .sikuli-code {
+            font-size: 20px;
+            font-family: "Osaka-mono", Monospace;
+            line-height: 1.5em;
+            display:table-cell;
+            white-space: pre-wrap;       /* css-3 */
+            white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
+            white-space: -pre-wrap;      /* Opera 4-6 */
+            white-space: -o-pre-wrap;    /* Opera 7 */
+            word-wrap: break-word;       /* Internet Explorer 5.5+ */
+            width: 99%;   /* remove horizontal scroll-bar when viewing in IE7 */
+         }
+         .sikuli-code img {
+            vertical-align: middle;
+            margin: 2px;
+            border: 1px solid #ccc;
+            padding: 2px;
+            -moz-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-box-shadow: 1px 1px 1px gray;
+            -webkit-box-shadow: 1px 1px 2px gray;
+         }
+         .kw {
+            color: blue;
+         }
+         .skw {
+            color: rgb(63, 127, 127);
+         }
+
+         .str {
+            color: rgb(128, 0, 0);
+         }
+
+         .dig {
+            color: rgb(128, 64, 0);
+         }
+
+         .cmt {
+            color: rgb(200, 0, 200);
+         }
+
+         h2 {
+            display: inline;
+            font-weight: normal;
+         }
+
+         .info {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+            display: none;
+         }
+
+         a {
+            color: #9D2900;
+         }
+
+         body {
+            font-family: "Trebuchet MS", Arial, Sans-Serif;
+         }
+
+      </style>
+   </head>
+<body>
+<div class="info">
+<h2>ControlLib.sikuli</h2> <a href="ControlLib.zip">(Download this script)</a>
+</div>
+<pre class="sikuli-code">
+<span class="kw">from</span> sikuli <span class="kw">import</span> *
+<span class="kw">import</span> SwordAndMagicPictures
+<span class="kw">from</span> SwordAndMagicPictures <span class="kw">import</span> *
+
+gameRegion = SwordAndMagicPictures.gameRegion
+
+Settings.MoveMouseDelay = <span class="dig">0.1</span>
+
+<span class="kw">def</span> clickInRegion(reg, target, timeout = <span class="dig">1</span>):
+    <span class="kw">while</span> timeout &gt;= <span class="dig">0</span>:
+        <span class="kw">try</span>:
+            <span class="kw">if</span> <span class="kw">not</span> reg.exists(target, timeout):
+                retry = retry -<span class="dig">1</span>
+                <span class="kw">if</span> retry &gt;= <span class="dig">0</span>:
+                    Debug.user(<span class="str">"not found, timeout %d"</span>, timeout)
+                    <span class="skw">sleep</span>(<span class="dig">1</span>)
+                <span class="kw">continue</span>
+            loc = reg.<span class="skw">find</span>(target)
+            Debug.user(<span class="str">"Found target"</span>)
+            reg.<span class="skw">click</span>(loc)
+            <span class="kw">return</span> True
+        <span class="kw">except</span> FindFailed:
+            Debug.user(<span class="str">"Can't find target"</span>)
+        timeout = timeout -<span class="dig">1</span>
+    <span class="kw">return</span> False
+
+<span class="cmt"># click a image in game region,  support retry,  return True if success</span>
+<span class="kw">def</span> c(target, retry = <span class="dig">1</span>):
+    <span class="kw">return</span> clickInRegion(gameRegion, target, retry)
+
+<span class="cmt"># click a image in game region,  support retry,  return True if success</span>
+<span class="kw">def</span> d(msg, target, timeout = <span class="dig">1</span>):
+    Debug.user(msg)
+    <span class="kw">return</span> clickInRegion(gameRegion, target, timeout)
+
+<span class="cmt"># second game</span>
+<span class="kw">def</span> d2(msg, target, retry = <span class="dig">1</span>):
+    Debug.user(msg)
+    <span class="kw">return</span> clickInRegion(gameRegion2, target, retry)
+
+<span class="cmt">#click location with log</span>
+<span class="kw">def</span> l(msg, location):
+    Debug.user(msg)
+    <span class="skw">click</span>(location)
+
+
+<span class="kw">def</span> findLocation(reg, target, retry = <span class="dig">1</span>):
+    <span class="kw">while</span> retry &gt;= <span class="dig">0</span>:
+        <span class="kw">try</span>:
+            loc = reg.<span class="skw">find</span>(target)
+            Debug.user(<span class="str">"Found target"</span>)
+            <span class="kw">return</span> loc
+        <span class="kw">except</span> FindFailed:
+            Debug.user(<span class="str">"Can't find target"</span>)
+        retry = retry -<span class="dig">1</span>
+    <span class="kw">return</span> None
+
+<span class="kw">def</span> clickLocIfExist(loc):
+    <span class="kw">if</span> loc!=None:
+        <span class="skw">click</span>(loc)
+
+
+
+<span class="kw">def</span> clickRegionBottom ( region ):
+    <span class="cmt">#click(region)</span>
+    <span class="skw">click</span>(region.offset(<span class="dig">0</span>, region.h/<span class="dig">2</span>))
+</pre>
+</body>
+</html>
