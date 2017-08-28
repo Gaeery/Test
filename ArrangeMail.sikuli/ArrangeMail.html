@@ -1,0 +1,157 @@
+
+<html>
+   <head>
+      <style type="text/css">
+         .sikuli-code {
+            font-size: 20px;
+            font-family: "Osaka-mono", Monospace;
+            line-height: 1.5em;
+            display:table-cell;
+            white-space: pre-wrap;       /* css-3 */
+            white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
+            white-space: -pre-wrap;      /* Opera 4-6 */
+            white-space: -o-pre-wrap;    /* Opera 7 */
+            word-wrap: break-word;       /* Internet Explorer 5.5+ */
+            width: 99%;   /* remove horizontal scroll-bar when viewing in IE7 */
+         }
+         .sikuli-code img {
+            vertical-align: middle;
+            margin: 2px;
+            border: 1px solid #ccc;
+            padding: 2px;
+            -moz-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-box-shadow: 1px 1px 1px gray;
+            -webkit-box-shadow: 1px 1px 2px gray;
+         }
+         .kw {
+            color: blue;
+         }
+         .skw {
+            color: rgb(63, 127, 127);
+         }
+
+         .str {
+            color: rgb(128, 0, 0);
+         }
+
+         .dig {
+            color: rgb(128, 64, 0);
+         }
+
+         .cmt {
+            color: rgb(200, 0, 200);
+         }
+
+         h2 {
+            display: inline;
+            font-weight: normal;
+         }
+
+         .info {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+            display: none;
+         }
+
+         a {
+            color: #9D2900;
+         }
+
+         body {
+            font-family: "Trebuchet MS", Arial, Sans-Serif;
+         }
+
+      </style>
+   </head>
+<body>
+<div class="info">
+<h2>ArrangeMail.sikuli</h2> <a href="ArrangeMail.zip">(Download this script)</a>
+</div>
+<pre class="sikuli-code">
+<span class="kw">import</span> random
+<span class="kw">import</span> SwordAndMagicPictures
+reload(SwordAndMagicPictures)  <span class="cmt"># make sure global variables are reloaded</span>
+<span class="kw">import</span> ControlLib
+<span class="kw">from</span> SwordAndMagicPictures <span class="kw">import</span> *
+<span class="kw">from</span> ControlLib <span class="kw">import</span> *
+Settings.MoveMouseDelay = <span class="dig">0.1</span>
+gameRegion = Region(<span class="dig">0</span>,<span class="dig">0</span>,<span class="dig">587</span>,<span class="dig">1024</span>)
+
+<span class="kw">def</span> ArrangeMail():
+    <span class="kw">with</span> gameRegion:
+        <span class="kw">while</span> True:
+            d(<span class="str">"menu"</span>, <img src="1503708173412.png" />,<span class="dig">3</span>)
+            d(<span class="str">"mailbox"</span>, <img src="1503708225124.png" />, <span class="dig">3</span>)
+            <span class="kw">if</span> <span class="kw">not</span> receiveAllMail():
+                <span class="kw">break</span>
+<span class="kw">def</span> receiveAllMail():
+    <span class="kw">with</span> gameRegion:
+        <span class="kw">while</span> True:
+            <span class="kw">if</span> exists(Pattern(<img src="1503708271933.png" />).similar(<span class="dig">0.95</span>), <span class="dig">0</span>):
+                d(<span class="str">"close popup"</span>, <img src="1503709252712.png" />,<span class="dig">1</span>)
+                gotoEquipPage()
+                sellAll()
+                storeAll()
+                <span class="kw">break</span>
+            <span class="kw">elif</span> exists( <img src="1503710326304.png" />, <span class="dig">0</span>):
+                d(<span class="str">"close popup"</span>, <img src="1503709252712.png" />,<span class="dig">1</span>)
+                d(<span class="str">"next page"</span>, <img src="1503710198198.png" />)
+                <span class="kw">if</span> <span class="kw">not</span> exists( Pattern(<img src="1503726855065.png" />).exact(),<span class="dig">2</span>):
+                    <span class="cmt">#no next page</span>
+                    gotoEquipPage()
+                    sellAll()
+                    storeAll()
+                    <span class="kw">return</span> False
+                <span class="kw">else</span>:
+                    Debug.user(<span class="str">"has next page"</span>)
+            <span class="kw">elif</span> exists(<img src="1503709252712.png" />, <span class="dig">0.5</span>):
+                d(<span class="str">"received"</span>, <img src="1503709252712.png" />,<span class="dig">5</span>)
+            <span class="kw">elif</span> d(<span class="str">"receive mail"</span>, Pattern(<img src="1503709138204.png" />).similar(<span class="dig">0.97</span>), <span class="dig">5</span>):
+                <span class="skw">sleep</span>(<span class="dig">0.5</span>)
+                exists(<img src="1503709252712.png" />, <span class="dig">3</span>)
+            <span class="kw">else</span>:
+                <span class="skw">sleep</span>(<span class="dig">1</span>)
+    <span class="kw">return</span> True
+
+<span class="kw">def</span> sellAll():
+    <span class="kw">with</span> gameRegion:
+        d(<span class="str">"sell page"</span>, <img src="1503708495938.png" />, <span class="dig">3</span>)
+        <span class="kw">while</span> True:
+            d(<span class="str">"select all"</span>, Pattern(<img src="1503708529175.png" />).exact(), <span class="dig">20</span>)
+            <span class="kw">if</span> d(<span class="str">"sold all"</span>, <img src="1503708674424.png" />,<span class="dig">1</span>):
+                d(<span class="str">"leave sell"</span>, <img src="1503708342988.png" />, <span class="dig">3</span>)
+                <span class="kw">break</span>
+            d(<span class="str">"sell"</span>, <img src="1503708547651.png" />, <span class="dig">5</span>)
+            d(<span class="str">"sell2"</span>, Pattern(<img src="1503708586923.png" />).similar(<span class="dig">0.94</span>), <span class="dig">5</span>)
+            d(<span class="str">"sell3"</span>, Pattern(<img src="1503708608570.png" />).similar(<span class="dig">0.90</span>), <span class="dig">5</span>)
+
+<span class="kw">def</span> gotoEquipPage():
+    <span class="kw">with</span> gameRegion:
+        d(<span class="str">"leave mail"</span>, <img src="1503708342988.png" />, <span class="dig">3</span>)
+        <span class="skw">sleep</span>(<span class="dig">0.5</span>)
+        d(<span class="str">"equip"</span>, <img src="1503708374841.png" />, <span class="dig">3</span>)
+        <span class="skw">sleep</span>(<span class="dig">0.5</span>)
+        d(<span class="str">"equip list"</span>, <img src="1503708432656.png" />, <span class="dig">3</span>)
+        <span class="skw">sleep</span>(<span class="dig">0.5</span>)
+        d(<span class="str">"equip list"</span>, <img src="1503708460080.png" />, <span class="dig">3</span>)
+
+<span class="kw">def</span> storeAll():
+    <span class="kw">with</span> gameRegion:
+        d(<span class="str">"store page"</span>, <img src="1503708850938.png" />, <span class="dig">3</span>)
+        d(<span class="str">"store page2"</span>, <img src="1503708870724.png" />, <span class="dig">3</span>)
+        <span class="kw">while</span> True:
+            d(<span class="str">"select all"</span>, <img src="1503708529175.png" />, <span class="dig">20</span>)
+            <span class="kw">if</span> d(<span class="str">"stored all"</span>, <img src="1503708674424.png" />,<span class="dig">1</span>):
+                d(<span class="str">"leave store"</span>, <img src="1503709049190.png" />, <span class="dig">3</span>)
+                <span class="kw">break</span>
+            d(<span class="str">"store"</span>, <img src="1503708937677.png" />, <span class="dig">5</span>)
+            d(<span class="str">"store2"</span>, Pattern(<img src="1503708586923.png" />).similar(<span class="dig">0.94</span>), <span class="dig">5</span>)
+
+            d(<span class="str">"store3"</span>, Pattern(<img src="1503708985982.png" />).similar(<span class="dig">0.95</span>), <span class="dig">5</span>)
+
+ArrangeMail()
+</pre>
+</body>
+</html>

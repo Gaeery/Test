@@ -7,26 +7,21 @@ gameRegion = SwordAndMagicPictures.gameRegion
 Settings.MoveMouseDelay = 0.1
 
 def clickInRegion(reg, target, timeout = 1):
-    while timeout >= 0:    
-        try:
-            if not reg.exists(target, timeout): 
-                retry = retry -1
-                if retry >= 0:
-                    Debug.user("not found, timeout %d", timeout)
-                    sleep(1)
-                continue
-            loc = reg.find(target)
-            Debug.user("Found target")
-            reg.click(loc)
-            return True
-        except FindFailed:
+    try:
+        if not reg.exists(target, timeout): 
             Debug.user("Can't find target")
-        timeout = timeout -1
+            return False
+        loc = reg.find(target)
+        Debug.user("Found target")
+        reg.click(loc)
+        return True
+    except FindFailed:
+        Debug.user("Can't find target")
     return False
 
 # click a image in game region,  support retry,  return True if success
-def c(target, retry = 1):
-    return clickInRegion(gameRegion, target, retry)
+def c(target, timeout = 1):
+    return clickInRegion(gameRegion, target, timeout)
 
 # click a image in game region,  support retry,  return True if success
 def d(msg, target, timeout = 1):
@@ -44,15 +39,14 @@ def l(msg, location):
     click(location)
 
 
-def findLocation(reg, target, retry = 1):
-    while retry >= 0:    
-        try:
+def findLocation(reg, target, timeout = 1):
+    try:
+        if reg.exists(target, timeout):
             loc = reg.find(target)
             Debug.user("Found target")
             return loc
-        except FindFailed:
-            Debug.user("Can't find target")
-        retry = retry -1
+    except FindFailed:
+        Debug.user("Can't find target")
     return None
 
 def clickLocIfExist(loc):
@@ -64,3 +58,4 @@ def clickLocIfExist(loc):
 def clickRegionBottom ( region ):
     #click(region)
     click(region.offset(0, region.h/2))
+

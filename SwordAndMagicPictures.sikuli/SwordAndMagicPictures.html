@@ -71,19 +71,65 @@
 </div>
 <pre class="sikuli-code">
 <span class="kw">from</span> sikuli <span class="kw">import</span> *
+
+gameRegion = Region(<span class="dig">0</span>,<span class="dig">0</span>,<span class="dig">587</span>,<span class="dig">1024</span>)
 imageTaskBoard = <img src="imageTaskBoard.png" />
+
+imageMissionClosed = <img src="te-1.png" />
+<span class="kw">class</span> PageId():
+    <span class="kw">def</span> getPageImage( i ):
+        <span class="kw">return</span> imagePages[i][<span class="dig">1</span>]
+
+    enumPageId_unknown = -<span class="dig">1</span>
+    enumPageId_mission = <span class="dig">0</span>
+    enumPageId_fighting = <span class="dig">1</span>
+    enumPageId_again = <span class="dig">2</span>
+    enumPageId_board = <span class="dig">3</span> <span class="cmt">#board</span>
+    enumPageId_close = <span class="dig">4</span>
+    enumPageId_selectingTask = <span class="dig">5</span>
+    enumPageId_openGift = <span class="dig">6</span>
+    enumPageId_missionClosed = <span class="dig">7</span>
+
+    escapeRegion = Region(<span class="dig">400</span>,<span class="dig">932</span>,<span class="dig">166</span>,<span class="dig">93</span>)
+    missionTimerRegion = Region(<span class="dig">438</span>,<span class="dig">23</span>,<span class="dig">110</span>,<span class="dig">78</span>)
+    imagePages = [
+            [escapeRegion, <img src="1497776017507-2.png" />, enumPageId_fighting, <span class="str">"Page: Fighting"</span> ],
+            [escapeRegion, <img src="1498270581243.png" />, enumPageId_fighting, <span class="str">"Page: Fighting (can't escape)"</span> ],
+            [gameRegion, <img src="imageClose.png" />, enumPageId_close, <span class="str">"Page: close something"</span>],
+            [missionTimerRegion, Pattern(<img src="1499210289316.png" />).similar(<span class="dig">0.80</span>), enumPageId_mission, <span class="str">"Page: In a mission"</span>],
+            [gameRegion, <img src="imageAgain.png" />, enumPageId_again, <span class="str">"Page: again"</span>],
+            [gameRegion, imageTaskBoard, enumPageId_board, <span class="str">"Page: task board"</span>],
+
+            [gameRegion, <img src="imagePageSelectingTask.png" />, enumPageId_selectingTask, <span class="str">"Page: Selecting a task"</span>],
+            [gameRegion, <img src="imagePageOpenGift.png" />, enumPageId_openGift, <span class="str">"Page: open gift"</span>],
+            [gameRegion, <img src="1503677033007.png" />, enumPageId_missionClosed, <span class="str">"Page: imageMissionClosed"</span>]
+        ]
+        <span class="cmt">#enumPageId_mission = 0</span>
+        <span class="cmt">#enumPageId_again = 2</span>
+        <span class="cmt">#enumPageId_board = 3</span>
+        <span class="cmt">#enumPageId_close = 4</span>
+        <span class="cmt">#enumPageId_selectingTask = 5</span>
+        <span class="cmt">#enumPageId_openGift = 6 </span>
+
+
+imageMissionTab22 =  <img src="1503325058113.png" />
 imageMissionTabs1 = [ Pattern(<img src="1503324924500.png" />).similar(<span class="dig">0.60</span>), Pattern(<img src="1503324978946.png" />).similar(<span class="dig">0.55</span>) ]
-imageMissionTabs2 = [ <img src="1503325095445.png" />, <img src="1503325058113.png" /> ]
+imageMissionTabs2 = [ <img src="1503325095445.png" />, imageMissionTab22 ]
 
 target1 = <img src="target1.png" />
 target2 = <img src="target2.png" />
 
-gameRegion = Region(<span class="dig">0</span>,<span class="dig">0</span>,<span class="dig">587</span>,<span class="dig">1024</span>)
-
 
 imageEvpEvent = [  Pattern(<img src="1503324924500.png" />).similar(<span class="dig">0.60</span>), <img src="1503325058113.png" />, <img src="target1.png" />, <img src="1503505788578.png" /> ]
-
+imageArmorMission = [
+        imageMissionTabs1[<span class="dig">1</span>],
+        imageMissionTabs2[<span class="dig">0</span>],
+        <img src="1503507033623.png" />, <img src="1503507047702.png" /> ]
 imageMissions = []
+
+
+
+enumPageIdMissionEnd = <img src="enumPageMissionClose.png" />
 </pre>
 </body>
 </html>
