@@ -21,7 +21,7 @@ enumEVP_branch = 14
 enumAutoSkill = 10
 enumArmor = 16
 #-------------
-enumType = 1
+enumType = enumArmor
 enumTypeNext = enumArmor
 
 # 技能使用
@@ -34,7 +34,7 @@ autoKills = [3,1,2,5,0,3,4]  #光單
 #autoKills = [2,3,1,0,4,5]
 # move if bMoveOnceInMission
 bMoveOnceInMission = False
-locationFixedMoveInMission = Location(335, 489)
+locationFixedMoveInMission = Location(430, 460)
 nMoveDelay = 5
 # move if bMoveTwiceInMission
 locationFixedMoveInMission2 = Location(335, 489)

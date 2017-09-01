@@ -4,7 +4,7 @@ reload(SwordAndMagicPictures)  # make sure global variables are reloaded
 import ControlLib
 from SwordAndMagicPictures import *
 from ControlLib import *
-Settings.MoveMouseDelay = 0.1
+Settings.MoveMouseDelay = 0.3
 gameRegion = Region(0,0,587,1024)
 
 def ArrangeMail():
@@ -51,9 +51,9 @@ def sellAll():
             if d("sold all", "1503708674424.png",1):
                 d("leave sell", "1503708342988.png", 3)
                 break
-            d("sell", "1503708547651.png", 5)
-            d("sell2", Pattern("1503708586923.png").similar(0.94), 5)
-            d("sell3", Pattern("1503708608570.png").similar(0.90), 5)
+            if d("sell", Pattern("1503708547651.png").exact(), 5):
+                d("sell2", Pattern("1503708586923.png").similar(0.94), 5)
+                d("sell3", Pattern("1503708608570.png").similar(0.90), 5)
 
 def gotoEquipPage():
     with gameRegion:  

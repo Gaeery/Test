@@ -76,7 +76,7 @@ reload(SwordAndMagicPictures)  <span class="cmt"># make sure global variables ar
 <span class="kw">import</span> ControlLib
 <span class="kw">from</span> SwordAndMagicPictures <span class="kw">import</span> *
 <span class="kw">from</span> ControlLib <span class="kw">import</span> *
-Settings.MoveMouseDelay = <span class="dig">0.1</span>
+Settings.MoveMouseDelay = <span class="dig">0.3</span>
 gameRegion = Region(<span class="dig">0</span>,<span class="dig">0</span>,<span class="dig">587</span>,<span class="dig">1024</span>)
 
 <span class="kw">def</span> ArrangeMail():
@@ -123,9 +123,9 @@ gameRegion = Region(<span class="dig">0</span>,<span class="dig">0</span>,<span 
             <span class="kw">if</span> d(<span class="str">"sold all"</span>, <img src="1503708674424.png" />,<span class="dig">1</span>):
                 d(<span class="str">"leave sell"</span>, <img src="1503708342988.png" />, <span class="dig">3</span>)
                 <span class="kw">break</span>
-            d(<span class="str">"sell"</span>, <img src="1503708547651.png" />, <span class="dig">5</span>)
-            d(<span class="str">"sell2"</span>, Pattern(<img src="1503708586923.png" />).similar(<span class="dig">0.94</span>), <span class="dig">5</span>)
-            d(<span class="str">"sell3"</span>, Pattern(<img src="1503708608570.png" />).similar(<span class="dig">0.90</span>), <span class="dig">5</span>)
+            <span class="kw">if</span> d(<span class="str">"sell"</span>, Pattern(<img src="1503708547651.png" />).exact(), <span class="dig">5</span>):
+                d(<span class="str">"sell2"</span>, Pattern(<img src="1503708586923.png" />).similar(<span class="dig">0.94</span>), <span class="dig">5</span>)
+                d(<span class="str">"sell3"</span>, Pattern(<img src="1503708608570.png" />).similar(<span class="dig">0.90</span>), <span class="dig">5</span>)
 
 <span class="kw">def</span> gotoEquipPage():
     <span class="kw">with</span> gameRegion:
