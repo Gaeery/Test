@@ -71,6 +71,8 @@
 </div>
 <pre class="sikuli-code">
 <span class="kw">from</span> sikuli <span class="kw">import</span> *
+<span class="kw">import</span> ControlLib
+<span class="kw">from</span> ControlLib <span class="kw">import</span> *
 
 gameRegion = Region(<span class="dig">0</span>,<span class="dig">0</span>,<span class="dig">587</span>,<span class="dig">1024</span>)
 imageTaskBoard = <img src="imageTaskBoard.png" />
@@ -125,8 +127,27 @@ imageArmorMission = [
         imageMissionTabs1[<span class="dig">1</span>],
         imageMissionTabs2[<span class="dig">0</span>],
         <img src="1503507033623.png" />, <img src="1503507047702.png" /> ]
+
+
 imageMissions = []
 
+
+imagesOffset_angleArmor =  [
+                ImageOffset(<img src="1503967548244.png" />, <span class="dig">0</span>, <span class="dig">10</span>),
+                ImageOffset(<img src="1503964578839.png" />, <span class="dig">0</span>, <span class="dig">30</span>),
+                ImageOffset(<img src="1503964608384.png" />, <span class="dig">0</span>, <span class="dig">20</span>),
+                ImageOffset(<img src="1503967522152.png" />, <span class="dig">0</span>, <span class="dig">20</span>),
+                ImageOffset(<img src="1503964713241.png" />, <span class="dig">0</span>, <span class="dig">20</span>),
+                ImageOffset(Pattern(<img src="1503966310928.png" />).similar(<span class="dig">0.80</span>), <span class="dig">75</span>, <span class="dig">150</span>),
+                ImageOffset(Pattern(<img src="1504059658229.png" />).similar(<span class="dig">0.80</span>), <span class="dig">75</span>, <span class="dig">150</span>),
+                ImageOffset(Pattern(<img src="1503964134166.png" />).similar(<span class="dig">0.80</span>), -<span class="dig">150</span>, <span class="dig">180</span>),
+                ImageOffset(Pattern(<img src="1503962423217.png" />).similar(<span class="dig">0.80</span>), <span class="dig">30</span>, <span class="dig">50</span>),
+                ImageOffset(<img src="1504047503481.png" />, <span class="dig">10</span>, <span class="dig">100</span>),
+                 ImageOffset(Pattern(<img src="1503963003921.png" />).similar(<span class="dig">0.80</span>), -<span class="dig">400</span>, <span class="dig">260</span>),
+                ImageOffset(Pattern(<img src="1503963735748.png" />).similar(<span class="dig">0.80</span>), -<span class="dig">450</span>, <span class="dig">320</span>),
+                ]
+
+imagesOffset = []
 
 
 enumPageIdMissionEnd = <img src="enumPageMissionClose.png" />

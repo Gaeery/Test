@@ -71,10 +71,8 @@
 </div>
 <pre class="sikuli-code">
 <span class="kw">from</span> sikuli <span class="kw">import</span> *
-<span class="kw">import</span> SwordAndMagicPictures
-<span class="kw">from</span> SwordAndMagicPictures <span class="kw">import</span> *
 
-gameRegion = SwordAndMagicPictures.gameRegion
+gameRegion = Region(<span class="dig">0</span>,<span class="dig">30</span>,<span class="dig">557</span>,<span class="dig">988</span>)
 
 Settings.MoveMouseDelay = <span class="dig">0.1</span>
 
@@ -130,6 +128,17 @@ Settings.MoveMouseDelay = <span class="dig">0.1</span>
 <span class="kw">def</span> clickRegionBottom ( region ):
     <span class="cmt">#click(region)</span>
     <span class="skw">click</span>(region.offset(<span class="dig">0</span>, region.h/<span class="dig">2</span>))
+
+<span class="kw">class</span> ImageOffset():
+    image = <span class="dig">0</span>
+    offsetX = <span class="dig">0</span>
+    offsetY = <span class="dig">0</span>
+    <span class="cmt">#def __init__(image):</span>
+    <span class="cmt">#    self.image = image</span>
+    <span class="kw">def</span> __init__(self,image, offsetX, offsetY):
+        self.image = image
+        self.offsetX = offsetX
+        self.offsetY = offsetY
 </pre>
 </body>
 </html>

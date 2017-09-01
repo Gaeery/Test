@@ -1,8 +1,6 @@
 from sikuli import *
-import SwordAndMagicPictures
-from SwordAndMagicPictures import *
 
-gameRegion = SwordAndMagicPictures.gameRegion
+gameRegion = Region(0,30,557,988)
 
 Settings.MoveMouseDelay = 0.1
 
@@ -59,3 +57,13 @@ def clickRegionBottom ( region ):
     #click(region)
     click(region.offset(0, region.h/2))
 
+class ImageOffset():
+    image = 0
+    offsetX = 0
+    offsetY = 0
+    #def __init__(image):
+    #    self.image = image
+    def __init__(self,image, offsetX, offsetY):
+        self.image = image
+        self.offsetX = offsetX
+        self.offsetY = offsetY

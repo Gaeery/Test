@@ -74,8 +74,8 @@ def storeAll():
             if d("stored all", "1503708674424.png",1):
                 d("leave store", "1503709049190.png", 3)
                 break
-            d("store", "1503708937677.png", 5)
-            d("store2", Pattern("1503708586923.png").similar(0.94), 5)
+            d("store", Pattern("1503708937677.png").exact(), 5)
+            d("store2", Pattern("1503961294687.png").similar(0.94), 5)
                 
             d("store3", Pattern("1503708985982.png").similar(0.95), 5)
 

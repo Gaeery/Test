@@ -1,5 +1,7 @@
 
 from sikuli import *
+import ControlLib
+from ControlLib import *
 
 gameRegion = Region(0,0,587,1024)
 imageTaskBoard = "imageTaskBoard.png"
@@ -54,8 +56,27 @@ imageArmorMission = [
         imageMissionTabs1[1],
         imageMissionTabs2[0], 
         "1503507033623.png", "1503507047702.png" ]
+
+
 imageMissions = []
 
+
+imagesOffset_angleArmor =  [
+                ImageOffset("1503967548244.png", 0, 10),
+                ImageOffset("1503964578839.png", 0, 30),
+                ImageOffset("1503964608384.png", 0, 20),
+                ImageOffset("1503967522152.png", 0, 20),
+                ImageOffset("1503964713241.png", 0, 20),
+                ImageOffset(Pattern("1503966310928.png").similar(0.80), 75, 150),
+                ImageOffset(Pattern("1504059658229.png").similar(0.80), 75, 150),
+                ImageOffset(Pattern("1503964134166.png").similar(0.80), -150, 180),
+                ImageOffset(Pattern("1503962423217.png").similar(0.80), 30, 50),
+                ImageOffset("1504047503481.png", 10, 100),
+                 ImageOffset(Pattern("1503963003921.png").similar(0.80), -400, 260),
+                ImageOffset(Pattern("1503963735748.png").similar(0.80), -450, 320),      
+                ] 
+
+imagesOffset = []
 
 
 enumPageIdMissionEnd = "enumPageMissionClose.png"

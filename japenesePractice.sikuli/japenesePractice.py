@@ -21,12 +21,13 @@ enumEVP_branch = 14
 enumAutoSkill = 10
 enumArmor = 16
 #-------------
-enumType = enumEVP_branch
-enumTypeNext = enumEVP_branch
+enumType = 1
+enumTypeNext = enumArmor
 
 # 技能使用
 autoKills = [0,1,2,3,4,5]  #一般
 autoKills = [1,2,5,0,3,4]  #光單
+autoKills = [3,1,2,5,0,3,4]  #光單
 #autoKills = [0,1,2,3,4,5]  #光範圍
 #autoKills = [5,1,2,3,0,4]
 #autoKills = [2,3,4]
@@ -177,6 +178,7 @@ monsterPositions = [Location(439, 328),
         Location(385, 456),  #新寶石任, 生命氣息
         Location(399, 557), #泳裝
         Location(438, 450), #EVP, 洗腦
+        Location(443, 539), #火小怪
         #Location(459, 628),
         #Location(457, 603)
         ] 
@@ -231,6 +233,8 @@ def refreshSetting():
     global nDelayBeforeUsingSkill 
     global bNeedTransfer 
     global bNeedToEnterEvpRoom
+    global imagesOffset
+    global enumType
     
     if enumType==enumPractice:
         # True   False
@@ -430,19 +434,23 @@ def refreshSetting():
     
         # 先找Boss的圖
         bMoveToBoss = True
-        imageBoss = [ "1503320329329.png", "1502752920469.png" ]
+        imageBoss = [ "1503320329329.png", "1503964977321.png", "1503965001575.png", "1503965024324.png" ]
+        #imageBoss = [ "1503320329329.png", "1502752920469.png" ]
         
         bFindMonsterBySelf = True
-        imageMonsters = [ "1502752920469.png", "1502753749177.png" ]
+        #imageMonsters = [ "1502752920469.png", "1502753749177.png" ]
+
+        imagesOffset = imagesOffset_angleArmor
+        imageMonsters = []
         bMoveToFighting = False
         monsterRegion = monsterRegion_Full
         bNeedUseOtherBranchServer = True
-        bMoveALittleAfterFight = True
-        autoKills = [3,0,1,2,3,5,4]
-        bMoveOnceInMission = True
-        locationFixedMoveInMission = Location(25, 741)
+        bMoveALittleAfterFight = False
+        autoKills = [0,5,1,2,3,5,4]
+        bMoveOnceInMission = False
+        locationFixedMoveInMission = Location(29, 543)
         bMoveTwiceInMission = False
-        locationFixedMoveInMission2 = Location(369, 586)
+        locationFixedMoveInMission2 = Location(131, 645)
         bUseGPS =False
         nDelayBeforeUsingSkill = 0
         bNeedTransfer = True
@@ -454,6 +462,7 @@ def refreshSetting():
 
   
 def main():
+    global enumType
     isTransfered = False
     isMoved = False
     bLeavingFighting = False
@@ -661,11 +670,18 @@ def enterMission():
         if not d( "select mission", imageMissions[i], 2):
             bFoundMission = False
             Debug.user("can't find mission %d" % i)
+
+            if i==2:
+                swipUp()
+                sleep(1)
+                continue
+            
             if d("click back", "1503880320458.png"):
                 i = i - 1
         else:
             bFoundMission = True
         i = i+1
+        
     if not bFoundMission:
         Debug.user("not find mission")
         return False
@@ -695,7 +711,11 @@ def enterMission():
         transfer()
     return True
 
-
+def swipUp():
+    mouseMove(Location(283, 633))
+    mouseDown(Button.LEFT)
+    mouseMove(Location(284, 282))
+    mouseUp(Button.LEFT)
 
 def loginGame():
     Debug.user("login game")
@@ -790,6 +810,27 @@ def moveToMonster(image):
         return False
     return False
 
+def moveToImageOffset( imageOffset ):
+    try:
+        if not monsterRegion.exists(imageOffset.image, 0):
+            return False
+        target = monsterRegion.find(imageOffset.image)
+        offsetX = imageOffset.offsetX 
+        offsetY = imageOffset.offsetY 
+        if offsetX + target.x < 0:
+            #Debug.user("offsetX=%d, target.x=%d" % imageOffset.offsetX , target.x)
+            offsetX = -1*target.x + 5 
+        if offsetY + target.y < 0:
+            #Debug.user("offsetY=%d, target.y=%d" % imageOffset.offsetY , target.y)
+            offsetY = -1*target.y + 5 
+        Debug.user("offsetX = %d" % offsetX)
+        Debug.user("target.x = %d" % target.x)
+        click( target.offset(offsetX, offsetY) )
+        return True
+    except FindFailed:
+        return False
+    return False
+
 # 檢查是否在任務中, 是的話就移過去打怪
 def moveToTaskTargetOnce():
     Debug.user("moveToTaskTargetOnce+") 
@@ -811,12 +852,21 @@ def moveToTaskTargetOnce():
             
         if bFindMonsterBySelf:
             i = 0
-            for image in imageMonsters:
-                i = i+1
-                Debug.user("moveToMonster %d" % i)
-                if moveToMonster(image):
-                    sleep(2)
-                    return True
+
+            if len(imagesOffset)>0:
+                for imageOffset in imagesOffset:
+                    i = i+1
+                    Debug.user("move to imageOffset %d" % i)
+                    if moveToImageOffset(imageOffset):
+                        sleep(2)
+                        return True
+            else:
+                for image in imageMonsters:
+                    i = i+1
+                    Debug.user("moveToMonster %d" % i)
+                    if moveToMonster(image):
+                        sleep(2)
+                        return True
     
 
 imageNextPage = "1497762347177.png"
