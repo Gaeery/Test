@@ -8,10 +8,10 @@ from ControlLib import *
 enumPractice = 1
 enumStoneMission = 2
 enumFixLocation = 3
-enumFixLocationDrop = 15
+enumFixLocationDropExp = 15
 enumFixLocationOtherServer = 4
 enumFixLocationSkip= 11
-enumMoveThanFind = 5
+enumMoveThanFind = 5  #special first
 enumIronMonster = 6
 enumAudoFindMonster = 7
 enumMoveALittle = 8
@@ -20,9 +20,10 @@ enumEVP = 9
 enumEVP_branch = 14
 enumAutoSkill = 10
 enumArmor = 16
+enumArmorWeekend = 17
 #-------------
-enumType = enumArmor
-enumTypeNext = enumArmor
+enumType = 17
+enumTypeNext = 17
 
 # 技能使用
 autoKills = [0,1,2,3,4,5]  #一般
@@ -34,7 +35,7 @@ autoKills = [3,1,2,5,0,3,4]  #光單
 #autoKills = [2,3,1,0,4,5]
 # move if bMoveOnceInMission
 bMoveOnceInMission = False
-locationFixedMoveInMission = Location(430, 460)
+locationFixedMoveInMission = Location(411, 469)
 nMoveDelay = 5
 # move if bMoveTwiceInMission
 locationFixedMoveInMission2 = Location(335, 489)
@@ -280,7 +281,7 @@ def refreshSetting():
         bNeedSkip = False
         # click skip after mission
         bSkipBeforeAgain = False
-    elif enumType==enumFixLocationDrop:
+    elif enumType==enumFixLocationDropExp:
         # True   False
         bUseGPS = True
         imageBonus1 = imageDropIncrease
@@ -454,6 +455,36 @@ def refreshSetting():
         bUseGPS =False
         nDelayBeforeUsingSkill = 0
         bNeedTransfer = True
+    elif enumType==enumArmorWeekend:
+        imageMissions =  [
+            imageMissionTabs1[1],
+            imageMissionTabs2[1], 
+            "1504283638867.png", "1504283686901.png" ]
+
+    
+        # 先找Boss的圖
+        bMoveToBoss = True
+        imageBoss = [ "1503320329329.png", "1503964977321.png", "1503965001575.png", "1503965024324.png" ]
+        
+        bFindMonsterBySelf = True
+        imageMonsters = [ "1504283821899.png", "1504283837684.png", "1504283849770.png" ]
+
+        #imagesOffset = imagesOffset_angleArmor
+        imagesOffset = []
+        bMoveToFighting = False
+        monsterRegion = monsterRegion_Full
+        bNeedUseOtherBranchServer = True
+        bMoveALittleAfterFight = True
+        autoKills = [0,5,1,2,3,5,4]
+        bMoveOnceInMission = False
+        locationFixedMoveInMission = Location(29, 543)
+        bMoveTwiceInMission = False
+        locationFixedMoveInMission2 = Location(131, 645)
+        nDelayBeforeUsingSkill = 0
+        bNeedTransfer = False
+        bUseGPS =True
+        imageBonus1 = imageSpecialMonsterIncrease 
+        imageBonus2 = imageDropIncrease
     else:
         Debug.user("error: unknown type");
     Debug.user("mission image length=%d" % len(imageMissions))
@@ -1008,6 +1039,8 @@ def useGPS():
             else:
                 Debug.user("no bonus 1")
 
+    if bNeedUseOtherBranchServer:
+        changeBranchServer()
         
     d( "imageGo", imageGo, 2 )
     d( "imageGpsGo", imageGpsGo, 2 )

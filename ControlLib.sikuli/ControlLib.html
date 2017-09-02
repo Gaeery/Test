@@ -70,6 +70,16 @@
 <h2>ControlLib.sikuli</h2> <a href="ControlLib.zip">(Download this script)</a>
 </div>
 <pre class="sikuli-code">
+<span class="str">'''
+    #usage
+    lib = GaeeryLib()
+    lib.setROI(Screen().getBounds())
+    #lib.setRoiRectangle(0,0,500,500)
+    lib.setRoiRectangle(0,0,1920,1080)
+    lib.clickImage( "menu", "1504253535945.png")
+'''</span>
+
+
 <span class="kw">from</span> sikuli <span class="kw">import</span> *
 
 gameRegion = Region(<span class="dig">0</span>,<span class="dig">30</span>,<span class="dig">557</span>,<span class="dig">988</span>)
@@ -139,6 +149,74 @@ Settings.MoveMouseDelay = <span class="dig">0.1</span>
         self.image = image
         self.offsetX = offsetX
         self.offsetY = offsetY
+
+
+
+
+<span class="kw">from</span> sikuli <span class="kw">import</span> *
+<span class="kw">import</span> shutil
+
+
+
+<span class="kw">class</span> GaeeryLib:
+    sc = Screen()
+    roiRectangle = Screen().getBounds()
+    regionImage = None
+
+    <span class="kw">def</span> __init__(self):
+        <span class="cmt">#constructor   </span>
+        self.region = Screen().getBounds()
+
+    <span class="kw">def</span> setROI(self, roiRectangle):
+        Debug.user( <span class="str">"setROI = %d, %d, %d, %d"</span> % (roiRectangle.x , roiRectangle.y , roiRectangle.w , roiRectangle.h) )
+        self.roiRectangle = roiRectangle
+
+    <span class="kw">def</span> setRoiRectangle(self, x, y, w, h):
+        self.setROI( Region(x,y,w,h) )
+
+    <span class="kw">def</span> clickImage( self, message, image, timeout = <span class="dig">0</span> ):
+        Debug.user(message)
+        self.sc.setAutoWaitTimeout(timeout)
+        self.sc.setROI(self.roiRectangle)
+        <span class="kw">try</span>:
+            target = self.sc.<span class="skw">find</span>(image)
+            <span class="skw">click</span>(target.getCenter())
+            <span class="kw">return</span> True
+        <span class="kw">except</span> FindFailed:
+            Debug.user(<span class="str">"can't find %s"</span> % message )
+            <span class="kw">return</span> False
+
+    <span class="kw">def</span> <span class="skw">find</span>( self, message, image, timeout = <span class="dig">0</span> ):
+        Debug.user(message)
+        self.sc.setAutoWaitTimeout(timeout)
+        self.sc.setROI(self.roiRectangle)
+        <span class="kw">try</span>:
+            target = self.sc.<span class="skw">find</span>(image)
+            Debug.user(<span class="str">"Found %s"</span> % message )
+            <span class="kw">return</span> target
+        <span class="kw">except</span> FindFailed:
+            Debug.user(<span class="str">"can't find %s"</span> % message )
+            <span class="kw">return</span> None
+
+
+<span class="cmt"># capture a screen</span>
+<span class="kw">def</span> screenCapture(strFileName, strPath = os.path.join(getBundlePath(),<span class="str">"screenCapture"</span>)):
+    screen = Screen()
+    img = <span class="skw">capture</span>(screen.getBounds())
+    <span class="kw">if</span> <span class="kw">not</span> os.path.exists(strPath):
+        os.mkdir(strPath);
+    shutil.move(img, os.path.join( strPath, strFileName))
+
+<span class="kw">import</span> time
+<span class="cmt"># log text to file with timestamp</span>
+<span class="kw">def</span> logToFile( strMessage, strFileName = os.path.join( getBundlePath(), <span class="str">"log.txt"</span>) ):
+    localtime = time.localtime(time.time())
+    timestring = time.strftime (<span class="str">'%Y/%m/%d %H:%M:%S'</span>)
+    inp = open(strFileName, <span class="str">"a"</span>)
+    inp.write(<span class="str">'%s'</span> % timestring)
+    inp.write(<span class="str">'  %s'</span> % strMessage)
+    inp.write(<span class="str">'\r\n'</span>)
+    inp.close()
 </pre>
 </body>
 </html>

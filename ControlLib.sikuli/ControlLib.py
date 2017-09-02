@@ -1,3 +1,13 @@
+'''
+    #usage
+    lib = GaeeryLib()
+    lib.setROI(Screen().getBounds())
+    #lib.setRoiRectangle(0,0,500,500)
+    lib.setRoiRectangle(0,0,1920,1080)
+    lib.clickImage( "menu", "1504253535945.png")
+'''
+
+
 from sikuli import *
 
 gameRegion = Region(0,30,557,988)
@@ -67,3 +77,71 @@ class ImageOffset():
         self.image = image
         self.offsetX = offsetX
         self.offsetY = offsetY
+
+
+
+
+from sikuli import *
+import shutil
+
+
+
+class GaeeryLib:
+    sc = Screen()
+    roiRectangle = Screen().getBounds()
+    regionImage = None
+    
+    def __init__(self):
+        #constructor   
+        self.region = Screen().getBounds()
+        
+    def setROI(self, roiRectangle):
+        Debug.user( "setROI = %d, %d, %d, %d" % (roiRectangle.x , roiRectangle.y , roiRectangle.w , roiRectangle.h) )
+        self.roiRectangle = roiRectangle
+
+    def setRoiRectangle(self, x, y, w, h):
+        self.setROI( Region(x,y,w,h) )
+        
+    def clickImage( self, message, image, timeout = 0 ):
+        Debug.user(message)
+        self.sc.setAutoWaitTimeout(timeout)
+        self.sc.setROI(self.roiRectangle)
+        try:
+            target = self.sc.find(image)
+            click(target.getCenter())
+            return True
+        except FindFailed:
+            Debug.user("can't find %s" % message )
+            return False
+
+    def find( self, message, image, timeout = 0 ):
+        Debug.user(message)
+        self.sc.setAutoWaitTimeout(timeout)
+        self.sc.setROI(self.roiRectangle)
+        try:
+            target = self.sc.find(image)
+            Debug.user("Found %s" % message )
+            return target
+        except FindFailed:
+            Debug.user("can't find %s" % message )
+            return None
+
+
+# capture a screen
+def screenCapture(strFileName, strPath = os.path.join(getBundlePath(),"screenCapture")):
+    screen = Screen()
+    img = capture(screen.getBounds())
+    if not os.path.exists(strPath): 
+        os.mkdir(strPath);
+    shutil.move(img, os.path.join( strPath, strFileName))
+
+import time
+# log text to file with timestamp
+def logToFile( strMessage, strFileName = os.path.join( getBundlePath(), "log.txt") ):
+    localtime = time.localtime(time.time())
+    timestring = time.strftime ('%Y/%m/%d %H:%M:%S')
+    inp = open(strFileName, "a")
+    inp.write('%s' % timestring)
+    inp.write('  %s' % strMessage)
+    inp.write('\r\n')
+    inp.close()

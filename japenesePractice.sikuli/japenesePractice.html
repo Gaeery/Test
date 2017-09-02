@@ -80,10 +80,10 @@ reload(SwordAndMagicPictures)  <span class="cmt"># make sure global variables ar
 enumPractice = <span class="dig">1</span>
 enumStoneMission = <span class="dig">2</span>
 enumFixLocation = <span class="dig">3</span>
-enumFixLocationDrop = <span class="dig">15</span>
+enumFixLocationDropExp = <span class="dig">15</span>
 enumFixLocationOtherServer = <span class="dig">4</span>
 enumFixLocationSkip= <span class="dig">11</span>
-enumMoveThanFind = <span class="dig">5</span>
+enumMoveThanFind = <span class="dig">5</span>  <span class="cmt">#special first</span>
 enumIronMonster = <span class="dig">6</span>
 enumAudoFindMonster = <span class="dig">7</span>
 enumMoveALittle = <span class="dig">8</span>
@@ -92,9 +92,10 @@ enumEVP = <span class="dig">9</span>
 enumEVP_branch = <span class="dig">14</span>
 enumAutoSkill = <span class="dig">10</span>
 enumArmor = <span class="dig">16</span>
+enumArmorWeekend = <span class="dig">17</span>
 <span class="cmt">#-------------</span>
-enumType = enumArmor
-enumTypeNext = enumArmor
+enumType = <span class="dig">17</span>
+enumTypeNext = <span class="dig">17</span>
 
 <span class="cmt"># 技能使用</span>
 autoKills = [<span class="dig">0</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">4</span>,<span class="dig">5</span>]  <span class="cmt">#一般</span>
@@ -106,7 +107,7 @@ autoKills = [<span class="dig">3</span>,<span class="dig">1</span>,<span class="
 <span class="cmt">#autoKills = [2,3,1,0,4,5]</span>
 <span class="cmt"># move if bMoveOnceInMission</span>
 bMoveOnceInMission = False
-locationFixedMoveInMission = Location(<span class="dig">430</span>, <span class="dig">460</span>)
+locationFixedMoveInMission = Location(<span class="dig">411</span>, <span class="dig">469</span>)
 nMoveDelay = <span class="dig">5</span>
 <span class="cmt"># move if bMoveTwiceInMission</span>
 locationFixedMoveInMission2 = Location(<span class="dig">335</span>, <span class="dig">489</span>)
@@ -352,7 +353,7 @@ bNeedAgree = True
         bNeedSkip = False
         <span class="cmt"># click skip after mission</span>
         bSkipBeforeAgain = False
-    <span class="kw">elif</span> enumType==enumFixLocationDrop:
+    <span class="kw">elif</span> enumType==enumFixLocationDropExp:
         <span class="cmt"># True   False</span>
         bUseGPS = True
         imageBonus1 = imageDropIncrease
@@ -526,6 +527,36 @@ bNeedAgree = True
         bUseGPS =False
         nDelayBeforeUsingSkill = <span class="dig">0</span>
         bNeedTransfer = True
+    <span class="kw">elif</span> enumType==enumArmorWeekend:
+        imageMissions =  [
+            imageMissionTabs1[<span class="dig">1</span>],
+            imageMissionTabs2[<span class="dig">1</span>],
+            <img src="1504283638867.png" />, <img src="1504283686901.png" /> ]
+
+
+        <span class="cmt"># 先找Boss的圖</span>
+        bMoveToBoss = True
+        imageBoss = [ <img src="1503320329329.png" />, <img src="1503964977321.png" />, <img src="1503965001575.png" />, <img src="1503965024324.png" /> ]
+
+        bFindMonsterBySelf = True
+        imageMonsters = [ <img src="1504283821899.png" />, <img src="1504283837684.png" />, <img src="1504283849770.png" /> ]
+
+        <span class="cmt">#imagesOffset = imagesOffset_angleArmor</span>
+        imagesOffset = []
+        bMoveToFighting = False
+        monsterRegion = monsterRegion_Full
+        bNeedUseOtherBranchServer = True
+        bMoveALittleAfterFight = True
+        autoKills = [<span class="dig">0</span>,<span class="dig">5</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">5</span>,<span class="dig">4</span>]
+        bMoveOnceInMission = False
+        locationFixedMoveInMission = Location(<span class="dig">29</span>, <span class="dig">543</span>)
+        bMoveTwiceInMission = False
+        locationFixedMoveInMission2 = Location(<span class="dig">131</span>, <span class="dig">645</span>)
+        nDelayBeforeUsingSkill = <span class="dig">0</span>
+        bNeedTransfer = False
+        bUseGPS =True
+        imageBonus1 = imageSpecialMonsterIncrease
+        imageBonus2 = imageDropIncrease
     <span class="kw">else</span>:
         Debug.user(<span class="str">"error: unknown type"</span>);
     Debug.user(<span class="str">"mission image length=%d"</span> % len(imageMissions))
@@ -1080,6 +1111,8 @@ imageGpsGo = <img src="imageGpsGo.png" />
             <span class="kw">else</span>:
                 Debug.user(<span class="str">"no bonus 1"</span>)
 
+    <span class="kw">if</span> bNeedUseOtherBranchServer:
+        changeBranchServer()
 
     d( <span class="str">"imageGo"</span>, imageGo, <span class="dig">2</span> )
     d( <span class="str">"imageGpsGo"</span>, imageGpsGo, <span class="dig">2</span> )
