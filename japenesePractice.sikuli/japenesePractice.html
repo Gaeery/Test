@@ -76,6 +76,9 @@ reload(SwordAndMagicPictures)  <span class="cmt"># make sure global variables ar
 <span class="kw">import</span> ControlLib
 <span class="kw">from</span> SwordAndMagicPictures <span class="kw">import</span> *
 <span class="kw">from</span> ControlLib <span class="kw">import</span> *
+<span class="kw">import</span> SwordAndMagicActions
+<span class="kw">from</span> SwordAndMagicActions <span class="kw">import</span> *
+reload(SwordAndMagicActions)
 
 enumPractice = <span class="dig">1</span>
 enumStoneMission = <span class="dig">2</span>
@@ -94,8 +97,8 @@ enumAutoSkill = <span class="dig">10</span>
 enumArmor = <span class="dig">16</span>
 enumArmorWeekend = <span class="dig">17</span>
 <span class="cmt">#-------------</span>
-enumType = <span class="dig">17</span>
-enumTypeNext = <span class="dig">17</span>
+enumType = <span class="dig">16</span>
+enumTypeNext = enumArmor
 
 <span class="cmt"># 技能使用</span>
 autoKills = [<span class="dig">0</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">4</span>,<span class="dig">5</span>]  <span class="cmt">#一般</span>
@@ -107,7 +110,7 @@ autoKills = [<span class="dig">3</span>,<span class="dig">1</span>,<span class="
 <span class="cmt">#autoKills = [2,3,1,0,4,5]</span>
 <span class="cmt"># move if bMoveOnceInMission</span>
 bMoveOnceInMission = False
-locationFixedMoveInMission = Location(<span class="dig">411</span>, <span class="dig">469</span>)
+locationFixedMoveInMission = Location(<span class="dig">385</span>, <span class="dig">455</span>)
 nMoveDelay = <span class="dig">5</span>
 <span class="cmt"># move if bMoveTwiceInMission</span>
 locationFixedMoveInMission2 = Location(<span class="dig">335</span>, <span class="dig">489</span>)
@@ -227,7 +230,7 @@ bCanEscap = True
 nCheckFightingTimes = <span class="dig">1</span>
 bNeedTransfer = False
 imageMissions = []
-
+bNeedSayThanks = False
 
 
 <span class="cmt"># ======== 需換的部分 ===============================================================</span>
@@ -308,11 +311,14 @@ bNeedAgree = True
     <span class="kw">global</span> bNeedToEnterEvpRoom
     <span class="kw">global</span> imagesOffset
     <span class="kw">global</span> enumType
+    <span class="kw">global</span> bNeedSayThanks
+    bNeedSayThanks = False
 
     <span class="kw">if</span> enumType==enumPractice:
         <span class="cmt"># True   False</span>
         <span class="cmt">#only move once</span>
-        bMoveOnceInMission = False
+        bMoveOnceInMission = True
+        locationFixedMoveInMission = Location(<span class="dig">278</span>, <span class="dig">400</span>)
         bFindTargetInMission = False
         <span class="cmt"># 試煉/積分 True, 原石 False</span>
         bNeedAgree = True
@@ -322,7 +328,8 @@ bNeedAgree = True
         bUseGPS = True
         imageBonus1 = imageDropIncrease
         imageBonus2 = imageSpecialMonsterIncrease
-        autoKills = [<span class="dig">5</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">0</span>,<span class="dig">3</span>,<span class="dig">4</span>]  <span class="cmt">#光單</span>
+        autoKills = [<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">4</span>,<span class="dig">5</span>]  <span class="cmt">#12345</span>
+        bNeedSayThanks = True
     <span class="kw">elif</span> enumType==enumStoneMission:
         bMoveALittleAfterFight = True
         <span class="cmt">#only move once</span>
@@ -397,6 +404,7 @@ bNeedAgree = True
         <span class="cmt"># True   False</span>
         <span class="cmt">#only move once</span>
         bMoveOnceInMission = True
+        locationFixedMoveInMission = Location(<span class="dig">58</span>, <span class="dig">430</span>)
         bFindTargetInMission = False
         <span class="cmt"># 試煉/積分 True, 原石 False</span>
         bNeedAgree = True
@@ -519,7 +527,7 @@ bNeedAgree = True
         monsterRegion = monsterRegion_Full
         bNeedUseOtherBranchServer = True
         bMoveALittleAfterFight = False
-        autoKills = [<span class="dig">0</span>,<span class="dig">5</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">5</span>,<span class="dig">4</span>]
+        autoKills = [<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">4</span>,<span class="dig">5</span>]  <span class="cmt">#12345</span>
         bMoveOnceInMission = False
         locationFixedMoveInMission = Location(<span class="dig">29</span>, <span class="dig">543</span>)
         bMoveTwiceInMission = False
@@ -547,7 +555,7 @@ bNeedAgree = True
         monsterRegion = monsterRegion_Full
         bNeedUseOtherBranchServer = True
         bMoveALittleAfterFight = True
-        autoKills = [<span class="dig">0</span>,<span class="dig">5</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">5</span>,<span class="dig">4</span>]
+        autoKills = [<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">4</span>,<span class="dig">5</span>]  <span class="cmt">#12345</span>
         bMoveOnceInMission = False
         locationFixedMoveInMission = Location(<span class="dig">29</span>, <span class="dig">543</span>)
         bMoveTwiceInMission = False
@@ -768,6 +776,7 @@ bNeedAgree = True
     bFoundMission = False
     nSteps=len(imageMissions)
     i = <span class="dig">0</span>
+    swipTimes = <span class="dig">0</span>
     <span class="kw">while</span> i &lt; nSteps:
         Debug.user(<span class="str">"click mission %d"</span> % i)
         <span class="kw">if</span> <span class="kw">not</span> d( <span class="str">"select mission"</span>, imageMissions[i], <span class="dig">2</span>):
@@ -776,6 +785,10 @@ bNeedAgree = True
 
             <span class="kw">if</span> i==<span class="dig">2</span>:
                 swipUp()
+                swipTimes = swipTimes+<span class="dig">1</span>
+                <span class="kw">if</span> swipTimes &gt; <span class="dig">3</span>:
+                    Debug.user(<span class="str">"error: can't find mission"</span>)
+                    <span class="kw">return</span> False
                 <span class="skw">sleep</span>(<span class="dig">1</span>)
                 <span class="kw">continue</span>
 
@@ -783,6 +796,7 @@ bNeedAgree = True
                 i = i - <span class="dig">1</span>
         <span class="kw">else</span>:
             bFoundMission = True
+            <span class="skw">sleep</span>(<span class="dig">0.5</span>)
         i = i+<span class="dig">1</span>
 
     <span class="kw">if</span> <span class="kw">not</span> bFoundMission:
@@ -1011,6 +1025,7 @@ friendMenu = <img src="1497755516858.png" />
     bFighting = False
     <span class="cmt"># is finished from fight</span>
     bFought = False
+    bSaidThanks = False
     <span class="kw">while</span> True:
         <span class="kw">if</span> <span class="kw">not</span> isFighting():
             bFighting = False
@@ -1027,6 +1042,10 @@ friendMenu = <img src="1497755516858.png" />
             <span class="kw">else</span>:
                 <span class="skw">sleep</span>(<span class="dig">1</span>)
                 bFought = True
+
+
+                <span class="kw">if</span> bNeedSayThanks &amp; (<span class="kw">not</span> bSaidThanks):
+                    bSaidThanks = SayThanksIfRare()
 
                 <span class="cmt">#if Region(398,80,154,71).exists("1502364055024.png", 2):</span>
                 <span class="cmt">#    d("exit", "1502364132345.png")</span>

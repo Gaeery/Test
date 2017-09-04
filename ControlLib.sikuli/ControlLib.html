@@ -198,6 +198,29 @@ Settings.MoveMouseDelay = <span class="dig">0.1</span>
             Debug.user(<span class="str">"can't find %s"</span> % message )
             <span class="kw">return</span> None
 
+    <span class="kw">def</span> exists( self, message, image, timeout = <span class="dig">0</span> ):
+        Debug.user(message)
+        self.sc.setROI(self.roiRectangle)
+        <span class="kw">if</span> self.sc.exists(image, timeout):
+            Debug.user(<span class="str">"Exists %s"</span> % message )
+            <span class="kw">return</span> True
+        <span class="kw">else</span>:
+            Debug.user(<span class="str">"not exists %s"</span> % message )
+            <span class="kw">return</span> False
+
+    <span class="kw">def</span> clickImageInRegion( self, message, region, image, timeout = <span class="dig">0</span> ):
+        Debug.user(<span class="str">"[clickImageInRegion] %s"</span> % message )
+        sc = Screen()
+        sc.setAutoWaitTimeout(timeout)
+        sc.setROI(region)
+        <span class="kw">try</span>:
+            target = sc.<span class="skw">find</span>(image)
+            <span class="skw">click</span>(target.getCenter())
+            <span class="kw">return</span> True
+        <span class="kw">except</span> FindFailed:
+            Debug.user(<span class="str">"[clickImageInRegion] can't find %s"</span> % message )
+            <span class="kw">return</span> False
+
 
 <span class="cmt"># capture a screen</span>
 <span class="kw">def</span> screenCapture(strFileName, strPath = os.path.join(getBundlePath(),<span class="str">"screenCapture"</span>)):

@@ -126,7 +126,30 @@ class GaeeryLib:
             Debug.user("can't find %s" % message )
             return None
 
+    def exists( self, message, image, timeout = 0 ):
+        Debug.user(message)
+        self.sc.setROI(self.roiRectangle)
+        if self.sc.exists(image, timeout):
+            Debug.user("Exists %s" % message )
+            return True
+        else:
+            Debug.user("not exists %s" % message )
+            return False
 
+    def clickImageInRegion( self, message, region, image, timeout = 0 ):
+        Debug.user("[clickImageInRegion] %s" % message )
+        sc = Screen()
+        sc.setAutoWaitTimeout(timeout)
+        sc.setROI(region)
+        try:
+            target = sc.find(image)
+            click(target.getCenter())
+            return True
+        except FindFailed:
+            Debug.user("[clickImageInRegion] can't find %s" % message )
+            return False
+
+        
 # capture a screen
 def screenCapture(strFileName, strPath = os.path.join(getBundlePath(),"screenCapture")):
     screen = Screen()

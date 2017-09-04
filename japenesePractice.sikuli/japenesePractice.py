@@ -4,6 +4,9 @@ reload(SwordAndMagicPictures)  # make sure global variables are reloaded
 import ControlLib
 from SwordAndMagicPictures import *
 from ControlLib import *
+import SwordAndMagicActions
+from SwordAndMagicActions import *
+reload(SwordAndMagicActions) 
 
 enumPractice = 1
 enumStoneMission = 2
@@ -22,8 +25,8 @@ enumAutoSkill = 10
 enumArmor = 16
 enumArmorWeekend = 17
 #-------------
-enumType = 17
-enumTypeNext = 17
+enumType = 16
+enumTypeNext = enumArmor
 
 # 技能使用
 autoKills = [0,1,2,3,4,5]  #一般
@@ -35,7 +38,7 @@ autoKills = [3,1,2,5,0,3,4]  #光單
 #autoKills = [2,3,1,0,4,5]
 # move if bMoveOnceInMission
 bMoveOnceInMission = False
-locationFixedMoveInMission = Location(411, 469)
+locationFixedMoveInMission = Location(385, 455)
 nMoveDelay = 5
 # move if bMoveTwiceInMission
 locationFixedMoveInMission2 = Location(335, 489)
@@ -155,7 +158,7 @@ bCanEscap = True
 nCheckFightingTimes = 1
 bNeedTransfer = False
 imageMissions = []
-
+bNeedSayThanks = False
 
 
 # ======== 需換的部分 ===============================================================
@@ -236,11 +239,14 @@ def refreshSetting():
     global bNeedToEnterEvpRoom
     global imagesOffset
     global enumType
+    global bNeedSayThanks
+    bNeedSayThanks = False
     
     if enumType==enumPractice:
         # True   False
         #only move once
-        bMoveOnceInMission = False
+        bMoveOnceInMission = True
+        locationFixedMoveInMission = Location(278, 400)
         bFindTargetInMission = False
         # 試煉/積分 True, 原石 False
         bNeedAgree = True
@@ -250,7 +256,8 @@ def refreshSetting():
         bUseGPS = True
         imageBonus1 = imageDropIncrease
         imageBonus2 = imageSpecialMonsterIncrease
-        autoKills = [5,1,2,0,3,4]  #光單
+        autoKills = [1,2,3,4,5]  #12345
+        bNeedSayThanks = True
     elif enumType==enumStoneMission:
         bMoveALittleAfterFight = True
         #only move once
@@ -325,6 +332,7 @@ def refreshSetting():
         # True   False
         #only move once
         bMoveOnceInMission = True
+        locationFixedMoveInMission = Location(58, 430)
         bFindTargetInMission = False
         # 試煉/積分 True, 原石 False
         bNeedAgree = True
@@ -447,7 +455,7 @@ def refreshSetting():
         monsterRegion = monsterRegion_Full
         bNeedUseOtherBranchServer = True
         bMoveALittleAfterFight = False
-        autoKills = [0,5,1,2,3,5,4]
+        autoKills = [1,2,3,4,5]  #12345
         bMoveOnceInMission = False
         locationFixedMoveInMission = Location(29, 543)
         bMoveTwiceInMission = False
@@ -475,7 +483,7 @@ def refreshSetting():
         monsterRegion = monsterRegion_Full
         bNeedUseOtherBranchServer = True
         bMoveALittleAfterFight = True
-        autoKills = [0,5,1,2,3,5,4]
+        autoKills = [1,2,3,4,5]  #12345
         bMoveOnceInMission = False
         locationFixedMoveInMission = Location(29, 543)
         bMoveTwiceInMission = False
@@ -696,6 +704,7 @@ def enterMission():
     bFoundMission = False
     nSteps=len(imageMissions)
     i = 0
+    swipTimes = 0
     while i < nSteps:
         Debug.user("click mission %d" % i)
         if not d( "select mission", imageMissions[i], 2):
@@ -704,6 +713,10 @@ def enterMission():
 
             if i==2:
                 swipUp()
+                swipTimes = swipTimes+1
+                if swipTimes > 3:
+                    Debug.user("error: can't find mission")
+                    return False
                 sleep(1)
                 continue
             
@@ -711,6 +724,7 @@ def enterMission():
                 i = i - 1
         else:
             bFoundMission = True
+            sleep(0.5)
         i = i+1
         
     if not bFoundMission:
@@ -939,6 +953,7 @@ def waitFightingFinished():
     bFighting = False
     # is finished from fight
     bFought = False
+    bSaidThanks = False
     while True:
         if not isFighting():
             bFighting = False
@@ -946,7 +961,7 @@ def waitFightingFinished():
             if i >= nCheckFightingTimes:
                 break
             sleep(1)
-        else:
+        else:            
             i = 0
             if not bFighting:
                 sleep(1)
@@ -955,6 +970,10 @@ def waitFightingFinished():
             else:
                 sleep(1)
                 bFought = True
+
+
+                if bNeedSayThanks & (not bSaidThanks):
+                    bSaidThanks = SayThanksIfRare()
                 
                 #if Region(398,80,154,71).exists("1502364055024.png", 2):
                 #    d("exit", "1502364132345.png")
