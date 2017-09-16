@@ -6,6 +6,27 @@ from ControlLib import *
 gameRegion = Region(0,0,587,1024)
 imageTaskBoard = "imageTaskBoard.png"
 
+
+locationIronMonster = Location(112, 555)
+locationFirstOriginalStone = Location(174, 431)
+locationSecondOriginalStone = Location(478, 240)
+locationDarkBoss = Location(384, 419)
+locationLightBoss = Location(172, 434)
+locationFireBoss = Location(495, 438)
+locationWindBoss = Location(50, 387)
+locationDustBoss = Location(208, 400)
+locationWaterBoss = Location(103, 399)
+locationSpecialPoints = Location(191, 426)
+locationTank = Location(390, 289)
+locationAngel = Location(476, 551)
+locationAssassin = Location(166, 472)
+locationGiant = Location(539, 341)
+locationLif = Location(337, 631)
+
+
+
+
+
 imageMissionClosed = "te-1.png"
 class PageId():
     def getPageImage( i ):
@@ -29,7 +50,7 @@ class PageId():
             [gameRegion, "imageClose.png", enumPageId_close, "Page: close something"],
             [missionTimerRegion, Pattern("1499210289316.png").similar(0.80), enumPageId_mission, "Page: In a mission"],
             [gameRegion, "imageAgain.png", enumPageId_again, "Page: again"],
-            [gameRegion, imageTaskBoard, enumPageId_board, "Page: task board"],
+            [gameRegion, "1505316075387.png", enumPageId_board, "Page: task board"],
  
             [gameRegion, "imagePageSelectingTask.png", enumPageId_selectingTask, "Page: Selecting a task"],
             [gameRegion, "imagePageOpenGift.png", enumPageId_openGift, "Page: open gift"],
@@ -51,7 +72,10 @@ target1 = "target1.png"
 target2 = "target2.png"
 
 
-imageEvpEvent = [  Pattern("1503324924500.png").similar(0.60), "1503325058113.png", "target1.png", "1503505788578.png" ]
+imageEvpEvent = [ imageMissionTabs1[1], imageMissionTabs2[1], "1505315719283.png", "1505315749946.png" ]
+imageEvpEvent2000 = [ imageMissionTabs1[1], imageMissionTabs2[1], "1505315719283.png",  "1505488887706.png"]
+
+
 imageArmorMission = [ 
         imageMissionTabs1[1],
         imageMissionTabs2[0], 
@@ -75,6 +99,11 @@ imagesOffset_angleArmor =  [
                  ImageOffset(Pattern("1503963003921.png").similar(0.80), -400, 260),
                 ImageOffset(Pattern("1503963735748.png").similar(0.80), -450, 320),      
                 ] 
+imagesOffset_AssassinArmor = [
+                ImageOffset("1503967548244.png", 0, 10),  
+                ImageOffset("1505232436315.png", 0, 10),  
+                ] 
+
 
 imagesOffset = []
 

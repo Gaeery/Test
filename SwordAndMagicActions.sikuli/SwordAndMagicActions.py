@@ -13,10 +13,25 @@ lib.setROI( gameRegion )
 
 def SayThanks():
     lib.clickImageInRegion("emotion menu", Region(315,917,142,118), "1504394917440.png")
-    return lib.clickImageInRegion("Thanks.", Region(0,91,551,610), "1504395063209.png", 1.5)
+
+    if lib.clickImageInRegion("Thanks.", Region(0,91,551,610), "1504395063209.png", 1.5):
+        return True 
+    lib.clickImage( "recent emotion", "1504566828246.png", 0.5)
+    return lib.clickImageInRegion("Thanks.", Region(0,91,551,610), "1504395063209.png", 1)
 def SayThanksIfRare():
-    if lib.exists( "rare", "1504308263995.png", 3):
+    
+    if lib.exists( "rare", Pattern("1504308263995.png").similar(0.60), 3):
         if lib.clickImage( "local talk", Pattern("1504437289796.png").similar(0.80)):
             sleep(0.1)
         return SayThanks()
     return False
+
+'''
+finder = Finder( Screen(0).capture() )
+try:
+    found = finder.find(Pattern("1504627650520.png").exact())
+    print found
+    Debug.user("found")
+except FindFailed:
+    Debug.user("failed")
+'''

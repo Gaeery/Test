@@ -15,33 +15,40 @@ enumFixLocationDropExp = 15
 enumFixLocationOtherServer = 4
 enumFixLocationSkip= 11
 enumMoveThanFind = 5  #special first
+enumMoveThanFindLeft = 18
 enumIronMonster = 6
 enumAudoFindMonster = 7
-enumMoveALittle = 8
-enumMoveALittleAndFindFighting = 13
+enumMoveALittle = 8 
+enumMoveALittleAndFindFighting = 13  #兔子
 enumEVP = 9
 enumEVP_branch = 14
 enumAutoSkill = 10
-enumArmor = 16
+enumArmorAngle = 16
+enumArmorAssassin = 18
 enumArmorWeekend = 17
 #-------------
-enumType = 16
-enumTypeNext = enumArmor
+enumType = enumEVP
+enumTypeNext = enumEVP 
+
+
+locationFixedMoveInMission = Location(383, 546)
 
 # 技能使用
-autoKills = [0,1,2,3,4,5]  #一般
-autoKills = [1,2,5,0,3,4]  #光單
-autoKills = [3,1,2,5,0,3,4]  #光單
+autoKills = [5,0,1,2,3,4,2,3,4,2,3,4]  #一般
+#autoKills = [2,3,1,5,0,4]  #土亡命
+#autoKills = [1,2,5,0,3,4]  #光單
+#autoKills = [3,1,2,5,0,3,4]  #光單
+#autoKills = [3, 0, 1, 2, 4,  5, 3, 0, 1, 2, 4]  #坦
 #autoKills = [0,1,2,3,4,5]  #光範圍
 #autoKills = [5,1,2,3,0,4]
 #autoKills = [2,3,4]
 #autoKills = [2,3,1,0,4,5]
 # move if bMoveOnceInMission
 bMoveOnceInMission = False
-locationFixedMoveInMission = Location(385, 455)
+
 nMoveDelay = 5
 # move if bMoveTwiceInMission
-locationFixedMoveInMission2 = Location(335, 489)
+locationFixedMoveInMission2 = locationWindBoss
 nMoveDelay2 = 1
 bMoveToFighting = True
 # GPS buffer [ imageDoubleExp, imageDropIncrease, imageSpecialMonsterIncrease ] 
@@ -81,7 +88,7 @@ imageNextPage3 = "imageNextPage3.png"
 imageOpenGift = "imageOpenGift.png"
 imageAgree = Pattern("imageAgree.png").similar(0.98)
 imageGo = "imageGo.png"
-#imageTaskBoard = "imageTaskBoard.png"
+
 imageFriendMenu = "imageFriendMenu.png"
 imagePageSelectingTask = "imagePageSelectingTask.png"
 imagePageOpenGift = "imagePageOpenGift.png"
@@ -99,24 +106,10 @@ monsterRegion = monsterRegion_Normal
 
 locationMonster = Location(84, 557)
 
-locationIronMonster = Location(112, 555)
-locationFirstOriginalStone = Location(174, 431)
-locationSecondOriginalStone = Location(478, 240)
-locationDarkBoss = Location(384, 419)
-locationLightBoss = Location(172, 434)
-locationFireBoss = Location(495, 438)
-locationWindBoss = Location(50, 387)
-locationDustBoss = Location(208, 400)
-locationWaterBoss = Location(103, 399)
-locationSpecialPoints = Location(191, 426)
-locationTank = Location(390, 289)
-locationAngel = Location(476, 551)
-locationAssassin = Location(166, 472)
-locationGiant = Location(539, 341)
-locationLif = Location(337, 631)
 
-locationDown = Location(277, 535)
-locationUp = Location(277, 501)
+
+locationDown = Location(280, 535)
+locationUp = Location(280, 515)
 nDelayBeforeUsingSkill = 2
 
 Settings.MoveMouseDelay = 0.1
@@ -144,8 +137,8 @@ bMoveTwiceInMission = False
 # 開禮物, True適用與各情況, False比較快
 bNeedOpenGift = True
 
-imageBonus1 = imageDropIncrease
-imageBonus2 = imageSpecialMonsterIncrease
+imageBonus1 = imageSpecialMonsterIncrease
+imageBonus2 = imageDropIncrease
 
 # 需要選人少的分流?
 bNeedUseOtherBranchServer = False
@@ -245,7 +238,7 @@ def refreshSetting():
     if enumType==enumPractice:
         # True   False
         #only move once
-        bMoveOnceInMission = True
+        bMoveOnceInMission = False
         locationFixedMoveInMission = Location(278, 400)
         bFindTargetInMission = False
         # 試煉/積分 True, 原石 False
@@ -254,7 +247,7 @@ def refreshSetting():
         # 寶石任務 False
         bNeedOpenGift = True
         bUseGPS = True
-        imageBonus1 = imageDropIncrease
+        imageBonus1 = imageDropIncrease 
         imageBonus2 = imageSpecialMonsterIncrease
         autoKills = [1,2,3,4,5]  #12345
         bNeedSayThanks = True
@@ -289,14 +282,14 @@ def refreshSetting():
         # click skip after mission
         bSkipBeforeAgain = False
     elif enumType==enumFixLocationDropExp:
-        # True   False
+        # True   False 
         bUseGPS = True
-        imageBonus1 = imageDropIncrease
+        imageBonus1 = imageDropIncrease   
         imageBonus2 = imageDoubleExp
         #only move once
         bMoveOnceInMission = True
         bFindTargetInMission = False
-        bMoveToFighting = True
+        bMoveToFighting = True 
         # 試煉/積分 True, 原石 False
         bNeedAgree = True
         # 寶石任務 False
@@ -305,13 +298,13 @@ def refreshSetting():
         bNeedSkip = False
         # click skip after mission
         bSkipBeforeAgain = False
-    elif enumType==enumFixLocationSkip:
+    elif enumType==enumFixLocationSkip:   
         monsterRegion = monsterRegion_Left
         bMoveOnceInMission = True
         bNeedAgree = True
         # 寶石任務 False
-        bNeedOpenGift = True
-        bNeedSkip = True
+        #bNeedOpenGift = True
+        #bNeedSkip = True
         bSkipBeforeAgain = False
     elif enumType==enumFixLocationOtherServer:
         #only move once
@@ -319,7 +312,7 @@ def refreshSetting():
         bFindTargetInMission = False
         # 試煉/積分 True, 原石 False
         bNeedAgree = True
-        # 寶石任務 False
+        # 寶石任務 False 
         bNeedOpenGift = True
         # click skip before mission
         bNeedSkip = False
@@ -332,12 +325,23 @@ def refreshSetting():
         # True   False
         #only move once
         bMoveOnceInMission = True
-        locationFixedMoveInMission = Location(58, 430)
+        #locationFixedMoveInMission = Location(170, 474)
         bFindTargetInMission = False
         # 試煉/積分 True, 原石 False
         bNeedAgree = True
         imageBonus1 = imageSpecialMonsterIncrease
         imageBonus2 = imageDropIncrease
+    elif enumType==enumMoveThanFindLeft:
+        # True   False
+        #only move once
+        bMoveOnceInMission = True
+        locationFixedMoveInMission = Location(170, 474)
+        bFindTargetInMission = False
+        # 試煉/積分 True, 原石 False
+        bNeedAgree = True
+        imageBonus1 = imageSpecialMonsterIncrease
+        imageBonus2 = imageDropIncrease
+        monsterRegion = monsterRegion_Left 
     elif enumType==enumIronMonster:
         # True   False
         #only move once
@@ -365,12 +369,17 @@ def refreshSetting():
         #bSecondCharacterFlyToJoin = True
         #bSkipBeforeAgain = True
     elif enumType == enumMoveALittleAndFindFighting:
+        bMoveOnceInMission = True
+        locationFixedMoveInMission = Location(365, 647)
         # 自己找怪撞
         bFindMonsterBySelf = False
         bMoveToFighting = True
         bNeedUseOtherBranchServer = False
         bMoveALittleAfterFight = True
         monsterRegion = monsterRegion_Small
+        imageBonus1 = imageDoubleExp
+        imageBonus2 = imageDropIncrease  
+        autoKills = [5,1,2,3,4,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,]
     elif enumType==enumAudoFindMonster:
         # 自己找怪撞
         bFindMonsterBySelf = True
@@ -385,7 +394,7 @@ def refreshSetting():
         autoKills = [0,1,3,4,2,5]
     elif enumType==enumEVP_branch:
         imageMissions = imageEvpEvent
-        bNeedToEnterEvpRoom = True
+        bNeedToEnterEvpRoom = False
         
         bFindMonsterBySelf = False
         imageMonsters = [ "1503077864353.png" ]
@@ -399,18 +408,18 @@ def refreshSetting():
         bSkipBeforeAgain = False
         #autoKills = [0,1,2,3,4,5]
         #autoKills = [2,3,1,5,0,2,4,2,2,3,3,1,2,3,1,4,4,5,1]  #坦
-        autoKills = [1,2,5,0,3,4]  #光單
-        bMoveOnceInMission = False
-        locationFixedMoveInMission = Location(138, 507)
+        autoKills = [3,1,2,5,0,3,4]  #光單
+        bMoveOnceInMission = True
+        locationFixedMoveInMission = Location(365, 289)
         bMoveTwiceInMission = False
         locationFixedMoveInMission2 = Location(369, 586)
         bUseGPS =False
-        nDelayBeforeUsingSkill = 0
+        nDelayBeforeUsingSkill = 3
         bNeedTransfer = False
         bMoveALittleAfterFight = False
     elif enumType==enumEVP:
-        imageMissions = imageEvpEvent
-        bNeedToEnterEvpRoom = True
+        imageMissions = imageEvpEvent2000
+        bNeedToEnterEvpRoom = False
         
         bFindMonsterBySelf = False
         imageMonsters = [ "1502903248260.png" ]
@@ -422,11 +431,15 @@ def refreshSetting():
         bNeedSkip = False
         bSkipBeforeAgain = False
         #autoKills = [0,1,2,3,4,5]
-        autoKills = [5,5,1,3,0,2,0,2,4,]
+        #autoKills = [5,5,1,3,0,2,0,2,4,]
+        autoKills = [3, 0, 1, 2, 4, 
+                    5,
+                    3, 0, 1, 2, 4]  #坦
         bMoveOnceInMission = True
-        locationFixedMoveInMission = Location(205, 520)
+        locationFixedMoveInMission = Location(381, 294)
+        #locationFixedMoveInMission = Location(205, 520)
         bMoveTwiceInMission = False
-        locationFixedMoveInMission2 = Location(369, 586)
+        #locationFixedMoveInMission2 = Location(369, 586)
         nDelayBeforeUsingSkill = 0
         monsterRegion = monsterRegion_Small
         bNeedTransfer = False
@@ -438,7 +451,7 @@ def refreshSetting():
         autoKills = [0,1,2,3,4,5]
         bCanEscap = False
         nCheckFightingTimes = 4
-    elif enumType==enumArmor:
+    elif enumType==enumArmorAngle:
         imageMissions = imageArmorMission
     
         # 先找Boss的圖
@@ -483,9 +496,9 @@ def refreshSetting():
         monsterRegion = monsterRegion_Full
         bNeedUseOtherBranchServer = True
         bMoveALittleAfterFight = True
-        autoKills = [1,2,3,4,5]  #12345
-        bMoveOnceInMission = False
-        locationFixedMoveInMission = Location(29, 543)
+        autoKills = [1,5,2,3,4,2,3,4,2,3,4]  #12345
+        bMoveOnceInMission = True
+        locationFixedMoveInMission = Location(402, 550)
         bMoveTwiceInMission = False
         locationFixedMoveInMission2 = Location(131, 645)
         nDelayBeforeUsingSkill = 0
@@ -493,6 +506,28 @@ def refreshSetting():
         bUseGPS =True
         imageBonus1 = imageSpecialMonsterIncrease 
         imageBonus2 = imageDropIncrease
+    elif enumType==enumArmorAssassin:
+        imageMissions = imageArmorMission
+        
+        bMoveToBoss = True
+        imageBoss = [ "1503320329329.png" ]
+
+        # 先找Boss的圖
+        bMoveToBoss = True       
+        bFindMonsterBySelf = True
+
+        imagesOffset = imagesOffset_AssassinArmor
+        imageMonsters = []
+        bMoveToFighting = False
+        monsterRegion = monsterRegion_Full
+        bNeedUseOtherBranchServer = True
+        bMoveALittleAfterFight = True
+        autoKills = [1,2,3,4,5]  #12345
+        bMoveOnceInMission = True
+        locationFixedMoveInMission = Location(302, 227)
+        bUseGPS =False
+        nDelayBeforeUsingSkill = 0
+        bNeedTransfer = False
     else:
         Debug.user("error: unknown type");
     Debug.user("mission image length=%d" % len(imageMissions))
@@ -595,6 +630,8 @@ def enterAgain():
         
         i = i + 1
         if d( "imageNextPage " + str(i) , imageNextPage1, 1 ):
+            retry = 0
+        if d( "imageNextPage3" , imageNextPage3, 0 ):
             retry = 0
         retry = retry + 1
         if retry >= 5:
@@ -983,15 +1020,15 @@ def waitFightingFinished():
     return bFought
 
 
-imageSkillStandBy = Pattern("imageSkillStandBy.png").similar(0.95)
-regionSkillStandBy = Region(225,495,82,315) 
+imageSkillStandBy = "imageSkillStandBy.png"
+regionSkillStandBy = Region(1,560,551,384)
 # use a skill on specify position
 def useSkill( position ):
     click( position )
-    if regionSkillStandBy.exists(imageSkillStandBy, 1):
+    if regionSkillStandBy.exists(imageSkillStandBy, 2):
         Debug.user("A skill is standby");
         sleep(1)
-        regionSkillStandBy.waitVanish(imageSkillStandBy, 3)
+        regionSkillStandBy.waitVanish(imageSkillStandBy, 30)
         return True
     else:
         Debug.user("can't find standby skill")
@@ -1017,10 +1054,10 @@ def autoUseSkill():
                 firstSkill.x = 23
                 if useSkill(firstSkill.offset(0+n*88, 0)):
                     d("burst bar", Pattern("1499732041383-1.png").similar(0.95), 0)
-                    for i in range(10):
-                        if not isFighting():
-                            return False
-                        sleep(0.2)
+                    #for i in range(10):
+                    #    if not isFighting():
+                    #        return False
+                    #    sleep(0.2)
             else:
                 return False
         
@@ -1042,10 +1079,10 @@ def useGPS():
         d( "imageGo", imageGo, 5 )
         return False
     sleep(1)
-    
-    imageHasUpsFriend = "imageHasUpsFriend.png"
-    while gameRegion.exists(imageHasUpsFriend, 0):
-        if not d( "imageHasUpsFriend", imageHasUpsFriend, 0 ):
+    imageFriendDialog = "imageFriendDialog.png"
+    imageHasGpsFriend = "imageHasUpsFriend.png"
+    while gameRegion.exists(imageFriendDialog, 1):
+        if not d( "imageHasUpsFriend", imageHasGpsFriend, 0 ):
             d("imageFriendClose", imageClose, 2 )
         else:
             if reg.exists(imageGpsBonusRemind,2):
@@ -1078,7 +1115,7 @@ def moveALitte():
     
     if isOnMission():
         click(locationDown)
-        sleep(0.5)
+        sleep(1)
         click(locationUp)
         sleep(2)
 
@@ -1138,7 +1175,11 @@ def transfer():
     sleep(4)
 
 def getPageId():
+    Debug.user("check page id (len=%d)" % len(PageId.imagePages))
     for i in range( len(PageId.imagePages)):
+        Debug.user("check %s" % PageId.imagePages[i][3])
+        #print PageId.imagePages[i][0]
+        #PageId.imagePages[i][0].highlight(1)
         if PageId.imagePages[i][0].exists( PageId.imagePages[i][1], 0):
             Debug.user( PageId.imagePages[i][3] )
             return PageId.imagePages[i][2]

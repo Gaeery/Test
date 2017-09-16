@@ -89,16 +89,17 @@ gameRegion = Region(<span class="dig">0</span>,<span class="dig">0</span>,<span 
 <span class="kw">def</span> receiveAllMail():
     <span class="kw">with</span> gameRegion:
         <span class="kw">while</span> True:
-            <span class="kw">if</span> exists(Pattern(<img src="1503708271933.png" />).similar(<span class="dig">0.95</span>), <span class="dig">0</span>):
+            Debug.user(<span class="str">"check bag capability"</span>)
+            <span class="kw">if</span> exists(Pattern(<img src="1503708271933.png" />).similar(<span class="dig">0.90</span>), <span class="dig">1</span>):
                 d(<span class="str">"close popup"</span>, <img src="1503709252712.png" />,<span class="dig">1</span>)
                 gotoEquipPage()
                 sellAll()
                 storeAll()
-                <span class="kw">break</span>
+                <span class="kw">return</span> True
             <span class="kw">elif</span> exists( <img src="1503710326304.png" />, <span class="dig">0</span>):
                 d(<span class="str">"close popup"</span>, <img src="1503709252712.png" />,<span class="dig">1</span>)
                 d(<span class="str">"next page"</span>, <img src="1503710198198.png" />)
-                <span class="kw">if</span> <span class="kw">not</span> exists( Pattern(<img src="1503726855065.png" />).exact(),<span class="dig">2</span>):
+                <span class="kw">if</span> <span class="kw">not</span> exists( Pattern(<img src="1505517915525.png" />).exact(),<span class="dig">2</span>):
                     <span class="cmt">#no next page</span>
                     gotoEquipPage()
                     sellAll()
@@ -108,9 +109,11 @@ gameRegion = Region(<span class="dig">0</span>,<span class="dig">0</span>,<span 
                     Debug.user(<span class="str">"has next page"</span>)
             <span class="kw">elif</span> exists(<img src="1503709252712.png" />, <span class="dig">0.5</span>):
                 d(<span class="str">"received"</span>, <img src="1503709252712.png" />,<span class="dig">5</span>)
-            <span class="kw">elif</span> d(<span class="str">"receive mail"</span>, Pattern(<img src="1503709138204.png" />).similar(<span class="dig">0.97</span>), <span class="dig">5</span>):
+            <span class="kw">elif</span> d(<span class="str">"receive mail"</span>, Pattern(<img src="1505517874410.png" />).exact(), <span class="dig">5</span>):
                 <span class="skw">sleep</span>(<span class="dig">0.5</span>)
                 exists(<img src="1503709252712.png" />, <span class="dig">3</span>)
+            <span class="kw">elif</span> exists(<img src="1505517117946.png" />, <span class="dig">0</span>):
+                <span class="kw">return</span> False
             <span class="kw">else</span>:
                 <span class="skw">sleep</span>(<span class="dig">1</span>)
     <span class="kw">return</span> True
@@ -119,22 +122,22 @@ gameRegion = Region(<span class="dig">0</span>,<span class="dig">0</span>,<span 
     <span class="kw">with</span> gameRegion:
         d(<span class="str">"sell page"</span>, <img src="1503708495938.png" />, <span class="dig">3</span>)
         <span class="kw">while</span> True:
-            d(<span class="str">"select all"</span>, Pattern(<img src="1503708529175.png" />).exact(), <span class="dig">20</span>)
+            d(<span class="str">"select all"</span>, Pattern(<img src="1505517689974.png" />).exact(), <span class="dig">20</span>)
             <span class="kw">if</span> d(<span class="str">"sold all"</span>, <img src="1503708674424.png" />,<span class="dig">1</span>):
                 d(<span class="str">"leave sell"</span>, <img src="1503708342988.png" />, <span class="dig">3</span>)
                 <span class="kw">break</span>
-            <span class="kw">if</span> d(<span class="str">"sell"</span>, Pattern(<img src="1503708547651.png" />).exact(), <span class="dig">5</span>):
-                d(<span class="str">"sell2"</span>, Pattern(<img src="1503708586923.png" />).similar(<span class="dig">0.94</span>), <span class="dig">5</span>)
+            <span class="kw">if</span> d(<span class="str">"sell"</span>, Pattern(<img src="1505517742074.png" />).exact(), <span class="dig">5</span>):
+                d(<span class="str">"sell2"</span>, Pattern(<img src="1505517768561.png" />).exact(), <span class="dig">5</span>)
                 d(<span class="str">"sell3"</span>, Pattern(<img src="1503708608570.png" />).similar(<span class="dig">0.90</span>), <span class="dig">5</span>)
 
 <span class="kw">def</span> gotoEquipPage():
     <span class="kw">with</span> gameRegion:
         d(<span class="str">"leave mail"</span>, <img src="1503708342988.png" />, <span class="dig">3</span>)
-        <span class="skw">sleep</span>(<span class="dig">0.5</span>)
+        <span class="skw">sleep</span>(<span class="dig">1</span>)
         d(<span class="str">"equip"</span>, <img src="1503708374841.png" />, <span class="dig">3</span>)
-        <span class="skw">sleep</span>(<span class="dig">0.5</span>)
+        <span class="skw">sleep</span>(<span class="dig">1</span>)
         d(<span class="str">"equip list"</span>, <img src="1503708432656.png" />, <span class="dig">3</span>)
-        <span class="skw">sleep</span>(<span class="dig">0.5</span>)
+        <span class="skw">sleep</span>(<span class="dig">1</span>)
         d(<span class="str">"equip list"</span>, <img src="1503708460080.png" />, <span class="dig">3</span>)
 
 <span class="kw">def</span> storeAll():
@@ -146,10 +149,10 @@ gameRegion = Region(<span class="dig">0</span>,<span class="dig">0</span>,<span 
             <span class="kw">if</span> d(<span class="str">"stored all"</span>, <img src="1503708674424.png" />,<span class="dig">1</span>):
                 d(<span class="str">"leave store"</span>, <img src="1503709049190.png" />, <span class="dig">3</span>)
                 <span class="kw">break</span>
-            d(<span class="str">"store"</span>, Pattern(<img src="1503708937677.png" />).exact(), <span class="dig">5</span>)
+            d(<span class="str">"store"</span>, Pattern(<img src="1505518002795.png" />).exact(), <span class="dig">5</span>)
             d(<span class="str">"store2"</span>, Pattern(<img src="1503961294687.png" />).similar(<span class="dig">0.94</span>), <span class="dig">5</span>)
 
-            d(<span class="str">"store3"</span>, Pattern(<img src="1503708985982.png" />).similar(<span class="dig">0.95</span>), <span class="dig">5</span>)
+            d(<span class="str">"store3"</span>, Pattern(<img src="1505518063648.png" />).similar(<span class="dig">0.95</span>), <span class="dig">5</span>)
 
 ArrangeMail()
 </pre>

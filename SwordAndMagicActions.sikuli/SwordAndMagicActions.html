@@ -85,13 +85,28 @@ lib.setROI( gameRegion )
 
 <span class="kw">def</span> SayThanks():
     lib.clickImageInRegion(<span class="str">"emotion menu"</span>, Region(<span class="dig">315</span>,<span class="dig">917</span>,<span class="dig">142</span>,<span class="dig">118</span>), <img src="1504394917440.png" />)
-    <span class="kw">return</span> lib.clickImageInRegion(<span class="str">"Thanks."</span>, Region(<span class="dig">0</span>,<span class="dig">91</span>,<span class="dig">551</span>,<span class="dig">610</span>), <img src="1504395063209.png" />, <span class="dig">1.5</span>)
+
+    <span class="kw">if</span> lib.clickImageInRegion(<span class="str">"Thanks."</span>, Region(<span class="dig">0</span>,<span class="dig">91</span>,<span class="dig">551</span>,<span class="dig">610</span>), <img src="1504395063209.png" />, <span class="dig">1.5</span>):
+        <span class="kw">return</span> True
+    lib.clickImage( <span class="str">"recent emotion"</span>, <img src="1504566828246.png" />, <span class="dig">0.5</span>)
+    <span class="kw">return</span> lib.clickImageInRegion(<span class="str">"Thanks."</span>, Region(<span class="dig">0</span>,<span class="dig">91</span>,<span class="dig">551</span>,<span class="dig">610</span>), <img src="1504395063209.png" />, <span class="dig">1</span>)
 <span class="kw">def</span> SayThanksIfRare():
-    <span class="kw">if</span> lib.exists( <span class="str">"rare"</span>, <img src="1504308263995.png" />, <span class="dig">3</span>):
+
+    <span class="kw">if</span> lib.exists( <span class="str">"rare"</span>, Pattern(<img src="1504308263995.png" />).similar(<span class="dig">0.60</span>), <span class="dig">3</span>):
         <span class="kw">if</span> lib.clickImage( <span class="str">"local talk"</span>, Pattern(<img src="1504437289796.png" />).similar(<span class="dig">0.80</span>)):
             <span class="skw">sleep</span>(<span class="dig">0.1</span>)
         <span class="kw">return</span> SayThanks()
     <span class="kw">return</span> False
+
+<span class="str">'''
+finder = Finder( Screen(0).capture() )
+try:
+    found = finder.find(Pattern("1504627650520.png").exact())
+    print found
+    Debug.user("found")
+except FindFailed:
+    Debug.user("failed")
+'''</span>
 </pre>
 </body>
 </html>

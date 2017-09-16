@@ -77,6 +77,27 @@
 gameRegion = Region(<span class="dig">0</span>,<span class="dig">0</span>,<span class="dig">587</span>,<span class="dig">1024</span>)
 imageTaskBoard = <img src="imageTaskBoard.png" />
 
+
+locationIronMonster = Location(<span class="dig">112</span>, <span class="dig">555</span>)
+locationFirstOriginalStone = Location(<span class="dig">174</span>, <span class="dig">431</span>)
+locationSecondOriginalStone = Location(<span class="dig">478</span>, <span class="dig">240</span>)
+locationDarkBoss = Location(<span class="dig">384</span>, <span class="dig">419</span>)
+locationLightBoss = Location(<span class="dig">172</span>, <span class="dig">434</span>)
+locationFireBoss = Location(<span class="dig">495</span>, <span class="dig">438</span>)
+locationWindBoss = Location(<span class="dig">50</span>, <span class="dig">387</span>)
+locationDustBoss = Location(<span class="dig">208</span>, <span class="dig">400</span>)
+locationWaterBoss = Location(<span class="dig">103</span>, <span class="dig">399</span>)
+locationSpecialPoints = Location(<span class="dig">191</span>, <span class="dig">426</span>)
+locationTank = Location(<span class="dig">390</span>, <span class="dig">289</span>)
+locationAngel = Location(<span class="dig">476</span>, <span class="dig">551</span>)
+locationAssassin = Location(<span class="dig">166</span>, <span class="dig">472</span>)
+locationGiant = Location(<span class="dig">539</span>, <span class="dig">341</span>)
+locationLif = Location(<span class="dig">337</span>, <span class="dig">631</span>)
+
+
+
+
+
 imageMissionClosed = <img src="te-1.png" />
 <span class="kw">class</span> PageId():
     <span class="kw">def</span> getPageImage( i ):
@@ -100,7 +121,7 @@ imageMissionClosed = <img src="te-1.png" />
             [gameRegion, <img src="imageClose.png" />, enumPageId_close, <span class="str">"Page: close something"</span>],
             [missionTimerRegion, Pattern(<img src="1499210289316.png" />).similar(<span class="dig">0.80</span>), enumPageId_mission, <span class="str">"Page: In a mission"</span>],
             [gameRegion, <img src="imageAgain.png" />, enumPageId_again, <span class="str">"Page: again"</span>],
-            [gameRegion, imageTaskBoard, enumPageId_board, <span class="str">"Page: task board"</span>],
+            [gameRegion, <img src="1505316075387.png" />, enumPageId_board, <span class="str">"Page: task board"</span>],
 
             [gameRegion, <img src="imagePageSelectingTask.png" />, enumPageId_selectingTask, <span class="str">"Page: Selecting a task"</span>],
             [gameRegion, <img src="imagePageOpenGift.png" />, enumPageId_openGift, <span class="str">"Page: open gift"</span>],
@@ -122,7 +143,10 @@ target1 = <img src="target1.png" />
 target2 = <img src="target2.png" />
 
 
-imageEvpEvent = [  Pattern(<img src="1503324924500.png" />).similar(<span class="dig">0.60</span>), <img src="1503325058113.png" />, <img src="target1.png" />, <img src="1503505788578.png" /> ]
+imageEvpEvent = [ imageMissionTabs1[<span class="dig">1</span>], imageMissionTabs2[<span class="dig">1</span>], <img src="1505315719283.png" />, <img src="1505315749946.png" /> ]
+imageEvpEvent2000 = [ imageMissionTabs1[<span class="dig">1</span>], imageMissionTabs2[<span class="dig">1</span>], <img src="1505315719283.png" />,  <img src="1505488887706.png" />]
+
+
 imageArmorMission = [
         imageMissionTabs1[<span class="dig">1</span>],
         imageMissionTabs2[<span class="dig">0</span>],
@@ -146,6 +170,11 @@ imagesOffset_angleArmor =  [
                  ImageOffset(Pattern(<img src="1503963003921.png" />).similar(<span class="dig">0.80</span>), -<span class="dig">400</span>, <span class="dig">260</span>),
                 ImageOffset(Pattern(<img src="1503963735748.png" />).similar(<span class="dig">0.80</span>), -<span class="dig">450</span>, <span class="dig">320</span>),
                 ]
+imagesOffset_AssassinArmor = [
+                ImageOffset(<img src="1503967548244.png" />, <span class="dig">0</span>, <span class="dig">10</span>),
+                ImageOffset(<img src="1505232436315.png" />, <span class="dig">0</span>, <span class="dig">10</span>),
+                ]
+
 
 imagesOffset = []
 
