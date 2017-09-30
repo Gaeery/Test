@@ -25,24 +25,28 @@ enumEVP_branch = 14
 enumAutoSkill = 10
 enumArmorAngle = 16
 enumArmorAssassin = 18
+enumArmorMele = 19
 enumArmorWeekend = 17
 #-------------
-enumType = enumEVP
-enumTypeNext = enumEVP 
+enumType = enumPractice
+enumTypeNext = enumEVP_branch
 
 
-locationFixedMoveInMission = Location(383, 546)
+locationFixedMoveInMission =  Location(215, 393)
 
 # 技能使用
 autoKills = [5,0,1,2,3,4,2,3,4,2,3,4]  #一般
 #autoKills = [2,3,1,5,0,4]  #土亡命
 #autoKills = [1,2,5,0,3,4]  #光單
 #autoKills = [3,1,2,5,0,3,4]  #光單
-#autoKills = [3, 0, 1, 2, 4,  5, 3, 0, 1, 2, 4]  #坦
+autoKills = [3, 0, 1, 2, 4,  5, 3, 0, 1, 2, 4]  #坦
 #autoKills = [0,1,2,3,4,5]  #光範圍
+autoKills = [0,1,2,3,5,-1,4,1,2,3,5,-1,4,1,2,3,5,-1,4,1,2,3,5,-1,4]  #土單 (霸劍
+autoKills = [0,1,5,4,-1,3,4,1,2,3,4,5,1,2,3,4,5,1,2,3,4,5,1,2,3,4,5,1,2,3,4,5]  #土單EVP
+#autoKills = [1,0,2,3,5,1,3,-1,4,0,2,1,3,-1,4]  #土單 (無霸劍
 #autoKills = [5,1,2,3,0,4]
 #autoKills = [2,3,4]
-#autoKills = [2,3,1,0,4,5]
+#autoKills = [1,2,3,4,5]
 # move if bMoveOnceInMission
 bMoveOnceInMission = False
 
@@ -110,7 +114,7 @@ locationMonster = Location(84, 557)
 
 locationDown = Location(280, 535)
 locationUp = Location(280, 515)
-nDelayBeforeUsingSkill = 2
+nDelayBeforeUsingSkill = 0
 
 Settings.MoveMouseDelay = 0.1
 # ======== default值, 不要改這邊 =========
@@ -166,6 +170,7 @@ bNeedSayThanks = False
 monsterPositions = [Location(439, 328), 
         Location(364, 651),   #泳裝1F
         Location(366, 682),  #舊寶石任
+        Location(369, 612), 
         Location(460, 603),  #光試煉小怪
         #Location(379, 504), #light boss
         #Location(337, 514), #wind boss
@@ -176,7 +181,6 @@ monsterPositions = [Location(439, 328),
         Location(399, 557), #泳裝
         Location(438, 450), #EVP, 洗腦
         Location(443, 539), #火小怪
-        #Location(459, 628),
         #Location(457, 603)
         ] 
 # click skip before mission
@@ -236,6 +240,7 @@ def refreshSetting():
     bNeedSayThanks = False
     
     if enumType==enumPractice:
+        autoKills = [0,1,2,3,5,-1,4,1,2,3,5,-1,4,1,2,3,5,-1,4,1,2,3,5,-1,4]  #土單 (霸劍
         # True   False
         #only move once
         bMoveOnceInMission = False
@@ -249,7 +254,7 @@ def refreshSetting():
         bUseGPS = True
         imageBonus1 = imageDropIncrease 
         imageBonus2 = imageSpecialMonsterIncrease
-        autoKills = [1,2,3,4,5]  #12345
+        #autoKills = [1,2,3,4,5]  #12345
         bNeedSayThanks = True
     elif enumType==enumStoneMission:
         bMoveALittleAfterFight = True
@@ -264,24 +269,25 @@ def refreshSetting():
         bUseGPS = True
         imageBonus1 = imageDropIncrease
         imageBonus2 = imageDoubleExp
-        locationFixedMoveInMission = locationSecondOriginalStone
+
         #locationFixedMoveInMission = locationFirstOriginalStone
+        locationFixedMoveInMission = locationSecondOriginalStone
         bMoveALittleAfterFight = True
         monsterRegion = monsterRegion_Small
     elif enumType==enumFixLocation:
         # True   False
         #only move once
         bMoveOnceInMission = True
-        bFindTargetInMission = False
+        bFindTargetInMission = False 
         # 試煉/積分 True, 原石 False
         bNeedAgree = True
-        # 寶石任務 False
-        bNeedOpenGift = True
-        # click skip before mission
+        # 寶石任務 False 
+        bNeedOpenGift = True 
+        # click skip before mission 
         bNeedSkip = False
         # click skip after mission
         bSkipBeforeAgain = False
-    elif enumType==enumFixLocationDropExp:
+    elif enumType==enumFixLocationDropExp:  
         # True   False 
         bUseGPS = True
         imageBonus1 = imageDropIncrease   
@@ -291,19 +297,19 @@ def refreshSetting():
         bFindTargetInMission = False
         bMoveToFighting = True 
         # 試煉/積分 True, 原石 False
-        bNeedAgree = True
+        bNeedAgree = True  
         # 寶石任務 False
-        bNeedOpenGift = True
+        bNeedOpenGift = True 
         # click skip before mission
         bNeedSkip = False
         # click skip after mission
         bSkipBeforeAgain = False
-    elif enumType==enumFixLocationSkip:   
+    elif enumType==enumFixLocationSkip:    
         monsterRegion = monsterRegion_Left
         bMoveOnceInMission = True
         bNeedAgree = True
         # 寶石任務 False
-        #bNeedOpenGift = True
+        #bNeedOpenGift = True 
         #bNeedSkip = True
         bSkipBeforeAgain = False
     elif enumType==enumFixLocationOtherServer:
@@ -369,7 +375,7 @@ def refreshSetting():
         #bSecondCharacterFlyToJoin = True
         #bSkipBeforeAgain = True
     elif enumType == enumMoveALittleAndFindFighting:
-        bMoveOnceInMission = True
+        bMoveOnceInMission = False
         locationFixedMoveInMission = Location(365, 647)
         # 自己找怪撞
         bFindMonsterBySelf = False
@@ -393,30 +399,31 @@ def refreshSetting():
         bNeedSkip = True
         autoKills = [0,1,3,4,2,5]
     elif enumType==enumEVP_branch:
-        imageMissions = imageEvpEvent
+        imageMissions = imageEvpTask
         bNeedToEnterEvpRoom = False
         
         bFindMonsterBySelf = False
-        imageMonsters = [ "1503077864353.png" ]
+        imageMonsters = [ "1506530623339.png" ]
         bMoveToFighting = False
         monsterRegion = monsterRegion_Normal
         bNeedUseOtherBranchServer = True
-        bMoveALittleAfterFight = False
+        bMoveALittleAfterFight = True
         # let second character fly to join
         bSecondCharacterFlyToJoin = False
         bNeedSkip = False
         bSkipBeforeAgain = False
         #autoKills = [0,1,2,3,4,5]
         #autoKills = [2,3,1,5,0,2,4,2,2,3,3,1,2,3,1,4,4,5,1]  #坦
-        autoKills = [3,1,2,5,0,3,4]  #光單
+        #autoKills = [3,1,2,5,0,3,4]  #光單
+        #autoKills = [0,1,2,3,5,-1,4,1,2,3,5,-1,4,1,2,3,5,-1,4,1,2,3,5,-1,4,1,2,3,5,-1,4]  #土單
+        autoKills = [0,1,5,4,-1,3,4,1,2,3,4,5,1,2,3,4,5,1,2,3,4,5,1,2,3,4,5,1,2,3,4,5]  #土單
         bMoveOnceInMission = True
-        locationFixedMoveInMission = Location(365, 289)
+        locationFixedMoveInMission = Location(450, 391)
         bMoveTwiceInMission = False
         locationFixedMoveInMission2 = Location(369, 586)
         bUseGPS =False
-        nDelayBeforeUsingSkill = 3
+        nDelayBeforeUsingSkill = 0
         bNeedTransfer = False
-        bMoveALittleAfterFight = False
     elif enumType==enumEVP:
         imageMissions = imageEvpEvent2000
         bNeedToEnterEvpRoom = False
@@ -427,7 +434,6 @@ def refreshSetting():
         monsterRegion = Region(160,371,131,260)
         #monsterRegion = monsterRegion_Up
         bNeedUseOtherBranchServer = False
-        bMoveALittleAfterFight = False
         bNeedSkip = False
         bSkipBeforeAgain = False
         #autoKills = [0,1,2,3,4,5]
@@ -435,15 +441,16 @@ def refreshSetting():
         autoKills = [3, 0, 1, 2, 4, 
                     5,
                     3, 0, 1, 2, 4]  #坦
+        #autoKills = [1,0,2,3,5,1,3,-1,4,0,2,1,3,-1,4]  #土單 (無霸劍
         bMoveOnceInMission = True
-        locationFixedMoveInMission = Location(381, 294)
+        locationFixedMoveInMission = Location(382, 315)
         #locationFixedMoveInMission = Location(205, 520)
         bMoveTwiceInMission = False
         #locationFixedMoveInMission2 = Location(369, 586)
         nDelayBeforeUsingSkill = 0
         monsterRegion = monsterRegion_Small
         bNeedTransfer = False
-        bMoveALittleAfterFight = False
+        bMoveALittleAfterFight = True
         bUseGPS =True
         imageBonus1 = imageDropIncrease
         imageBonus2 = imageDoubleExp
@@ -480,15 +487,17 @@ def refreshSetting():
         imageMissions =  [
             imageMissionTabs1[1],
             imageMissionTabs2[1], 
-            "1504283638867.png", "1504283686901.png" ]
+            "1506126880383.png", "1506127026448.png" ]
 
     
         # 先找Boss的圖
         bMoveToBoss = True
-        imageBoss = [ "1503320329329.png", "1503964977321.png", "1503965001575.png", "1503965024324.png" ]
+        #imageBoss = [ "1503320329329.png", "1503964977321.png", "1503965001575.png", "1503965024324.png" ]
+        imageBoss = ["1503320329329.png", "1506127773060.png"]
         
         bFindMonsterBySelf = True
-        imageMonsters = [ "1504283821899.png", "1504283837684.png", "1504283849770.png" ]
+        #imageMonsters = [ "1504283821899.png", "1504283837684.png", "1504283849770.png" ]
+        imageMonsters = ["1506127255039.png", "1506127311313.png","1506127326969.png", "1506127339509.png"]
 
         #imagesOffset = imagesOffset_angleArmor
         imagesOffset = []
@@ -496,14 +505,41 @@ def refreshSetting():
         monsterRegion = monsterRegion_Full
         bNeedUseOtherBranchServer = True
         bMoveALittleAfterFight = True
-        autoKills = [1,5,2,3,4,2,3,4,2,3,4]  #12345
+        #autoKills = [1,5,2,3,4,2,3,4,2,3,4]  #12345
+        autoKills = [0,1,2,3,5,-1,4,1,2,3,5,-1,4,1,2,3,5,-1,4,1,2,3,5,-1,4]  #土單 (霸劍
         bMoveOnceInMission = True
-        locationFixedMoveInMission = Location(402, 550)
+        locationFixedMoveInMission = Location(448, 531)
         bMoveTwiceInMission = False
         locationFixedMoveInMission2 = Location(131, 645)
         nDelayBeforeUsingSkill = 0
         bNeedTransfer = False
         bUseGPS =True
+        imageBonus1 = imageSpecialMonsterIncrease 
+        imageBonus2 = imageDropIncrease
+    elif enumType==enumArmorMele:
+        imageMissions = imageArmorMission
+    
+        # 先找Boss的圖
+        bMoveToBoss = True
+        imageBoss = ["1503320329329.png", "1506127773060.png"]
+        
+        bFindMonsterBySelf = True
+        imageMonsters = ["1506127255039.png", "1506127311313.png","1506127326969.png", "1506127339509.png"]
+
+        imagesOffset = []
+        bMoveToFighting = False
+        monsterRegion = monsterRegion_Full
+        bNeedUseOtherBranchServer = True
+        bMoveALittleAfterFight = True
+        #autoKills = [1,5,2,3,4,2,3,4,2,3,4]  #12345
+        autoKills = [0,1,2,3,5,-1,4,1,2,3,5,-1,4,1,2,3,5,-1,4,1,2,3,5,-1,4]  #土單 (霸劍
+        bMoveOnceInMission = True
+        locationFixedMoveInMission = Location(448, 531)
+        bMoveTwiceInMission = False
+        locationFixedMoveInMission2 = Location(131, 645)
+        nDelayBeforeUsingSkill = 0
+        bNeedTransfer = True
+        bUseGPS =False
         imageBonus1 = imageSpecialMonsterIncrease 
         imageBonus2 = imageDropIncrease
     elif enumType==enumArmorAssassin:
@@ -523,8 +559,9 @@ def refreshSetting():
         bNeedUseOtherBranchServer = True
         bMoveALittleAfterFight = True
         autoKills = [1,2,3,4,5]  #12345
+        autoKills = [0,1,2,3,5,-1,4,1,2,3,5,-1,4,1,2,3,5,-1,4,1,2,3,5,-1,4]  #土單 (霸劍
         bMoveOnceInMission = True
-        locationFixedMoveInMission = Location(302, 227)
+        locationFixedMoveInMission = Location(181, 472)
         bUseGPS =False
         nDelayBeforeUsingSkill = 0
         bNeedTransfer = False
@@ -546,6 +583,7 @@ def main():
             d("skip", "1500213106784.png", 2)
 
         if waitFightingFinished():
+            Debug.user("bLeavingFighting = True")
             isMoved = True
             bLeavingFighting = True
         Debug.user("bLeavingFighting = %d" % bLeavingFighting)
@@ -555,6 +593,7 @@ def main():
         Debug.user("enumPageId = %d" % enumPageId)
 
         if enumPageId == PageId.enumPageId_mission:
+            
             if bLeavingFighting:
                 bLeavingFighting = False
                 if bMoveALittleAfterFight:
@@ -575,7 +614,7 @@ def main():
                 c("1499951382722.png", 0)
                 sleep(3)
             moveToTaskTargetOnce()
-            sleep(2)
+            waitFighting(2)
         elif enumPageId == PageId.enumPageId_fighting:
             # still fighting
             Debug.user("still fighting")
@@ -697,7 +736,7 @@ def clickMonster():
 def changeBranchServer():
    if not d("branch servet button","1499732606430.png"):
        return False
-   if not clickInRegion(Region(48,480,457,292), "1499732622006.png", 2):
+   if not clickInRegion(Region(38,570,475,389), "1499732622006.png", 2):
        return False
    return True
 #    serversRegion = Region(80,312,389,505)
@@ -928,8 +967,8 @@ def moveToTaskTargetOnce():
 
         if bMoveToFighting:
             if moveToFighting():
-                sleep(2)
-                break;
+                waitFightingFinished(2)
+                break
 
             
         if bFindMonsterBySelf:
@@ -984,7 +1023,19 @@ def isFighting():
     Debug.user("isFighting=false")
     return False
 
-def waitFightingFinished():
+def waitFighting( timeout ):
+    Debug.user("waitFighting+")
+    if bCanEscap:
+        if escapeRegion.exists("1497776017507-2.png", timeout): 
+            Debug.user("isFighting=true")
+            return True
+    if escapeRegion.exists("1498270581243.png", timeout): 
+        Debug.user("isFighting=true")
+        return True
+    Debug.user("isFighting=false")
+    return False
+
+def waitFightingFinished( i = nCheckFightingTimes ):
     Debug.user("waitFightingFinished+")
     i = 0
     bFighting = False
@@ -994,8 +1045,8 @@ def waitFightingFinished():
     while True:
         if not isFighting():
             bFighting = False
-            i = i + 1
-            if i >= nCheckFightingTimes:
+            i = i - 1
+            if i <= 0:
                 break
             sleep(1)
         else:            
@@ -1029,6 +1080,7 @@ def useSkill( position ):
         Debug.user("A skill is standby");
         sleep(1)
         regionSkillStandBy.waitVanish(imageSkillStandBy, 30)
+        sleep(1)
         return True
     else:
         Debug.user("can't find standby skill")
@@ -1052,8 +1104,11 @@ def autoUseSkill():
                     sleep(0.5)
                 Debug.user("use skill %d", n)
                 firstSkill.x = 23
-                if useSkill(firstSkill.offset(0+n*88, 0)):
-                    d("burst bar", Pattern("1499732041383-1.png").similar(0.95), 0)
+                if n==-1:
+                    useSkill(firstSkill.offset(20, -80))
+                else: 
+                    useSkill(firstSkill.offset(0+n*88, 0))
+                    #d("burst bar", Pattern("1499732041383-1.png").similar(0.95), 0)
                     #for i in range(10):
                     #    if not isFighting():
                     #        return False
@@ -1097,9 +1152,13 @@ def useGPS():
 
     if bNeedUseOtherBranchServer:
         changeBranchServer()
-        
+
+    d("no GPS service", "1505642893410.png", 0)
+    
     d( "imageGo", imageGo, 2 )
     d( "imageGpsGo", imageGpsGo, 2 )
+    if gameRegion.exists(Pattern("1505664145843.png").exact(), 0):
+        d("GPS effect doesn't be used.", Pattern("1505664202573.png").exact())
 
 def moveALitte():
     Debug.user("move a little")    
@@ -1166,13 +1225,26 @@ def transfer():
 
     d("talking", "1502752596473.png", 5)
     sleep(1)
+    for n in range(2):
+        d("talk to next page", "1506294076568.png", 5)
+        sleep(1)
+        d("talking again", "1502752596473.png", 5)
+        sleep(1)
+    d("talk to move other place", "1506294278905.png", 5)
+    d("talking2", "1506294351532.png", 5)
+    d("talk to move other place2", "1506294369543.png", 5)
+    sleep(4)
+'''
     d("talk to move other place", "1502752617013.png", 5)
     d("talking2", "1502752630300.png", 5)
+
     #if enumType == enumEVP_6:
     #    d("talk to move other place2", "1502318001566.png", 5)
     #else:
     d("talk to move other place2", "1502752654221.png", 5)
     sleep(4)
+'''
+    
 
 def getPageId():
     Debug.user("check page id (len=%d)" % len(PageId.imagePages))
@@ -1204,14 +1276,14 @@ def clickImageOffsetOrClickLocation(image, offsetX, offsetY, location):
         l("click image offset", loc.offset(offsetX,offsetY) )
 
 def moveToEvpTarget():
-    clickImageOffsetOrClickLocation( Pattern("1503533643058.png").similar(0.90), -170, -110, Location(530, 471) )
-    sleep(2)
+    clickImageOffsetOrClickLocation( Pattern("1505924038158.png").similar(0.95), 70, -170, Location(35, 394) )
+    sleep(1)
     
     if isFighting():
         return True
-    imageEnterEvpTarget = "1503534046968.png"
-    d("enter evp room?", imageEnterEvpTarget)
-    if d("enter evp room", "1503534159788.png"):
+    imageEnterEvpTarget = "imageEnterEvpTarget.png"
+    d("enter evp room?", imageEnterEvpTarget, 3)
+    if d("enter evp room", "1505925536533.png", 3):
         return True
     return False
 

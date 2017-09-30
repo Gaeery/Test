@@ -97,24 +97,28 @@ enumEVP_branch = <span class="dig">14</span>
 enumAutoSkill = <span class="dig">10</span>
 enumArmorAngle = <span class="dig">16</span>
 enumArmorAssassin = <span class="dig">18</span>
+enumArmorMele = <span class="dig">19</span>
 enumArmorWeekend = <span class="dig">17</span>
 <span class="cmt">#-------------</span>
-enumType = enumEVP
-enumTypeNext = enumEVP
+enumType = enumPractice
+enumTypeNext = enumEVP_branch
 
 
-locationFixedMoveInMission = Location(<span class="dig">383</span>, <span class="dig">546</span>)
+locationFixedMoveInMission =  Location(<span class="dig">215</span>, <span class="dig">393</span>)
 
 <span class="cmt"># 技能使用</span>
 autoKills = [<span class="dig">5</span>,<span class="dig">0</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">4</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">4</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">4</span>]  <span class="cmt">#一般</span>
 <span class="cmt">#autoKills = [2,3,1,5,0,4]  #土亡命</span>
 <span class="cmt">#autoKills = [1,2,5,0,3,4]  #光單</span>
 <span class="cmt">#autoKills = [3,1,2,5,0,3,4]  #光單</span>
-<span class="cmt">#autoKills = [3, 0, 1, 2, 4,  5, 3, 0, 1, 2, 4]  #坦</span>
+autoKills = [<span class="dig">3</span>, <span class="dig">0</span>, <span class="dig">1</span>, <span class="dig">2</span>, <span class="dig">4</span>,  <span class="dig">5</span>, <span class="dig">3</span>, <span class="dig">0</span>, <span class="dig">1</span>, <span class="dig">2</span>, <span class="dig">4</span>]  <span class="cmt">#坦</span>
 <span class="cmt">#autoKills = [0,1,2,3,4,5]  #光範圍</span>
+autoKills = [<span class="dig">0</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">5</span>,-<span class="dig">1</span>,<span class="dig">4</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">5</span>,-<span class="dig">1</span>,<span class="dig">4</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">5</span>,-<span class="dig">1</span>,<span class="dig">4</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">5</span>,-<span class="dig">1</span>,<span class="dig">4</span>]  <span class="cmt">#土單 (霸劍</span>
+autoKills = [<span class="dig">0</span>,<span class="dig">1</span>,<span class="dig">5</span>,<span class="dig">4</span>,-<span class="dig">1</span>,<span class="dig">3</span>,<span class="dig">4</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">4</span>,<span class="dig">5</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">4</span>,<span class="dig">5</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">4</span>,<span class="dig">5</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">4</span>,<span class="dig">5</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">4</span>,<span class="dig">5</span>]  <span class="cmt">#土單EVP</span>
+<span class="cmt">#autoKills = [1,0,2,3,5,1,3,-1,4,0,2,1,3,-1,4]  #土單 (無霸劍</span>
 <span class="cmt">#autoKills = [5,1,2,3,0,4]</span>
 <span class="cmt">#autoKills = [2,3,4]</span>
-<span class="cmt">#autoKills = [2,3,1,0,4,5]</span>
+<span class="cmt">#autoKills = [1,2,3,4,5]</span>
 <span class="cmt"># move if bMoveOnceInMission</span>
 bMoveOnceInMission = False
 
@@ -182,7 +186,7 @@ locationMonster = Location(<span class="dig">84</span>, <span class="dig">557</s
 
 locationDown = Location(<span class="dig">280</span>, <span class="dig">535</span>)
 locationUp = Location(<span class="dig">280</span>, <span class="dig">515</span>)
-nDelayBeforeUsingSkill = <span class="dig">2</span>
+nDelayBeforeUsingSkill = <span class="dig">0</span>
 
 Settings.MoveMouseDelay = <span class="dig">0.1</span>
 <span class="cmt"># ======== default值, 不要改這邊 =========</span>
@@ -238,6 +242,7 @@ bNeedSayThanks = False
 monsterPositions = [Location(<span class="dig">439</span>, <span class="dig">328</span>),
         Location(<span class="dig">364</span>, <span class="dig">651</span>),   <span class="cmt">#泳裝1F</span>
         Location(<span class="dig">366</span>, <span class="dig">682</span>),  <span class="cmt">#舊寶石任</span>
+        Location(<span class="dig">369</span>, <span class="dig">612</span>),
         Location(<span class="dig">460</span>, <span class="dig">603</span>),  <span class="cmt">#光試煉小怪</span>
         <span class="cmt">#Location(379, 504), #light boss</span>
         <span class="cmt">#Location(337, 514), #wind boss</span>
@@ -248,7 +253,6 @@ monsterPositions = [Location(<span class="dig">439</span>, <span class="dig">328
         Location(<span class="dig">399</span>, <span class="dig">557</span>), <span class="cmt">#泳裝</span>
         Location(<span class="dig">438</span>, <span class="dig">450</span>), <span class="cmt">#EVP, 洗腦</span>
         Location(<span class="dig">443</span>, <span class="dig">539</span>), <span class="cmt">#火小怪</span>
-        <span class="cmt">#Location(459, 628),</span>
         <span class="cmt">#Location(457, 603)</span>
         ]
 <span class="cmt"># click skip before mission</span>
@@ -308,6 +312,7 @@ bNeedAgree = True
     bNeedSayThanks = False
 
     <span class="kw">if</span> enumType==enumPractice:
+        autoKills = [<span class="dig">0</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">5</span>,-<span class="dig">1</span>,<span class="dig">4</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">5</span>,-<span class="dig">1</span>,<span class="dig">4</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">5</span>,-<span class="dig">1</span>,<span class="dig">4</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">5</span>,-<span class="dig">1</span>,<span class="dig">4</span>]  <span class="cmt">#土單 (霸劍</span>
         <span class="cmt"># True   False</span>
         <span class="cmt">#only move once</span>
         bMoveOnceInMission = False
@@ -321,7 +326,7 @@ bNeedAgree = True
         bUseGPS = True
         imageBonus1 = imageDropIncrease
         imageBonus2 = imageSpecialMonsterIncrease
-        autoKills = [<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">4</span>,<span class="dig">5</span>]  <span class="cmt">#12345</span>
+        <span class="cmt">#autoKills = [1,2,3,4,5]  #12345</span>
         bNeedSayThanks = True
     <span class="kw">elif</span> enumType==enumStoneMission:
         bMoveALittleAfterFight = True
@@ -336,8 +341,9 @@ bNeedAgree = True
         bUseGPS = True
         imageBonus1 = imageDropIncrease
         imageBonus2 = imageDoubleExp
-        locationFixedMoveInMission = locationSecondOriginalStone
+
         <span class="cmt">#locationFixedMoveInMission = locationFirstOriginalStone</span>
+        locationFixedMoveInMission = locationSecondOriginalStone
         bMoveALittleAfterFight = True
         monsterRegion = monsterRegion_Small
     <span class="kw">elif</span> enumType==enumFixLocation:
@@ -347,9 +353,9 @@ bNeedAgree = True
         bFindTargetInMission = False
         <span class="cmt"># 試煉/積分 True, 原石 False</span>
         bNeedAgree = True
-        <span class="cmt"># 寶石任務 False</span>
+        <span class="cmt"># 寶石任務 False </span>
         bNeedOpenGift = True
-        <span class="cmt"># click skip before mission</span>
+        <span class="cmt"># click skip before mission </span>
         bNeedSkip = False
         <span class="cmt"># click skip after mission</span>
         bSkipBeforeAgain = False
@@ -375,7 +381,7 @@ bNeedAgree = True
         bMoveOnceInMission = True
         bNeedAgree = True
         <span class="cmt"># 寶石任務 False</span>
-        <span class="cmt">#bNeedOpenGift = True</span>
+        <span class="cmt">#bNeedOpenGift = True </span>
         <span class="cmt">#bNeedSkip = True</span>
         bSkipBeforeAgain = False
     <span class="kw">elif</span> enumType==enumFixLocationOtherServer:
@@ -441,7 +447,7 @@ bNeedAgree = True
         <span class="cmt">#bSecondCharacterFlyToJoin = True</span>
         <span class="cmt">#bSkipBeforeAgain = True</span>
     <span class="kw">elif</span> enumType == enumMoveALittleAndFindFighting:
-        bMoveOnceInMission = True
+        bMoveOnceInMission = False
         locationFixedMoveInMission = Location(<span class="dig">365</span>, <span class="dig">647</span>)
         <span class="cmt"># 自己找怪撞</span>
         bFindMonsterBySelf = False
@@ -465,30 +471,31 @@ bNeedAgree = True
         bNeedSkip = True
         autoKills = [<span class="dig">0</span>,<span class="dig">1</span>,<span class="dig">3</span>,<span class="dig">4</span>,<span class="dig">2</span>,<span class="dig">5</span>]
     <span class="kw">elif</span> enumType==enumEVP_branch:
-        imageMissions = imageEvpEvent
+        imageMissions = imageEvpTask
         bNeedToEnterEvpRoom = False
 
         bFindMonsterBySelf = False
-        imageMonsters = [ <img src="1503077864353.png" /> ]
+        imageMonsters = [ <img src="1506530623339.png" /> ]
         bMoveToFighting = False
         monsterRegion = monsterRegion_Normal
         bNeedUseOtherBranchServer = True
-        bMoveALittleAfterFight = False
+        bMoveALittleAfterFight = True
         <span class="cmt"># let second character fly to join</span>
         bSecondCharacterFlyToJoin = False
         bNeedSkip = False
         bSkipBeforeAgain = False
         <span class="cmt">#autoKills = [0,1,2,3,4,5]</span>
         <span class="cmt">#autoKills = [2,3,1,5,0,2,4,2,2,3,3,1,2,3,1,4,4,5,1]  #坦</span>
-        autoKills = [<span class="dig">3</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">5</span>,<span class="dig">0</span>,<span class="dig">3</span>,<span class="dig">4</span>]  <span class="cmt">#光單</span>
+        <span class="cmt">#autoKills = [3,1,2,5,0,3,4]  #光單</span>
+        <span class="cmt">#autoKills = [0,1,2,3,5,-1,4,1,2,3,5,-1,4,1,2,3,5,-1,4,1,2,3,5,-1,4,1,2,3,5,-1,4]  #土單</span>
+        autoKills = [<span class="dig">0</span>,<span class="dig">1</span>,<span class="dig">5</span>,<span class="dig">4</span>,-<span class="dig">1</span>,<span class="dig">3</span>,<span class="dig">4</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">4</span>,<span class="dig">5</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">4</span>,<span class="dig">5</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">4</span>,<span class="dig">5</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">4</span>,<span class="dig">5</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">4</span>,<span class="dig">5</span>]  <span class="cmt">#土單</span>
         bMoveOnceInMission = True
-        locationFixedMoveInMission = Location(<span class="dig">365</span>, <span class="dig">289</span>)
+        locationFixedMoveInMission = Location(<span class="dig">450</span>, <span class="dig">391</span>)
         bMoveTwiceInMission = False
         locationFixedMoveInMission2 = Location(<span class="dig">369</span>, <span class="dig">586</span>)
         bUseGPS =False
-        nDelayBeforeUsingSkill = <span class="dig">3</span>
+        nDelayBeforeUsingSkill = <span class="dig">0</span>
         bNeedTransfer = False
-        bMoveALittleAfterFight = False
     <span class="kw">elif</span> enumType==enumEVP:
         imageMissions = imageEvpEvent2000
         bNeedToEnterEvpRoom = False
@@ -499,7 +506,6 @@ bNeedAgree = True
         monsterRegion = Region(<span class="dig">160</span>,<span class="dig">371</span>,<span class="dig">131</span>,<span class="dig">260</span>)
         <span class="cmt">#monsterRegion = monsterRegion_Up</span>
         bNeedUseOtherBranchServer = False
-        bMoveALittleAfterFight = False
         bNeedSkip = False
         bSkipBeforeAgain = False
         <span class="cmt">#autoKills = [0,1,2,3,4,5]</span>
@@ -507,15 +513,16 @@ bNeedAgree = True
         autoKills = [<span class="dig">3</span>, <span class="dig">0</span>, <span class="dig">1</span>, <span class="dig">2</span>, <span class="dig">4</span>,
                     <span class="dig">5</span>,
                     <span class="dig">3</span>, <span class="dig">0</span>, <span class="dig">1</span>, <span class="dig">2</span>, <span class="dig">4</span>]  <span class="cmt">#坦</span>
+        <span class="cmt">#autoKills = [1,0,2,3,5,1,3,-1,4,0,2,1,3,-1,4]  #土單 (無霸劍</span>
         bMoveOnceInMission = True
-        locationFixedMoveInMission = Location(<span class="dig">381</span>, <span class="dig">294</span>)
+        locationFixedMoveInMission = Location(<span class="dig">382</span>, <span class="dig">315</span>)
         <span class="cmt">#locationFixedMoveInMission = Location(205, 520)</span>
         bMoveTwiceInMission = False
         <span class="cmt">#locationFixedMoveInMission2 = Location(369, 586)</span>
         nDelayBeforeUsingSkill = <span class="dig">0</span>
         monsterRegion = monsterRegion_Small
         bNeedTransfer = False
-        bMoveALittleAfterFight = False
+        bMoveALittleAfterFight = True
         bUseGPS =True
         imageBonus1 = imageDropIncrease
         imageBonus2 = imageDoubleExp
@@ -552,15 +559,17 @@ bNeedAgree = True
         imageMissions =  [
             imageMissionTabs1[<span class="dig">1</span>],
             imageMissionTabs2[<span class="dig">1</span>],
-            <img src="1504283638867.png" />, <img src="1504283686901.png" /> ]
+            <img src="1506126880383.png" />, <img src="1506127026448.png" /> ]
 
 
         <span class="cmt"># 先找Boss的圖</span>
         bMoveToBoss = True
-        imageBoss = [ <img src="1503320329329.png" />, <img src="1503964977321.png" />, <img src="1503965001575.png" />, <img src="1503965024324.png" /> ]
+        <span class="cmt">#imageBoss = [ "1503320329329.png", "1503964977321.png", "1503965001575.png", "1503965024324.png" ]</span>
+        imageBoss = [<img src="1503320329329.png" />, <img src="1506127773060.png" />]
 
         bFindMonsterBySelf = True
-        imageMonsters = [ <img src="1504283821899.png" />, <img src="1504283837684.png" />, <img src="1504283849770.png" /> ]
+        <span class="cmt">#imageMonsters = [ "1504283821899.png", "1504283837684.png", "1504283849770.png" ]</span>
+        imageMonsters = [<img src="1506127255039.png" />, <img src="1506127311313.png" />,<img src="1506127326969.png" />, <img src="1506127339509.png" />]
 
         <span class="cmt">#imagesOffset = imagesOffset_angleArmor</span>
         imagesOffset = []
@@ -568,14 +577,41 @@ bNeedAgree = True
         monsterRegion = monsterRegion_Full
         bNeedUseOtherBranchServer = True
         bMoveALittleAfterFight = True
-        autoKills = [<span class="dig">1</span>,<span class="dig">5</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">4</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">4</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">4</span>]  <span class="cmt">#12345</span>
+        <span class="cmt">#autoKills = [1,5,2,3,4,2,3,4,2,3,4]  #12345</span>
+        autoKills = [<span class="dig">0</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">5</span>,-<span class="dig">1</span>,<span class="dig">4</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">5</span>,-<span class="dig">1</span>,<span class="dig">4</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">5</span>,-<span class="dig">1</span>,<span class="dig">4</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">5</span>,-<span class="dig">1</span>,<span class="dig">4</span>]  <span class="cmt">#土單 (霸劍</span>
         bMoveOnceInMission = True
-        locationFixedMoveInMission = Location(<span class="dig">402</span>, <span class="dig">550</span>)
+        locationFixedMoveInMission = Location(<span class="dig">448</span>, <span class="dig">531</span>)
         bMoveTwiceInMission = False
         locationFixedMoveInMission2 = Location(<span class="dig">131</span>, <span class="dig">645</span>)
         nDelayBeforeUsingSkill = <span class="dig">0</span>
         bNeedTransfer = False
         bUseGPS =True
+        imageBonus1 = imageSpecialMonsterIncrease
+        imageBonus2 = imageDropIncrease
+    <span class="kw">elif</span> enumType==enumArmorMele:
+        imageMissions = imageArmorMission
+
+        <span class="cmt"># 先找Boss的圖</span>
+        bMoveToBoss = True
+        imageBoss = [<img src="1503320329329.png" />, <img src="1506127773060.png" />]
+
+        bFindMonsterBySelf = True
+        imageMonsters = [<img src="1506127255039.png" />, <img src="1506127311313.png" />,<img src="1506127326969.png" />, <img src="1506127339509.png" />]
+
+        imagesOffset = []
+        bMoveToFighting = False
+        monsterRegion = monsterRegion_Full
+        bNeedUseOtherBranchServer = True
+        bMoveALittleAfterFight = True
+        <span class="cmt">#autoKills = [1,5,2,3,4,2,3,4,2,3,4]  #12345</span>
+        autoKills = [<span class="dig">0</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">5</span>,-<span class="dig">1</span>,<span class="dig">4</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">5</span>,-<span class="dig">1</span>,<span class="dig">4</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">5</span>,-<span class="dig">1</span>,<span class="dig">4</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">5</span>,-<span class="dig">1</span>,<span class="dig">4</span>]  <span class="cmt">#土單 (霸劍</span>
+        bMoveOnceInMission = True
+        locationFixedMoveInMission = Location(<span class="dig">448</span>, <span class="dig">531</span>)
+        bMoveTwiceInMission = False
+        locationFixedMoveInMission2 = Location(<span class="dig">131</span>, <span class="dig">645</span>)
+        nDelayBeforeUsingSkill = <span class="dig">0</span>
+        bNeedTransfer = True
+        bUseGPS =False
         imageBonus1 = imageSpecialMonsterIncrease
         imageBonus2 = imageDropIncrease
     <span class="kw">elif</span> enumType==enumArmorAssassin:
@@ -595,8 +631,9 @@ bNeedAgree = True
         bNeedUseOtherBranchServer = True
         bMoveALittleAfterFight = True
         autoKills = [<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">4</span>,<span class="dig">5</span>]  <span class="cmt">#12345</span>
+        autoKills = [<span class="dig">0</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">5</span>,-<span class="dig">1</span>,<span class="dig">4</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">5</span>,-<span class="dig">1</span>,<span class="dig">4</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">5</span>,-<span class="dig">1</span>,<span class="dig">4</span>,<span class="dig">1</span>,<span class="dig">2</span>,<span class="dig">3</span>,<span class="dig">5</span>,-<span class="dig">1</span>,<span class="dig">4</span>]  <span class="cmt">#土單 (霸劍</span>
         bMoveOnceInMission = True
-        locationFixedMoveInMission = Location(<span class="dig">302</span>, <span class="dig">227</span>)
+        locationFixedMoveInMission = Location(<span class="dig">181</span>, <span class="dig">472</span>)
         bUseGPS =False
         nDelayBeforeUsingSkill = <span class="dig">0</span>
         bNeedTransfer = False
@@ -618,6 +655,7 @@ bNeedAgree = True
             d(<span class="str">"skip"</span>, <img src="1500213106784.png" />, <span class="dig">2</span>)
 
         <span class="kw">if</span> waitFightingFinished():
+            Debug.user(<span class="str">"bLeavingFighting = True"</span>)
             isMoved = True
             bLeavingFighting = True
         Debug.user(<span class="str">"bLeavingFighting = %d"</span> % bLeavingFighting)
@@ -627,6 +665,7 @@ bNeedAgree = True
         Debug.user(<span class="str">"enumPageId = %d"</span> % enumPageId)
 
         <span class="kw">if</span> enumPageId == PageId.enumPageId_mission:
+
             <span class="kw">if</span> bLeavingFighting:
                 bLeavingFighting = False
                 <span class="kw">if</span> bMoveALittleAfterFight:
@@ -647,7 +686,7 @@ bNeedAgree = True
                 c(<img src="1499951382722.png" />, <span class="dig">0</span>)
                 <span class="skw">sleep</span>(<span class="dig">3</span>)
             moveToTaskTargetOnce()
-            <span class="skw">sleep</span>(<span class="dig">2</span>)
+            waitFighting(<span class="dig">2</span>)
         <span class="kw">elif</span> enumPageId == PageId.enumPageId_fighting:
             <span class="cmt"># still fighting</span>
             Debug.user(<span class="str">"still fighting"</span>)
@@ -769,7 +808,7 @@ bNeedAgree = True
 <span class="kw">def</span> changeBranchServer():
    <span class="kw">if</span> <span class="kw">not</span> d(<span class="str">"branch servet button"</span>,<img src="1499732606430.png" />):
        <span class="kw">return</span> False
-   <span class="kw">if</span> <span class="kw">not</span> clickInRegion(Region(<span class="dig">48</span>,<span class="dig">480</span>,<span class="dig">457</span>,<span class="dig">292</span>), <img src="1499732622006.png" />, <span class="dig">2</span>):
+   <span class="kw">if</span> <span class="kw">not</span> clickInRegion(Region(<span class="dig">38</span>,<span class="dig">570</span>,<span class="dig">475</span>,<span class="dig">389</span>), <img src="1499732622006.png" />, <span class="dig">2</span>):
        <span class="kw">return</span> False
    <span class="kw">return</span> True
 <span class="cmt">#    serversRegion = Region(80,312,389,505)</span>
@@ -1000,8 +1039,8 @@ bNeedAgree = True
 
         <span class="kw">if</span> bMoveToFighting:
             <span class="kw">if</span> moveToFighting():
-                <span class="skw">sleep</span>(<span class="dig">2</span>)
-                <span class="kw">break</span>;
+                waitFightingFinished(<span class="dig">2</span>)
+                <span class="kw">break</span>
 
 
         <span class="kw">if</span> bFindMonsterBySelf:
@@ -1056,7 +1095,19 @@ friendMenu = <img src="1497755516858.png" />
     Debug.user(<span class="str">"isFighting=false"</span>)
     <span class="kw">return</span> False
 
-<span class="kw">def</span> waitFightingFinished():
+<span class="kw">def</span> waitFighting( timeout ):
+    Debug.user(<span class="str">"waitFighting+"</span>)
+    <span class="kw">if</span> bCanEscap:
+        <span class="kw">if</span> escapeRegion.exists(<img src="1497776017507-2.png" />, timeout):
+            Debug.user(<span class="str">"isFighting=true"</span>)
+            <span class="kw">return</span> True
+    <span class="kw">if</span> escapeRegion.exists(<img src="1498270581243.png" />, timeout):
+        Debug.user(<span class="str">"isFighting=true"</span>)
+        <span class="kw">return</span> True
+    Debug.user(<span class="str">"isFighting=false"</span>)
+    <span class="kw">return</span> False
+
+<span class="kw">def</span> waitFightingFinished( i = nCheckFightingTimes ):
     Debug.user(<span class="str">"waitFightingFinished+"</span>)
     i = <span class="dig">0</span>
     bFighting = False
@@ -1066,8 +1117,8 @@ friendMenu = <img src="1497755516858.png" />
     <span class="kw">while</span> True:
         <span class="kw">if</span> <span class="kw">not</span> isFighting():
             bFighting = False
-            i = i + <span class="dig">1</span>
-            <span class="kw">if</span> i &gt;= nCheckFightingTimes:
+            i = i - <span class="dig">1</span>
+            <span class="kw">if</span> i &lt;= <span class="dig">0</span>:
                 <span class="kw">break</span>
             <span class="skw">sleep</span>(<span class="dig">1</span>)
         <span class="kw">else</span>:
@@ -1101,6 +1152,7 @@ regionSkillStandBy = Region(<span class="dig">1</span>,<span class="dig">560</sp
         Debug.user(<span class="str">"A skill is standby"</span>);
         <span class="skw">sleep</span>(<span class="dig">1</span>)
         regionSkillStandBy.waitVanish(imageSkillStandBy, <span class="dig">30</span>)
+        <span class="skw">sleep</span>(<span class="dig">1</span>)
         <span class="kw">return</span> True
     <span class="kw">else</span>:
         Debug.user(<span class="str">"can't find standby skill"</span>)
@@ -1124,8 +1176,11 @@ regionSkillStandBy = Region(<span class="dig">1</span>,<span class="dig">560</sp
                     <span class="skw">sleep</span>(<span class="dig">0.5</span>)
                 Debug.user(<span class="str">"use skill %d"</span>, n)
                 firstSkill.x = <span class="dig">23</span>
-                <span class="kw">if</span> useSkill(firstSkill.offset(<span class="dig">0</span>+n*<span class="dig">88</span>, <span class="dig">0</span>)):
-                    d(<span class="str">"burst bar"</span>, Pattern(<img src="1499732041383-1.png" />).similar(<span class="dig">0.95</span>), <span class="dig">0</span>)
+                <span class="kw">if</span> n==-<span class="dig">1</span>:
+                    useSkill(firstSkill.offset(<span class="dig">20</span>, -<span class="dig">80</span>))
+                <span class="kw">else</span>:
+                    useSkill(firstSkill.offset(<span class="dig">0</span>+n*<span class="dig">88</span>, <span class="dig">0</span>))
+                    <span class="cmt">#d("burst bar", Pattern("1499732041383-1.png").similar(0.95), 0)</span>
                     <span class="cmt">#for i in range(10):</span>
                     <span class="cmt">#    if not isFighting():</span>
                     <span class="cmt">#        return False</span>
@@ -1170,8 +1225,12 @@ imageGpsGo = <img src="imageGpsGo.png" />
     <span class="kw">if</span> bNeedUseOtherBranchServer:
         changeBranchServer()
 
+    d(<span class="str">"no GPS service"</span>, <img src="1505642893410.png" />, <span class="dig">0</span>)
+
     d( <span class="str">"imageGo"</span>, imageGo, <span class="dig">2</span> )
     d( <span class="str">"imageGpsGo"</span>, imageGpsGo, <span class="dig">2</span> )
+    <span class="kw">if</span> gameRegion.exists(Pattern(<img src="1505664145843.png" />).exact(), <span class="dig">0</span>):
+        d(<span class="str">"GPS effect doesn't be used."</span>, Pattern(<img src="1505664202573.png" />).exact())
 
 <span class="kw">def</span> moveALitte():
     Debug.user(<span class="str">"move a little"</span>)
@@ -1238,13 +1297,26 @@ imageGpsGo = <img src="imageGpsGo.png" />
 
     d(<span class="str">"talking"</span>, <img src="1502752596473.png" />, <span class="dig">5</span>)
     <span class="skw">sleep</span>(<span class="dig">1</span>)
-    d(<span class="str">"talk to move other place"</span>, <img src="1502752617013.png" />, <span class="dig">5</span>)
-    d(<span class="str">"talking2"</span>, <img src="1502752630300.png" />, <span class="dig">5</span>)
-    <span class="cmt">#if enumType == enumEVP_6:</span>
-    <span class="cmt">#    d("talk to move other place2", "1502318001566.png", 5)</span>
-    <span class="cmt">#else:</span>
-    d(<span class="str">"talk to move other place2"</span>, <img src="1502752654221.png" />, <span class="dig">5</span>)
+    <span class="kw">for</span> n <span class="kw">in</span> range(<span class="dig">2</span>):
+        d(<span class="str">"talk to next page"</span>, <img src="1506294076568.png" />, <span class="dig">5</span>)
+        <span class="skw">sleep</span>(<span class="dig">1</span>)
+        d(<span class="str">"talking again"</span>, <img src="1502752596473.png" />, <span class="dig">5</span>)
+        <span class="skw">sleep</span>(<span class="dig">1</span>)
+    d(<span class="str">"talk to move other place"</span>, <img src="1506294278905.png" />, <span class="dig">5</span>)
+    d(<span class="str">"talking2"</span>, <img src="1506294351532.png" />, <span class="dig">5</span>)
+    d(<span class="str">"talk to move other place2"</span>, <img src="1506294369543.png" />, <span class="dig">5</span>)
     <span class="skw">sleep</span>(<span class="dig">4</span>)
+<span class="str">'''
+    d("talk to move other place", "1502752617013.png", 5)
+    d("talking2", "1502752630300.png", 5)
+
+    #if enumType == enumEVP_6:
+    #    d("talk to move other place2", "1502318001566.png", 5)
+    #else:
+    d("talk to move other place2", "1502752654221.png", 5)
+    sleep(4)
+'''</span>
+
 
 <span class="kw">def</span> getPageId():
     Debug.user(<span class="str">"check page id (len=%d)"</span> % len(PageId.imagePages))
@@ -1276,14 +1348,14 @@ imageGpsGo = <img src="imageGpsGo.png" />
         l(<span class="str">"click image offset"</span>, loc.offset(offsetX,offsetY) )
 
 <span class="kw">def</span> moveToEvpTarget():
-    clickImageOffsetOrClickLocation( Pattern(<img src="1503533643058.png" />).similar(<span class="dig">0.90</span>), -<span class="dig">170</span>, -<span class="dig">110</span>, Location(<span class="dig">530</span>, <span class="dig">471</span>) )
-    <span class="skw">sleep</span>(<span class="dig">2</span>)
+    clickImageOffsetOrClickLocation( Pattern(<img src="1505924038158.png" />).similar(<span class="dig">0.95</span>), <span class="dig">70</span>, -<span class="dig">170</span>, Location(<span class="dig">35</span>, <span class="dig">394</span>) )
+    <span class="skw">sleep</span>(<span class="dig">1</span>)
 
     <span class="kw">if</span> isFighting():
         <span class="kw">return</span> True
-    imageEnterEvpTarget = <img src="1503534046968.png" />
-    d(<span class="str">"enter evp room?"</span>, imageEnterEvpTarget)
-    <span class="kw">if</span> d(<span class="str">"enter evp room"</span>, <img src="1503534159788.png" />):
+    imageEnterEvpTarget = <img src="imageEnterEvpTarget.png" />
+    d(<span class="str">"enter evp room?"</span>, imageEnterEvpTarget, <span class="dig">3</span>)
+    <span class="kw">if</span> d(<span class="str">"enter evp room"</span>, <img src="1505925536533.png" />, <span class="dig">3</span>):
         <span class="kw">return</span> True
     <span class="kw">return</span> False
 
