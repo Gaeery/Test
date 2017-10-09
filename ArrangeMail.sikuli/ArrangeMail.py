@@ -40,8 +40,9 @@ def receiveAllMail():
             elif d("receive mail", Pattern("1505517874410.png").exact(), 5):
                 sleep(0.5)
                 exists("1503709252712.png", 3)
-            elif exists("1505517117946.png", 0):
-                return False
+            elif exists("1505517117946.png", 0): 
+                if not exists(Pattern("1503708271933.png").similar(0.90), 0):
+                    return False
             else:
                 sleep(1)
     return True

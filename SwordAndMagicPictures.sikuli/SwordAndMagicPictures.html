@@ -96,6 +96,13 @@ locationLif = Location(<span class="dig">337</span>, <span class="dig">631</span
 
 
 
+gameRegion2 = Region(<span class="dig">587</span>,<span class="dig">0</span>,<span class="dig">566</span>,<span class="dig">1029</span>)
+escapeRegion = Region(<span class="dig">400</span>,<span class="dig">932</span>,<span class="dig">166</span>,<span class="dig">93</span>)
+monsterRegion_Normal = Region(<span class="dig">0</span>,<span class="dig">369</span>,<span class="dig">554</span>,<span class="dig">351</span>)
+monsterRegion_Small = Region(<span class="dig">167</span>,<span class="dig">336</span>,<span class="dig">239</span>,<span class="dig">249</span>)
+monsterRegion_Left = Region(<span class="dig">4</span>,<span class="dig">382</span>,<span class="dig">344</span>,<span class="dig">345</span>)
+monsterRegion_Up = Region(<span class="dig">4</span>,<span class="dig">220</span>,<span class="dig">550</span>,<span class="dig">361</span>)
+monsterRegion_Full = Region(<span class="dig">1</span>,<span class="dig">167</span>,<span class="dig">554</span>,<span class="dig">555</span>)
 
 
 imageMissionClosed = <img src="te-1.png" />
@@ -112,6 +119,7 @@ imageMissionClosed = <img src="te-1.png" />
     enumPageId_selectingTask = <span class="dig">5</span>
     enumPageId_openGift = <span class="dig">6</span>
     enumPageId_missionClosed = <span class="dig">7</span>
+    enumPageId_skip = <span class="dig">8</span>
 
     escapeRegion = Region(<span class="dig">400</span>,<span class="dig">932</span>,<span class="dig">166</span>,<span class="dig">93</span>)
     missionTimerRegion = Region(<span class="dig">438</span>,<span class="dig">23</span>,<span class="dig">110</span>,<span class="dig">78</span>)
@@ -121,11 +129,12 @@ imageMissionClosed = <img src="te-1.png" />
             [gameRegion, <img src="imageClose.png" />, enumPageId_close, <span class="str">"Page: close something"</span>],
             [missionTimerRegion, Pattern(<img src="1499210289316.png" />).similar(<span class="dig">0.80</span>), enumPageId_mission, <span class="str">"Page: In a mission"</span>],
             [gameRegion, <img src="imageAgain.png" />, enumPageId_again, <span class="str">"Page: again"</span>],
-            [gameRegion, <img src="1505316075387.png" />, enumPageId_board, <span class="str">"Page: task board"</span>],
+            [gameRegion, <img src="1505925204806.png" />, enumPageId_board, <span class="str">"Page: task board"</span>],
 
             [gameRegion, <img src="imagePageSelectingTask.png" />, enumPageId_selectingTask, <span class="str">"Page: Selecting a task"</span>],
             [gameRegion, <img src="imagePageOpenGift.png" />, enumPageId_openGift, <span class="str">"Page: open gift"</span>],
-            [gameRegion, <img src="1503677033007.png" />, enumPageId_missionClosed, <span class="str">"Page: imageMissionClosed"</span>]
+            [gameRegion, <img src="1503677033007.png" />, enumPageId_missionClosed, <span class="str">"Page: imageMissionClosed"</span>],
+            [gameRegion, <img src="1507194420421.png" />, enumPageId_skip, <span class="str">"Page: skip"</span>]
         ]
         <span class="cmt">#enumPageId_mission = 0</span>
         <span class="cmt">#enumPageId_again = 2</span>
@@ -145,7 +154,10 @@ target2 = <img src="target2.png" />
 
 imageEvpEvent = [ imageMissionTabs1[<span class="dig">1</span>], imageMissionTabs2[<span class="dig">1</span>], <img src="1505315719283.png" />, <img src="1505315749946.png" /> ]
 imageEvpEvent2000 = [ imageMissionTabs1[<span class="dig">1</span>], imageMissionTabs2[<span class="dig">1</span>], <img src="1505315719283.png" />,  <img src="1505488887706.png" />]
+imageEvpEventDust = [ imageMissionTabs1[<span class="dig">0</span>], imageMissionTabs2[<span class="dig">1</span>], <img src="1505924940340.png" />, <img src="1505924953174.png" /> ]
+imageEvpEventFire = [ imageMissionTabs1[<span class="dig">0</span>], imageMissionTabs2[<span class="dig">1</span>], <img src="1507117532032.png" />, <img src="1507124347810.png" /> ]
 
+imageEvpTask = [ imageMissionTabs1[<span class="dig">0</span>], imageMissionTabs2[<span class="dig">1</span>], <img src="1506530260506.png" />, <img src="1506530271721.png" /> ]
 
 imageArmorMission = [
         imageMissionTabs1[<span class="dig">1</span>],

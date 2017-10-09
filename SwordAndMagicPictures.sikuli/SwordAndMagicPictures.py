@@ -25,6 +25,13 @@ locationLif = Location(337, 631)
 
 
 
+gameRegion2 = Region(587,0,566,1029)
+escapeRegion = Region(400,932,166,93)
+monsterRegion_Normal = Region(0,369,554,351)
+monsterRegion_Small = Region(167,336,239,249)
+monsterRegion_Left = Region(4,382,344,345)
+monsterRegion_Up = Region(4,220,550,361)
+monsterRegion_Full = Region(1,167,554,555)
 
 
 imageMissionClosed = "te-1.png"
@@ -41,6 +48,7 @@ class PageId():
     enumPageId_selectingTask = 5
     enumPageId_openGift = 6
     enumPageId_missionClosed = 7
+    enumPageId_skip = 8
 
     escapeRegion = Region(400,932,166,93)
     missionTimerRegion = Region(438,23,110,78)
@@ -50,11 +58,12 @@ class PageId():
             [gameRegion, "imageClose.png", enumPageId_close, "Page: close something"],
             [missionTimerRegion, Pattern("1499210289316.png").similar(0.80), enumPageId_mission, "Page: In a mission"],
             [gameRegion, "imageAgain.png", enumPageId_again, "Page: again"],
-            [gameRegion, "1505316075387.png", enumPageId_board, "Page: task board"],
+            [gameRegion, "1505925204806.png", enumPageId_board, "Page: task board"],
  
             [gameRegion, "imagePageSelectingTask.png", enumPageId_selectingTask, "Page: Selecting a task"],
             [gameRegion, "imagePageOpenGift.png", enumPageId_openGift, "Page: open gift"],
-            [gameRegion, "1503677033007.png", enumPageId_missionClosed, "Page: imageMissionClosed"]
+            [gameRegion, "1503677033007.png", enumPageId_missionClosed, "Page: imageMissionClosed"],
+            [gameRegion, "1507194420421.png", enumPageId_skip, "Page: skip"]
         ]
         #enumPageId_mission = 0
         #enumPageId_again = 2
@@ -74,7 +83,10 @@ target2 = "target2.png"
 
 imageEvpEvent = [ imageMissionTabs1[1], imageMissionTabs2[1], "1505315719283.png", "1505315749946.png" ]
 imageEvpEvent2000 = [ imageMissionTabs1[1], imageMissionTabs2[1], "1505315719283.png",  "1505488887706.png"]
+imageEvpEventDust = [ imageMissionTabs1[0], imageMissionTabs2[1], "1505924940340.png", "1505924953174.png" ]
+imageEvpEventFire = [ imageMissionTabs1[0], imageMissionTabs2[1], "1507117532032.png", "1507124347810.png" ]
 
+imageEvpTask = [ imageMissionTabs1[0], imageMissionTabs2[1], "1506530260506.png", "1506530271721.png" ]
 
 imageArmorMission = [ 
         imageMissionTabs1[1],
