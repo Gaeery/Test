@@ -99,35 +99,37 @@ Settings.MoveMouseDelay = <span class="dig">0.1</span>
         Debug.user(<span class="str">"Can't find target"</span>)
     <span class="kw">return</span> False
 
-<span class="cmt"># click a image in game region,  support retry,  return True if success</span>
+<span class="cmt"># click a image in game region,  support timeout,  return True if success</span>
 <span class="kw">def</span> c(target, timeout = <span class="dig">1</span>):
     <span class="kw">return</span> clickInRegion(gameRegion, target, timeout)
 
-<span class="cmt"># click a image in game region,  support retry,  return True if success</span>
+<span class="cmt"># click a image in game region,  support timeout,  return True if success</span>
 <span class="kw">def</span> d(msg, target, timeout = <span class="dig">1</span>):
     Debug.user(msg)
     <span class="kw">return</span> clickInRegion(gameRegion, target, timeout)
 
-<span class="cmt"># second game</span>
-<span class="kw">def</span> d2(msg, target, retry = <span class="dig">1</span>):
+<span class="str">'''# second game
+def d2(msg, target, retry = 1):
     Debug.user(msg)
-    <span class="kw">return</span> clickInRegion(gameRegion2, target, retry)
+    return clickInRegion(gameRegion2, target, retry)
+'''</span>
 
 <span class="cmt">#click location with log</span>
 <span class="kw">def</span> l(msg, location):
     Debug.user(msg)
     <span class="skw">click</span>(location)
 
-
-<span class="kw">def</span> findLocation(reg, target, timeout = <span class="dig">1</span>):
-    <span class="kw">try</span>:
-        <span class="kw">if</span> reg.exists(target, timeout):
-            loc = reg.<span class="skw">find</span>(target)
-            Debug.user(<span class="str">"Found target"</span>)
-            <span class="kw">return</span> loc
-    <span class="kw">except</span> FindFailed:
-        Debug.user(<span class="str">"Can't find target"</span>)
-    <span class="kw">return</span> None
+<span class="str">'''
+def findLocation(reg, target, timeout = 1):
+    try:
+        if reg.exists(target, timeout):
+            loc = reg.find(target)
+            Debug.user("Found target")
+            return loc
+    except FindFailed:
+        Debug.user("Can't find target")
+    return None
+'''</span>
 
 <span class="kw">def</span> clickLocIfExist(loc):
     <span class="kw">if</span> loc!=None:
@@ -139,13 +141,45 @@ Settings.MoveMouseDelay = <span class="dig">0.1</span>
     <span class="cmt">#click(region)</span>
     <span class="skw">click</span>(region.offset(<span class="dig">0</span>, region.h/<span class="dig">2</span>))
 
-<span class="kw">class</span> ImageOffset():
+<span class="kw">def</span> clickImageBottomInRegion( message, region, image, timeout = <span class="dig">0</span> ):
+    Debug.user(<span class="str">"[clickImageInRegion] %s"</span> % message )
+    sc = Screen()
+    sc.setAutoWaitTimeout(timeout)
+    sc.setROI(region)
+    <span class="kw">try</span>:
+        target = sc.<span class="skw">find</span>(image)
+        clickRegionBottom( target )
+        <span class="kw">return</span> True
+    <span class="kw">except</span> FindFailed:
+        Debug.user(<span class="str">"[clickImageInRegion] can't find %s"</span> % message )
+        <span class="kw">return</span> False
+
+
+
+<span class="kw">class</span> Automation:
+    <span class="kw">def</span> getTargetInRegion( region ):
+        <span class="kw">raise</span> ValueError(<span class="str">'not impelmented'</span>)
+    <span class="kw">def</span> __init__(self):
+        <span class="kw">return</span>
+    <span class="kw">def</span> __str__(self):
+        <span class="kw">return</span> (<span class="str">"Automation class"</span>)
+
+<span class="kw">class</span> ImageTarget(Automation):
+    <span class="kw">def</span> getTargetInRegion( region ):
+        <span class="kw">raise</span> ValueError(<span class="str">'not impelmented'</span>)
+    <span class="kw">def</span> __init__(self,image):
+        suer.__init__()
+        self.image = image
+
+<span class="cmt"># store image and its offset</span>
+<span class="kw">class</span> ImageOffset(Automation):
     image = <span class="dig">0</span>
     offsetX = <span class="dig">0</span>
     offsetY = <span class="dig">0</span>
     <span class="cmt">#def __init__(image):</span>
     <span class="cmt">#    self.image = image</span>
     <span class="kw">def</span> __init__(self,image, offsetX, offsetY):
+        <span class="cmt">#super.__init__(self);</span>
         self.image = image
         self.offsetX = offsetX
         self.offsetY = offsetY
@@ -220,6 +254,9 @@ Settings.MoveMouseDelay = <span class="dig">0.1</span>
         <span class="kw">except</span> FindFailed:
             Debug.user(<span class="str">"[clickImageInRegion] can't find %s"</span> % message )
             <span class="kw">return</span> False
+
+     <span class="cmt">#def excuteAutomation(automation):</span>
+     <span class="cmt">#    automation.execute()</span>
 
 
 <span class="cmt"># capture a screen</span>

@@ -75,12 +75,13 @@
 <span class="kw">from</span> ControlLib <span class="kw">import</span> *
 
 gameRegion = Region(<span class="dig">0</span>,<span class="dig">0</span>,<span class="dig">587</span>,<span class="dig">1024</span>)
+<span class="cmt">#imageTaskBoard = "imageTaskBoard.png"  #normal</span>
 imageTaskBoard = <img src="imageTaskBoard.png" />
 
 
 locationIronMonster = Location(<span class="dig">112</span>, <span class="dig">555</span>)
 locationFirstOriginalStone = Location(<span class="dig">174</span>, <span class="dig">431</span>)
-locationSecondOriginalStone = Location(<span class="dig">478</span>, <span class="dig">240</span>)
+locationSecondOriginalStone = Location(<span class="dig">508</span>, <span class="dig">240</span>)
 locationDarkBoss = Location(<span class="dig">384</span>, <span class="dig">419</span>)
 locationLightBoss = Location(<span class="dig">172</span>, <span class="dig">434</span>)
 locationFireBoss = Location(<span class="dig">495</span>, <span class="dig">438</span>)
@@ -129,7 +130,7 @@ imageMissionClosed = <img src="te-1.png" />
             [gameRegion, <img src="imageClose.png" />, enumPageId_close, <span class="str">"Page: close something"</span>],
             [missionTimerRegion, Pattern(<img src="1499210289316.png" />).similar(<span class="dig">0.80</span>), enumPageId_mission, <span class="str">"Page: In a mission"</span>],
             [gameRegion, <img src="imageAgain.png" />, enumPageId_again, <span class="str">"Page: again"</span>],
-            [gameRegion, <img src="1505925204806.png" />, enumPageId_board, <span class="str">"Page: task board"</span>],
+            [gameRegion, imageTaskBoard, enumPageId_board, <span class="str">"Page: task board"</span>],
 
             [gameRegion, <img src="imagePageSelectingTask.png" />, enumPageId_selectingTask, <span class="str">"Page: Selecting a task"</span>],
             [gameRegion, <img src="imagePageOpenGift.png" />, enumPageId_openGift, <span class="str">"Page: open gift"</span>],
@@ -153,11 +154,13 @@ target2 = <img src="target2.png" />
 
 
 imageEvpEvent = [ imageMissionTabs1[<span class="dig">1</span>], imageMissionTabs2[<span class="dig">1</span>], <img src="1505315719283.png" />, <img src="1505315749946.png" /> ]
-imageEvpEvent2000 = [ imageMissionTabs1[<span class="dig">1</span>], imageMissionTabs2[<span class="dig">1</span>], <img src="1505315719283.png" />,  <img src="1505488887706.png" />]
+imageEvpEvent2000 = [ imageMissionTabs1[<span class="dig">0</span>], imageMissionTabs2[<span class="dig">1</span>], <img src="1508342146553.png" />, <img src="1508342154667.png" />]
 imageEvpEventDust = [ imageMissionTabs1[<span class="dig">0</span>], imageMissionTabs2[<span class="dig">1</span>], <img src="1505924940340.png" />, <img src="1505924953174.png" /> ]
 imageEvpEventFire = [ imageMissionTabs1[<span class="dig">0</span>], imageMissionTabs2[<span class="dig">1</span>], <img src="1507117532032.png" />, <img src="1507124347810.png" /> ]
 
-imageEvpTask = [ imageMissionTabs1[<span class="dig">0</span>], imageMissionTabs2[<span class="dig">1</span>], <img src="1506530260506.png" />, <img src="1506530271721.png" /> ]
+imageEvpTask = [ imageMissionTabs1[<span class="dig">0</span>], imageMissionTabs2[<span class="dig">1</span>],  <img src="1511569923977.png" />,  <img src="1511875735271.png" /> ]
+imageEvpPumpkin =  [ imageMissionTabs1[<span class="dig">0</span>], imageMissionTabs2[<span class="dig">1</span>], <img src="1510836807935.png" />, <img src="1510836861266.png" /> ]
+
 
 imageArmorMission = [
         imageMissionTabs1[<span class="dig">1</span>],
