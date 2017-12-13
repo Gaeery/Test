@@ -1,0 +1,205 @@
+
+<html>
+   <head>
+      <style type="text/css">
+         .sikuli-code {
+            font-size: 20px;
+            font-family: "Osaka-mono", Monospace;
+            line-height: 1.5em;
+            display:table-cell;
+            white-space: pre-wrap;       /* css-3 */
+            white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
+            white-space: -pre-wrap;      /* Opera 4-6 */
+            white-space: -o-pre-wrap;    /* Opera 7 */
+            word-wrap: break-word;       /* Internet Explorer 5.5+ */
+            width: 99%;   /* remove horizontal scroll-bar when viewing in IE7 */
+         }
+         .sikuli-code img {
+            vertical-align: middle;
+            margin: 2px;
+            border: 1px solid #ccc;
+            padding: 2px;
+            -moz-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-box-shadow: 1px 1px 1px gray;
+            -webkit-box-shadow: 1px 1px 2px gray;
+         }
+         .kw {
+            color: blue;
+         }
+         .skw {
+            color: rgb(63, 127, 127);
+         }
+
+         .str {
+            color: rgb(128, 0, 0);
+         }
+
+         .dig {
+            color: rgb(128, 64, 0);
+         }
+
+         .cmt {
+            color: rgb(200, 0, 200);
+         }
+
+         h2 {
+            display: inline;
+            font-weight: normal;
+         }
+
+         .info {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+            display: none;
+         }
+
+         a {
+            color: #9D2900;
+         }
+
+         body {
+            font-family: "Trebuchet MS", Arial, Sans-Serif;
+         }
+
+      </style>
+   </head>
+<body>
+<div class="info">
+<h2>HeavenM.sikuli</h2> <a href="HeavenM.zip">(Download this script)</a>
+</div>
+<pre class="sikuli-code">
+<span class="kw">import</span> random
+<span class="kw">import</span> SwordAndMagicPictures
+reload(SwordAndMagicPictures)  <span class="cmt"># make sure global variables are reloaded</span>
+<span class="kw">import</span> ControlLib
+<span class="kw">from</span> SwordAndMagicPictures <span class="kw">import</span> *
+<span class="kw">from</span> ControlLib <span class="kw">import</span> *
+<span class="kw">import</span> SwordAndMagicActions
+<span class="kw">from</span> SwordAndMagicActions <span class="kw">import</span> *
+reload(SwordAndMagicActions)
+
+pHpWater = Location(<span class="dig">802</span>, <span class="dig">922</span>)
+<span class="cmt">#bufferImages = "bufferRegion.png"</span>
+bufferRegion =  Region(<span class="dig">145</span>,<span class="dig">155</span>,<span class="dig">466</span>,<span class="dig">40</span>)
+
+
+imageNoHp = Pattern(<img src="imageHasHp.png" />).similar(<span class="dig">0.74</span>)
+imageHp50p = Pattern(<img src="imageHp50p.png" />).similar(<span class="dig">0.61</span>)
+imageHp50Region = Region(<span class="dig">149</span>,<span class="dig">56</span>,<span class="dig">287</span>,<span class="dig">26</span>)
+
+<span class="cmt"># store image and its offset</span>
+<span class="kw">class</span> BufferStatus():
+    image = <span class="dig">0</span>
+    name = <span class="str">""</span>
+    useSkillSteps = []
+    <span class="kw">def</span> __init__(self, name, image, useSkillSteps = []):
+        self.image = image
+        self.name = unicode(name, <span class="str">"utf8"</span>)
+        self.useSkillSteps = useSkillSteps
+
+BufferList = [
+        <span class="cmt">#BufferStatus("精靈餅乾", "1513000438389.png", [Pattern("1513012091917.png").similar(0.95), Pattern("1513012115279.png").similar(0.95), Pattern("1513012153809.png").similar(0.95), "1513012783396.png", "1513012843741.png"]),</span>
+        <span class="cmt">#BufferStatus("食物", Pattern("1513000766333.png").similar(0.59), [Pattern("1513012091917.png").similar(0.95), Pattern("1513012115279.png").similar(0.95), "1513053707716.png", "1513053720833.png" , "1513012843741.png"]),</span>
+        <span class="cmt">#BufferStatus("保護罩", Pattern("1513000826312.png").similar(0.67), ["1513012904938.png", "1513012930638.png", "1513012940942.png", "1513012843741.png"]),</span>
+        <span class="cmt">#BufferStatus("鎧甲護持", Pattern("1513000907139.png").similar(0.69), ["1513012904938.png","1513013125930.png","1513013138966.png", "1513012843741.png"]),</span>
+        <span class="cmt">#BufferStatus("負重強化", Pattern("1513000932286.png").similar(0.65), ["1513012904938.png","1513013030782.png","1513013041431.png", "1513012843741.png"]),</span>
+        <span class="cmt">#BufferStatus("變身", Pattern("1513001027215.png").similar(0.68)),</span>
+        <span class="cmt">#BufferStatus("強化戰鬥卷軸", Pattern("1513001000565.png").similar(0.59)),</span>
+        <span class="cmt">#BufferStatus("自我加速藥水", Pattern("1513004774208.png").similar(0.72), [Pattern("1513012091917.png").similar(0.95), Pattern("1513012115279.png").similar(0.95), "1513033719938.png", "1513033735138.png", "1513012843741.png"]),</span>
+        ]
+
+<span class="kw">def</span> checkBufferStatus():
+    lib = GaeeryLib()
+    lib.setROI(Region(<span class="dig">1303</span>,<span class="dig">49</span>,<span class="dig">502</span>,<span class="dig">710</span>))
+
+    <span class="kw">for</span> buffer <span class="kw">in</span> BufferList:
+        <span class="kw">if</span> <span class="kw">not</span> bufferRegion.exists(buffer.image, <span class="dig">0</span>):
+            Debug.user( <span class="str">"no buffer %s"</span> % buffer.name )
+            <span class="kw">for</span> step <span class="kw">in</span> buffer.useSkillSteps:
+                lib.clickImage( <span class="str">"use skill step"</span>, step)
+                <span class="skw">sleep</span>(<span class="dig">0.5</span>)
+
+<span class="kw">def</span> doImageSteps( steps ):
+    lib = GaeeryLib()
+    i = <span class="dig">0</span>
+    <span class="kw">for</span> step <span class="kw">in</span> steps:
+        lib.clickImage( <span class="str">"use image step "</span> + str(i), step)
+        i = i + <span class="dig">1</span>
+        <span class="skw">sleep</span>(<span class="dig">0.5</span>)
+
+<span class="kw">def</span> doPositionSteps( steps ):
+    i = <span class="dig">0</span>
+    <span class="kw">for</span> step <span class="kw">in</span> steps:
+        Debug.user( <span class="str">"click position step "</span> + str(i) )
+        <span class="skw">click</span>(step)
+        i = i + <span class="dig">1</span>
+        <span class="skw">sleep</span>(<span class="dig">0.5</span>)
+
+nBackHomeCount = <span class="dig">0</span>
+
+<span class="kw">def</span> checkHp():
+    <span class="kw">global</span> nBackHomeCount
+    <span class="kw">if</span> imageHp50Region.exists(imageNoHp, <span class="dig">0</span>):
+        Debug.user(<span class="str">"Hp is lower than 70"</span>)
+        <span class="skw">click</span>(pHpWater)
+        nBackHomeCount = <span class="dig">0</span>
+    <span class="kw">elif</span> imageHp50Region.exists(imageHp50p, <span class="dig">0</span>):
+        Debug.user(<span class="str">"Hp is lower than 50"</span>)
+        <span class="skw">click</span>(pHpWater)
+        nBackHomeCount = nBackHomeCount + <span class="dig">1</span>
+        <span class="kw">if</span> nBackHomeCount &gt; <span class="dig">5</span>:
+            <span class="skw">click</span>(Location(<span class="dig">1736</span>, <span class="dig">915</span>))
+            exit
+    <span class="kw">else</span>:
+        Debug.user(<span class="str">"Hp is OK"</span>)
+
+regionHp = Region(<span class="dig">715</span>,<span class="dig">352</span>,<span class="dig">457</span>,<span class="dig">155</span>)
+imageHp80 = Pattern(<img src="imageHp70.png" />).similar(<span class="dig">0.80</span>)
+imageHp70 = <img src="imageHp50.png" />
+imageHp60 = Pattern(<img src="imageHp30.png" />).similar(<span class="dig">0.60</span>)
+<span class="kw">def</span> checkHp2():
+    <span class="kw">global</span> nBackHomeCount
+    <span class="kw">if</span> regionHp.exists(imageHp80, <span class="dig">1</span>):
+        Debug.user(<span class="str">"Hp is OK"</span>)
+        nBackHomeCount = <span class="dig">0</span>
+    <span class="kw">elif</span> regionHp.exists(imageHp70, <span class="dig">1</span>):
+        Debug.user(<span class="str">"Hp is 50~70"</span>)
+        useSelfRecover()
+        nBackHomeCount = <span class="dig">0</span>
+    <span class="kw">elif</span> regionHp.exists(imageHp60, <span class="dig">1</span>):
+        Debug.user(<span class="str">"Hp is 30~50"</span>)
+        <span class="skw">click</span>(pHpWater)
+        useSelfRecover()
+        nBackHomeCount = <span class="dig">0</span>
+    <span class="kw">else</span>:
+        Debug.user(<span class="str">"Hp is lower than 50"</span>)
+        nBackHomeCount = nBackHomeCount + <span class="dig">1</span>
+        <span class="kw">if</span> nBackHomeCount &lt; <span class="dig">3</span>:
+            <span class="kw">return</span>
+
+        Debug.user(<span class="str">"return to town!!"</span>)
+        screenCapture(<img src="before return.png" />)
+        <span class="skw">click</span>(Location(<span class="dig">1736</span>, <span class="dig">915</span>))
+        exit(<span class="dig">1</span>)
+
+<span class="kw">def</span> useSelfRecover():
+    lib = GaeeryLib()
+    lib.setROI(Region(<span class="dig">751</span>,<span class="dig">869</span>,<span class="dig">1038</span>,<span class="dig">104</span>))
+    imageSelfRecover = Pattern(<img src="imageSelfRecover.png" />).exact()
+    imageRecover = <img src="imageRecover.png" />
+    skill = lib.<span class="skw">find</span>( <span class="str">"find self recover skill"</span>, imageSelfRecover )
+    <span class="kw">if</span> skill == None:
+        <span class="skw">click</span>(Location(<span class="dig">1533</span>, <span class="dig">597</span>))
+        <span class="skw">sleep</span>(<span class="dig">0.5</span>)
+    lib.clickImage( <span class="str">"use skill to rescue self"</span>, imageSelfRecover)
+
+
+<span class="kw">while</span> True:
+    <span class="cmt">#checkBufferStatus()</span>
+    checkHp2()
+    <span class="skw">sleep</span>(<span class="dig">0.3</span>)
+</pre>
+</body>
+</html>

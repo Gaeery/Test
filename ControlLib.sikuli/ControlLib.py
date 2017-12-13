@@ -114,7 +114,6 @@ class ImageOffset(Automation):
 
 
 
-
 from sikuli import *
 import shutil
 
@@ -130,7 +129,7 @@ class GaeeryLib:
         self.region = Screen().getBounds()
         
     def setROI(self, roiRectangle):
-        Debug.user( "setROI = %d, %d, %d, %d" % (roiRectangle.x , roiRectangle.y , roiRectangle.w , roiRectangle.h) )
+        #Debug.user( "setROI = %d, %d, %d, %d" % (roiRectangle.x , roiRectangle.y , roiRectangle.w , roiRectangle.h) )
         self.roiRectangle = roiRectangle
 
     def setRoiRectangle(self, x, y, w, h):

@@ -186,7 +186,6 @@ def findLocation(reg, target, timeout = 1):
 
 
 
-
 <span class="kw">from</span> sikuli <span class="kw">import</span> *
 <span class="kw">import</span> shutil
 
@@ -202,7 +201,7 @@ def findLocation(reg, target, timeout = 1):
         self.region = Screen().getBounds()
 
     <span class="kw">def</span> setROI(self, roiRectangle):
-        Debug.user( <span class="str">"setROI = %d, %d, %d, %d"</span> % (roiRectangle.x , roiRectangle.y , roiRectangle.w , roiRectangle.h) )
+        <span class="cmt">#Debug.user( "setROI = %d, %d, %d, %d" % (roiRectangle.x , roiRectangle.y , roiRectangle.w , roiRectangle.h) )</span>
         self.roiRectangle = roiRectangle
 
     <span class="kw">def</span> setRoiRectangle(self, x, y, w, h):

@@ -75,7 +75,7 @@ class PageId():
 
 
 imageMissionTab22 =  "1503325058113.png"
-imageMissionTabs1 = [ Pattern("1503324924500.png").similar(0.60), Pattern("1503324978946.png").similar(0.55) ]
+imageMissionTabs1 = [ Pattern("1503324924500.png").similar(0.60), Pattern("1503324978946.png").similar(0.51) ]
 imageMissionTabs2 = [ "1503325095445.png", imageMissionTab22 ]
 
 target1 = "target1.png"
@@ -87,14 +87,15 @@ imageEvpEvent2000 = [ imageMissionTabs1[0], imageMissionTabs2[1], "1508342146553
 imageEvpEventDust = [ imageMissionTabs1[0], imageMissionTabs2[1], "1505924940340.png", "1505924953174.png" ]
 imageEvpEventFire = [ imageMissionTabs1[0], imageMissionTabs2[1], "1507117532032.png", "1507124347810.png" ]
 
-imageEvpTask = [ imageMissionTabs1[0], imageMissionTabs2[1],  "1511569923977.png",  "1511875735271.png" ]
+imageEvpTask = [ imageMissionTabs1[0], imageMissionTabs2[1],  "1512579269469.png", "1512579277996.png" ]
 imageEvpPumpkin =  [ imageMissionTabs1[0], imageMissionTabs2[1], "1510836807935.png", "1510836861266.png" ]
 
 
 imageArmorMission = [ 
         imageMissionTabs1[1],
         imageMissionTabs2[0], 
-        "1503507033623.png", "1503507047702.png" ]
+        "1503507033623.png", 
+         ]
 
 
 imageMissions = []
