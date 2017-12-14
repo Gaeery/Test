@@ -85,21 +85,32 @@ def checkHp():
 
 regionHp = Region(715,352,457,155)
 imageHp80 = Pattern("imageHp70.png").similar(0.80)
-imageHp70 = "imageHp50.png"
-imageHp60 = Pattern("imageHp30.png").similar(0.60)
+imageHp60 = Pattern("imageHp50.png").similar(0.60)
+imageHp50 = Pattern("imageHp30.png").similar(0.50)
+imageMp50 = Pattern("imageMp50.png").similar(0.90)
 def checkHp2():
     global nBackHomeCount
+    
     if regionHp.exists(imageHp80, 1):
         Debug.user("Hp is OK")
         nBackHomeCount = 0
-    elif regionHp.exists(imageHp70, 1):
-        Debug.user("Hp is 50~70")
-        useSelfRecover()
-        nBackHomeCount = 0
     elif regionHp.exists(imageHp60, 1):
-        Debug.user("Hp is 30~50")
+        Debug.user("Hp is 60~80")
+        #click(pHpWater)  
+        if regionHp.exists(imageMp50, 0.3):     
+            Debug.user("has mp")
+            useSelfRecover()
+        else:
+            Debug.user("no mp")
+        nBackHomeCount = 0
+    elif regionHp.exists(imageHp50, 1):
+        Debug.user("Hp is 50~70")
         click(pHpWater)        
-        useSelfRecover()
+        if regionHp.exists(imageMp50, 0.3):     
+            Debug.user("has mp")
+            useSelfRecover()
+        else:
+            Debug.user("no mp")
         nBackHomeCount = 0
     else:
         Debug.user("Hp is lower than 50")
@@ -112,16 +123,21 @@ def checkHp2():
         click(Location(1736, 915))
         exit(1)
 
+
+
+
+
 def useSelfRecover():
     lib = GaeeryLib()
     lib.setROI(Region(751,869,1038,104))
-    imageSelfRecover = Pattern("imageSelfRecover.png").exact()
+    imageSelfRecover = Pattern("imageSelfRecover.png").similar(0.95)
     imageRecover = "imageRecover.png"
     skill = lib.find( "find self recover skill", imageSelfRecover )
     if skill == None:
         click(Location(1533, 597))
         sleep(0.5)
     lib.clickImage( "use skill to rescue self", imageSelfRecover)
+
 
 
 while True:

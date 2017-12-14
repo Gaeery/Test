@@ -30,12 +30,12 @@ enumArmorMele = 19
 enumArmorWeekend = 17
 enumImageOffset = 21
 #-------------
-enumType = enumImageOffset 
+enumType = enumFixLocation 
 #enumType = enumPractice
 #enumType = enumImageOffset
 enumTypeNext = enumImageOffset
 
-locationFixedMoveInMission =  Location(57, 389)
+locationFixedMoveInMission = Location(171, 505)
 locationFixedMoveInMission2 = Location(513, 443)
         
 # 技能使用
@@ -46,7 +46,7 @@ locationFixedMoveInMission2 = Location(513, 443)
 
 #autoKills = [1,2,3,4,5,0]  #光範圍
 autoKills = [0,1,2,3,4,5,3,4,-1,3,4,1,2,3,4,5,3,4,1,2,3,4,5,3,4]  #靈刀 
-#autoKills = [1,2,3,4]  #補坦
+autoKills = [0,1,2,3,4,1,2,3,4]  #補坦
 #autoKills = [0,1,2,0,1,3,4,0,1,0,1,2,0,1,4,0,1,3,0,1,2,0,1,4,0,1,3]  #暗殺(雙獄鬼)
 #autoKills = [0,1,2,3,5,-1,4,1,2,3,5,-1,4,1,2,3,5,-1,4,1,2,3,5,-1,4]  #土單 (霸劍
 #autoKills = [0,1,5,4,-1,3,4,1,2,3,4,5,1,2,3,4,5,1,2,3,4,5,1,2,3,4,5,1,2,3,4,5]  #土單EVP

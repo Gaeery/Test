@@ -157,21 +157,32 @@ nBackHomeCount = <span class="dig">0</span>
 
 regionHp = Region(<span class="dig">715</span>,<span class="dig">352</span>,<span class="dig">457</span>,<span class="dig">155</span>)
 imageHp80 = Pattern(<img src="imageHp70.png" />).similar(<span class="dig">0.80</span>)
-imageHp70 = <img src="imageHp50.png" />
-imageHp60 = Pattern(<img src="imageHp30.png" />).similar(<span class="dig">0.60</span>)
+imageHp60 = Pattern(<img src="imageHp50.png" />).similar(<span class="dig">0.60</span>)
+imageHp50 = Pattern(<img src="imageHp30.png" />).similar(<span class="dig">0.50</span>)
+imageMp50 = Pattern(<img src="imageMp50.png" />).similar(<span class="dig">0.90</span>)
 <span class="kw">def</span> checkHp2():
     <span class="kw">global</span> nBackHomeCount
+
     <span class="kw">if</span> regionHp.exists(imageHp80, <span class="dig">1</span>):
         Debug.user(<span class="str">"Hp is OK"</span>)
         nBackHomeCount = <span class="dig">0</span>
-    <span class="kw">elif</span> regionHp.exists(imageHp70, <span class="dig">1</span>):
-        Debug.user(<span class="str">"Hp is 50~70"</span>)
-        useSelfRecover()
-        nBackHomeCount = <span class="dig">0</span>
     <span class="kw">elif</span> regionHp.exists(imageHp60, <span class="dig">1</span>):
-        Debug.user(<span class="str">"Hp is 30~50"</span>)
+        Debug.user(<span class="str">"Hp is 60~80"</span>)
+        <span class="cmt">#click(pHpWater)  </span>
+        <span class="kw">if</span> regionHp.exists(imageMp50, <span class="dig">0.3</span>):
+            Debug.user(<span class="str">"has mp"</span>)
+            useSelfRecover()
+        <span class="kw">else</span>:
+            Debug.user(<span class="str">"no mp"</span>)
+        nBackHomeCount = <span class="dig">0</span>
+    <span class="kw">elif</span> regionHp.exists(imageHp50, <span class="dig">1</span>):
+        Debug.user(<span class="str">"Hp is 50~70"</span>)
         <span class="skw">click</span>(pHpWater)
-        useSelfRecover()
+        <span class="kw">if</span> regionHp.exists(imageMp50, <span class="dig">0.3</span>):
+            Debug.user(<span class="str">"has mp"</span>)
+            useSelfRecover()
+        <span class="kw">else</span>:
+            Debug.user(<span class="str">"no mp"</span>)
         nBackHomeCount = <span class="dig">0</span>
     <span class="kw">else</span>:
         Debug.user(<span class="str">"Hp is lower than 50"</span>)
@@ -184,16 +195,21 @@ imageHp60 = Pattern(<img src="imageHp30.png" />).similar(<span class="dig">0.60<
         <span class="skw">click</span>(Location(<span class="dig">1736</span>, <span class="dig">915</span>))
         exit(<span class="dig">1</span>)
 
+
+
+
+
 <span class="kw">def</span> useSelfRecover():
     lib = GaeeryLib()
     lib.setROI(Region(<span class="dig">751</span>,<span class="dig">869</span>,<span class="dig">1038</span>,<span class="dig">104</span>))
-    imageSelfRecover = Pattern(<img src="imageSelfRecover.png" />).exact()
+    imageSelfRecover = Pattern(<img src="imageSelfRecover.png" />).similar(<span class="dig">0.95</span>)
     imageRecover = <img src="imageRecover.png" />
     skill = lib.<span class="skw">find</span>( <span class="str">"find self recover skill"</span>, imageSelfRecover )
     <span class="kw">if</span> skill == None:
         <span class="skw">click</span>(Location(<span class="dig">1533</span>, <span class="dig">597</span>))
         <span class="skw">sleep</span>(<span class="dig">0.5</span>)
     lib.clickImage( <span class="str">"use skill to rescue self"</span>, imageSelfRecover)
+
 
 
 <span class="kw">while</span> True:
