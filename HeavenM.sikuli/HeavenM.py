@@ -8,7 +8,7 @@ import SwordAndMagicActions
 from SwordAndMagicActions import *
 reload(SwordAndMagicActions) 
 
-pHpWater = Location(802, 922)
+
 #bufferImages = "bufferRegion.png"
 bufferRegion =  Region(145,155,466,40)
 
@@ -83,58 +83,93 @@ def checkHp():
     else:
         Debug.user("Hp is OK")
 
-regionHp = Region(715,352,457,155)
-imageHp80 = Pattern("imageHp70.png").similar(0.80)
-imageHp60 = Pattern("imageHp50.png").similar(0.60)
-imageHp50 = Pattern("imageHp30.png").similar(0.50)
-imageMp50 = Pattern("imageMp50.png").similar(0.90)
+regionParty = Region(53,337,75,319)
+regionHp = Region(140,370,161,40)
+imageHp90 = Pattern("imageHp90.png").similar(0.90)
+imageHp65 = Pattern("imageHp65.png").similar(0.85)
+imageHp40 = Pattern("imageHp40.png").similar(0.85)
+imageMp90 = Pattern("imageMp90.png").similar(0.85)
+imageMp50 = Pattern("imageMp50.png").similar(0.85)
+imageMp10 = Pattern("imageMp0.png").similar(0.80)
+imageParty = "imageParty.png"
+pRecoverHp = Location(921, 921)
+pRecoverMp = Location(1037, 916)
+pParty = Location(228, 270)
+pHpWater = Location(808, 921)
+pGoToTown = Location(1160, 916)
+
 def checkHp2():
     global nBackHomeCount
+            
+    if not regionParty.exists(imageParty, 1):
+        Debug.user("Change to party page")
+        click(pParty)
+        return
     
-    if regionHp.exists(imageHp80, 1):
-        Debug.user("Hp is OK")
+    if regionHp.exists(imageHp90, 0.3):
         nBackHomeCount = 0
-    elif regionHp.exists(imageHp60, 1):
-        Debug.user("Hp is 60~80")
+        if not regionHp.exists(imageMp90, 0):     
+            Debug.user("Hp is OK")            
+            recoverMp()
+        else:
+            Debug.user("Hp & Mp are OK")
+            
+    elif regionHp.exists(imageHp65, 0.3):
+        Debug.user("Hp is 65~90")
         #click(pHpWater)  
-        if regionHp.exists(imageMp50, 0.3):     
+        if regionHp.exists(imageMp10, 0.3):     
             Debug.user("has mp")
-            useSelfRecover()
+            recoverHp()
+            sleep(1)
         else:
             Debug.user("no mp")
+            recoverMp()
+            sleep(1)
         nBackHomeCount = 0
-    elif regionHp.exists(imageHp50, 1):
-        Debug.user("Hp is 50~70")
-        click(pHpWater)        
-        if regionHp.exists(imageMp50, 0.3):     
+    elif regionHp.exists(imageHp40, 0.5):
+        Debug.user("Hp is 40~65")
+        drinkWater()
+        if regionHp.exists(imageMp10, 0.3):     
             Debug.user("has mp")
-            useSelfRecover()
+            recoverHp()
+            sleep(1)
         else:
             Debug.user("no mp")
+            recoverMp()
+            sleep(1)
         nBackHomeCount = 0
     else:
-        Debug.user("Hp is lower than 50")
+        Debug.user("Hp is lower than 40")
+        drinkWater()
         nBackHomeCount = nBackHomeCount + 1
-        if nBackHomeCount < 3:
+        if nBackHomeCount < 2:
             return
         
         Debug.user("return to town!!")
         screenCapture("before return.png")
-        click(Location(1736, 915))
+        click(pGoToTown)
         exit(1)
 
+def recoverMp():
+    Debug.user("MP recover skill")
+    type(Key.F3)
+    
+def recoverHp():
+    Debug.user("HP recover skill")
+    type(Key.F2)
 
-
-
-
-def useSelfRecover():
+def drinkWater():
+    Debug.user("Drink water!")
+    type(Key.F1)
+    
+def useSelfRecoverBackupassssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss():
     lib = GaeeryLib()
     lib.setROI(Region(751,869,1038,104))
     imageSelfRecover = Pattern("imageSelfRecover.png").similar(0.95)
     imageRecover = "imageRecover.png"
     skill = lib.find( "find self recover skill", imageSelfRecover )
     if skill == None:
-        click(Location(1533, 597))
+        click(pRecoverHp)
         sleep(0.5)
     lib.clickImage( "use skill to rescue self", imageSelfRecover)
 
