@@ -71,23 +71,12 @@
 </div>
 <pre class="sikuli-code">
 <span class="kw">import</span> random
-<span class="kw">import</span> SwordAndMagicPictures
-reload(SwordAndMagicPictures)  <span class="cmt"># make sure global variables are reloaded</span>
+
 <span class="kw">import</span> ControlLib
-<span class="kw">from</span> SwordAndMagicPictures <span class="kw">import</span> *
-<span class="kw">from</span> ControlLib <span class="kw">import</span> *
-<span class="kw">import</span> SwordAndMagicActions
-<span class="kw">from</span> SwordAndMagicActions <span class="kw">import</span> *
-reload(SwordAndMagicActions)
 
 
-<span class="cmt">#bufferImages = "bufferRegion.png"</span>
 bufferRegion =  Region(<span class="dig">145</span>,<span class="dig">155</span>,<span class="dig">466</span>,<span class="dig">40</span>)
 
-
-imageNoHp = Pattern(<img src="imageHasHp.png" />).similar(<span class="dig">0.74</span>)
-imageHp50p = Pattern(<img src="imageHp50p.png" />).similar(<span class="dig">0.61</span>)
-imageHp50Region = Region(<span class="dig">149</span>,<span class="dig">56</span>,<span class="dig">287</span>,<span class="dig">26</span>)
 
 <span class="cmt"># store image and its offset</span>
 <span class="kw">class</span> BufferStatus():
@@ -100,14 +89,14 @@ imageHp50Region = Region(<span class="dig">149</span>,<span class="dig">56</span
         self.useSkillSteps = useSkillSteps
 
 BufferList = [
-        <span class="cmt">#BufferStatus("精靈餅乾", "1513000438389.png", [Pattern("1513012091917.png").similar(0.95), Pattern("1513012115279.png").similar(0.95), Pattern("1513012153809.png").similar(0.95), "1513012783396.png", "1513012843741.png"]),</span>
-        <span class="cmt">#BufferStatus("食物", Pattern("1513000766333.png").similar(0.59), [Pattern("1513012091917.png").similar(0.95), Pattern("1513012115279.png").similar(0.95), "1513053707716.png", "1513053720833.png" , "1513012843741.png"]),</span>
-        <span class="cmt">#BufferStatus("保護罩", Pattern("1513000826312.png").similar(0.67), ["1513012904938.png", "1513012930638.png", "1513012940942.png", "1513012843741.png"]),</span>
-        <span class="cmt">#BufferStatus("鎧甲護持", Pattern("1513000907139.png").similar(0.69), ["1513012904938.png","1513013125930.png","1513013138966.png", "1513012843741.png"]),</span>
-        <span class="cmt">#BufferStatus("負重強化", Pattern("1513000932286.png").similar(0.65), ["1513012904938.png","1513013030782.png","1513013041431.png", "1513012843741.png"]),</span>
-        <span class="cmt">#BufferStatus("變身", Pattern("1513001027215.png").similar(0.68)),</span>
-        <span class="cmt">#BufferStatus("強化戰鬥卷軸", Pattern("1513001000565.png").similar(0.59)),</span>
-        <span class="cmt">#BufferStatus("自我加速藥水", Pattern("1513004774208.png").similar(0.72), [Pattern("1513012091917.png").similar(0.95), Pattern("1513012115279.png").similar(0.95), "1513033719938.png", "1513033735138.png", "1513012843741.png"]),</span>
+        BufferStatus(<span class="str">"精靈餅乾"</span>, <img src="1513000438389.png" />, [Pattern(<img src="1513012091917.png" />).similar(<span class="dig">0.95</span>), Pattern(<img src="1513012115279.png" />).similar(<span class="dig">0.95</span>), Pattern(<img src="1513012153809.png" />).similar(<span class="dig">0.95</span>), <img src="1513012783396.png" />, <img src="1513012843741.png" />]),
+        BufferStatus(<span class="str">"食物"</span>, Pattern(<img src="1513000766333.png" />).similar(<span class="dig">0.59</span>), [Pattern(<img src="1513012091917.png" />).similar(<span class="dig">0.95</span>), Pattern(<img src="1513012115279.png" />).similar(<span class="dig">0.95</span>), <img src="1513053707716.png" />, <img src="1513053720833.png" /> , <img src="1513012843741.png" />]),
+        BufferStatus(<span class="str">"保護罩"</span>, Pattern(<img src="1513000826312.png" />).similar(<span class="dig">0.67</span>), [<img src="1513012904938.png" />, <img src="1513012930638.png" />, <img src="1513012940942.png" />, <img src="1513012843741.png" />]),
+        BufferStatus(<span class="str">"鎧甲護持"</span>, Pattern(<img src="1513000907139.png" />).similar(<span class="dig">0.69</span>), [<img src="1513012904938.png" />,<img src="1513013125930.png" />,<img src="1513013138966.png" />, <img src="1513012843741.png" />]),
+        BufferStatus(<span class="str">"負重強化"</span>, Pattern(<img src="1513000932286.png" />).similar(<span class="dig">0.65</span>), [<img src="1513012904938.png" />,<img src="1513013030782.png" />,<img src="1513013041431.png" />, <img src="1513012843741.png" />]),
+        BufferStatus(<span class="str">"變身"</span>, Pattern(<img src="1513001027215.png" />).similar(<span class="dig">0.68</span>)),
+        BufferStatus(<span class="str">"強化戰鬥卷軸"</span>, Pattern(<img src="1513001000565.png" />).similar(<span class="dig">0.59</span>)),
+        BufferStatus(<span class="str">"自我加速藥水"</span>, Pattern(<img src="1513004774208.png" />).similar(<span class="dig">0.72</span>), [Pattern(<img src="1513012091917.png" />).similar(<span class="dig">0.95</span>), Pattern(<img src="1513012115279.png" />).similar(<span class="dig">0.95</span>), <img src="1513033719938.png" />, <img src="1513033735138.png" />, <img src="1513012843741.png" />]),
         ]
 
 <span class="kw">def</span> checkBufferStatus():
@@ -139,21 +128,6 @@ BufferList = [
 
 nBackHomeCount = <span class="dig">0</span>
 
-<span class="kw">def</span> checkHp():
-    <span class="kw">global</span> nBackHomeCount
-    <span class="kw">if</span> imageHp50Region.exists(imageNoHp, <span class="dig">0</span>):
-        Debug.user(<span class="str">"Hp is lower than 70"</span>)
-        <span class="skw">click</span>(pHpWater)
-        nBackHomeCount = <span class="dig">0</span>
-    <span class="kw">elif</span> imageHp50Region.exists(imageHp50p, <span class="dig">0</span>):
-        Debug.user(<span class="str">"Hp is lower than 50"</span>)
-        <span class="skw">click</span>(pHpWater)
-        nBackHomeCount = nBackHomeCount + <span class="dig">1</span>
-        <span class="kw">if</span> nBackHomeCount &gt; <span class="dig">5</span>:
-            <span class="skw">click</span>(Location(<span class="dig">1736</span>, <span class="dig">915</span>))
-            exit
-    <span class="kw">else</span>:
-        Debug.user(<span class="str">"Hp is OK"</span>)
 
 regionParty = Region(<span class="dig">53</span>,<span class="dig">337</span>,<span class="dig">75</span>,<span class="dig">319</span>)
 regionHp = Region(<span class="dig">140</span>,<span class="dig">370</span>,<span class="dig">161</span>,<span class="dig">40</span>)
@@ -170,7 +144,7 @@ pParty = Location(<span class="dig">228</span>, <span class="dig">270</span>)
 pHpWater = Location(<span class="dig">808</span>, <span class="dig">921</span>)
 pGoToTown = Location(<span class="dig">1160</span>, <span class="dig">916</span>)
 
-<span class="kw">def</span> checkHp2():
+<span class="kw">def</span> checkHp():
     <span class="kw">global</span> nBackHomeCount
 
     <span class="kw">if</span> <span class="kw">not</span> regionParty.exists(imageParty, <span class="dig">1</span>):
@@ -223,18 +197,18 @@ pGoToTown = Location(<span class="dig">1160</span>, <span class="dig">916</span>
         exit(<span class="dig">1</span>)
 
 <span class="kw">def</span> recoverMp():
-    Debug.user(<span class="str">"MP recover skill"</span>)
+    Debug.user(<span class="str">"Use MP recover skill"</span>)
     <span class="skw">type</span>(Key.F3)
 
 <span class="kw">def</span> recoverHp():
-    Debug.user(<span class="str">"HP recover skill"</span>)
+    Debug.user(<span class="str">"Use HP recover skill"</span>)
     <span class="skw">type</span>(Key.F2)
 
 <span class="kw">def</span> drinkWater():
     Debug.user(<span class="str">"Drink water!"</span>)
     <span class="skw">type</span>(Key.F1)
 
-<span class="kw">def</span> useSelfRecoverBackupassssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss():
+<span class="kw">def</span> useSelfRecoverOldWay():
     lib = GaeeryLib()
     lib.setROI(Region(<span class="dig">751</span>,<span class="dig">869</span>,<span class="dig">1038</span>,<span class="dig">104</span>))
     imageSelfRecover = Pattern(<img src="imageSelfRecover.png" />).similar(<span class="dig">0.95</span>)
@@ -249,7 +223,7 @@ pGoToTown = Location(<span class="dig">1160</span>, <span class="dig">916</span>
 
 <span class="kw">while</span> True:
     <span class="cmt">#checkBufferStatus()</span>
-    checkHp2()
+    checkHp()
     <span class="skw">sleep</span>(<span class="dig">0.3</span>)
 </pre>
 </body>
