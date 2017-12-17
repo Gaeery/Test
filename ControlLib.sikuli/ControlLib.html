@@ -257,16 +257,10 @@ def findLocation(reg, target, timeout = 1):
      <span class="cmt">#def excuteAutomation(automation):</span>
      <span class="cmt">#    automation.execute()</span>
 
-
-<span class="cmt"># capture a screen</span>
-<span class="kw">def</span> screenCapture(strFileName, strPath = os.path.join(getBundlePath(),<span class="str">"screenCapture"</span>)):
-    screen = Screen()
-    img = <span class="skw">capture</span>(screen.getBounds())
-    <span class="kw">if</span> <span class="kw">not</span> os.path.exists(strPath):
-        os.mkdir(strPath);
-    shutil.move(img, os.path.join( strPath, strFileName))
-
 <span class="kw">import</span> time
+
+
+
 <span class="cmt"># log text to file with timestamp</span>
 <span class="kw">def</span> logToFile( strMessage, strFileName = os.path.join( getBundlePath(), <span class="str">"log.txt"</span>) ):
     localtime = time.localtime(time.time())
@@ -276,6 +270,18 @@ def findLocation(reg, target, timeout = 1):
     inp.write(<span class="str">'  %s'</span> % strMessage)
     inp.write(<span class="str">'\r\n'</span>)
     inp.close()
+
+
+<span class="cmt"># capture a screen</span>
+<span class="kw">def</span> screenCapture(strFileName = None, strPath = os.path.join(getBundlePath(),<span class="str">"screenCapture"</span>)):
+    screen = Screen()
+    img = <span class="skw">capture</span>(screen.getBounds())
+    <span class="kw">if</span> <span class="kw">not</span> os.path.exists(strPath):
+        os.mkdir(strPath)
+    <span class="kw">if</span> strFileName == None:
+        strFileName = time.strftime (<span class="str">'%Y-%m-%d %H_%M_%S'</span>) + <img src=".png" />
+    shutil.move(img, os.path.join( strPath, strFileName))
+    Debug.user(<span class="str">"screen captured : "</span>+strFileName)
 </pre>
 </body>
 </html>

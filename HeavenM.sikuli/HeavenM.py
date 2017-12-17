@@ -1,7 +1,7 @@
 import random
 
 import ControlLib
-
+from ControlLib import *
 
 bufferRegion =  Region(145,155,466,40)
 
@@ -120,7 +120,7 @@ def checkHp():
             return
         
         Debug.user("return to town!!")
-        screenCapture("before return.png")
+        screenCapture()
         click(pGoToTown)
         exit(1)
 
@@ -146,7 +146,6 @@ def useSelfRecoverOldWay():
         click(pRecoverHp)
         sleep(0.5)
     lib.clickImage( "use skill to rescue self", imageSelfRecover)
-
 
 
 while True:

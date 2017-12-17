@@ -73,7 +73,7 @@
 <span class="kw">import</span> random
 
 <span class="kw">import</span> ControlLib
-
+<span class="kw">from</span> ControlLib <span class="kw">import</span> *
 
 bufferRegion =  Region(<span class="dig">145</span>,<span class="dig">155</span>,<span class="dig">466</span>,<span class="dig">40</span>)
 
@@ -192,7 +192,7 @@ pGoToTown = Location(<span class="dig">1160</span>, <span class="dig">916</span>
             <span class="kw">return</span>
 
         Debug.user(<span class="str">"return to town!!"</span>)
-        screenCapture(<img src="before return.png" />)
+        screenCapture()
         <span class="skw">click</span>(pGoToTown)
         exit(<span class="dig">1</span>)
 
@@ -218,7 +218,6 @@ pGoToTown = Location(<span class="dig">1160</span>, <span class="dig">916</span>
         <span class="skw">click</span>(pRecoverHp)
         <span class="skw">sleep</span>(<span class="dig">0.5</span>)
     lib.clickImage( <span class="str">"use skill to rescue self"</span>, imageSelfRecover)
-
 
 
 <span class="kw">while</span> True:

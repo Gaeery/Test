@@ -185,16 +185,10 @@ class GaeeryLib:
      #def excuteAutomation(automation):
      #    automation.execute()
 
-        
-# capture a screen
-def screenCapture(strFileName, strPath = os.path.join(getBundlePath(),"screenCapture")):
-    screen = Screen()
-    img = capture(screen.getBounds())
-    if not os.path.exists(strPath): 
-        os.mkdir(strPath);
-    shutil.move(img, os.path.join( strPath, strFileName))
+import time        
 
-import time
+
+
 # log text to file with timestamp
 def logToFile( strMessage, strFileName = os.path.join( getBundlePath(), "log.txt") ):
     localtime = time.localtime(time.time())
@@ -204,3 +198,15 @@ def logToFile( strMessage, strFileName = os.path.join( getBundlePath(), "log.txt
     inp.write('  %s' % strMessage)
     inp.write('\r\n')
     inp.close()
+
+
+# capture a screen
+def screenCapture(strFileName = None, strPath = os.path.join(getBundlePath(),"screenCapture")):
+    screen = Screen()
+    img = capture(screen.getBounds())
+    if not os.path.exists(strPath): 
+        os.mkdir(strPath)
+    if strFileName == None:
+        strFileName = time.strftime ('%Y-%m-%d %H_%M_%S') + ".png"
+    shutil.move(img, os.path.join( strPath, strFileName))
+    Debug.user("screen captured : "+strFileName)
