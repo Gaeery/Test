@@ -187,7 +187,15 @@ def switchAutoBuff( loc, bOn ):
 def bringGameToFront():
     rightClick(pGameWnidow)
 
+def login():
+    imageWaitForLogin = "imageWaitForLogin.png"
+    imageLoginButton = "imageLoginButton.png"
+    
+    if Region(753,689,393,120).waitVanish(imageWaitForLogin):
+        sleep(5)
+        click(imageLoginButton)
 
+#login()
 bringGameToFront()
 while True:
     #checkBufferStatus()

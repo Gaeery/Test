@@ -259,7 +259,15 @@ bUsingFightingSkill = False
 <span class="kw">def</span> bringGameToFront():
     <span class="skw">rightClick</span>(pGameWnidow)
 
+<span class="kw">def</span> login():
+    imageWaitForLogin = <img src="imageWaitForLogin.png" />
+    imageLoginButton = <img src="imageLoginButton.png" />
 
+    <span class="kw">if</span> Region(<span class="dig">753</span>,<span class="dig">689</span>,<span class="dig">393</span>,<span class="dig">120</span>).waitVanish(imageWaitForLogin):
+        <span class="skw">sleep</span>(<span class="dig">5</span>)
+        <span class="skw">click</span>(imageLoginButton)
+
+<span class="cmt">#login()</span>
 bringGameToFront()
 <span class="kw">while</span> True:
     <span class="cmt">#checkBufferStatus()</span>
