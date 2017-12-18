@@ -180,6 +180,7 @@ bUseFightingSkill = False
         nBackHomeCount = <span class="dig">0</span>
     <span class="kw">elif</span> regionHp.exists(imageHp40, <span class="dig">0.5</span>):
         Debug.user(<span class="str">"Hp is 40~65"</span>)
+        bringGameToFront()
         drinkWater()
         <span class="kw">if</span> regionHp.exists(imageMp10, <span class="dig">0.3</span>):
             Debug.user(<span class="str">"has mp"</span>)

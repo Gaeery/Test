@@ -108,6 +108,7 @@ def checkHp():
         nBackHomeCount = 0
     elif regionHp.exists(imageHp40, 0.5):
         Debug.user("Hp is 40~65")
+        bringGameToFront()
         drinkWater()
         if regionHp.exists(imageMp10, 0.3):     
             Debug.user("has mp")
