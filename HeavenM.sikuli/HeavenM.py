@@ -1,5 +1,5 @@
 import random
-
+import time
 import ControlLib
 from ControlLib import *
 
@@ -62,7 +62,7 @@ regionHp = Region(140,370,161,40)
 imageHp90 = Pattern("imageHp90.png").similar(0.90)
 imageHp65 = Pattern("imageHp65.png").similar(0.85)
 imageHp40 = Pattern("imageHp40.png").similar(0.85)
-imageMp90 = Pattern("imageMp90.png").similar(0.85)
+imageMp90 = Pattern("imageMp90.png").similar(0.95)
 imageMp50 = Pattern("imageMp50.png").similar(0.85)
 imageMp10 = Pattern("imageMp0.png").similar(0.80)
 imageParty = "imageParty.png"
@@ -71,6 +71,9 @@ pRecoverMp = Location(1037, 916)
 pParty = Location(228, 270)
 pHpWater = Location(808, 921)
 pGoToTown = Location(1160, 916)
+pGameWnidow = Location(800, 14)
+bUseFightingSkill = False
+
 
 def checkHp():
     global nBackHomeCount
@@ -82,11 +85,13 @@ def checkHp():
     
     if regionHp.exists(imageHp90, 0.3):
         nBackHomeCount = 0
-        if not regionHp.exists(imageMp90, 0):     
+        if not regionHp.exists(imageMp90, 0.1):     
             Debug.user("Hp is OK")            
             recoverMp()
         else:
             Debug.user("Hp & Mp are OK")
+            usingFightingSkill(True)
+                
             
     elif regionHp.exists(imageHp65, 0.3):
         Debug.user("Hp is 65~90")
@@ -97,6 +102,7 @@ def checkHp():
             sleep(1)
         else:
             Debug.user("no mp")
+            usingFightingSkill(False)
             recoverMp()
             sleep(1)
         nBackHomeCount = 0
@@ -109,6 +115,7 @@ def checkHp():
             sleep(1)
         else:
             Debug.user("no mp")
+            usingFightingSkill(False)
             recoverMp()
             sleep(1)
         nBackHomeCount = 0
@@ -147,8 +154,46 @@ def useSelfRecoverOldWay():
         sleep(0.5)
     lib.clickImage( "use skill to rescue self", imageSelfRecover)
 
+bUsingFightingSkill = False
+def usingFightingSkill( bOn ):
+    global bUsingFightingSkill 
+    if not bUseFightingSkill:
+        return
+    regionSkill = Region(1574,863,100,130)
+    if bOn: 
+        if not regionSkill.exists("1513525529844.png", 0.1):
+            Debug.user("This skill doesn't support 'auto'")
+            return
+    else:
+        if not regionSkill.exists("1513524888200.png", 0.1):
+            Debug.user("no 'auto'")
+            return
+    
+    switchAutoBuff(Location(1624, 924), bOn)
+    bUsingFightingSkill = bOn
 
+def switchAutoBuff( loc, bOn ):
+    mouseMove(loc)
+    mouseDown(Button.LEFT)
+    if not bOn:
+        Debug.user("Turn off skill %s" % loc)
+        mouseMove( loc.offset(0, -30) )
+    else:       
+        Debug.user("Turn on skill %s" % loc)
+        mouseMove( loc.offset(0, 30) )
+    mouseUp(Button.LEFT)
+
+def bringGameToFront():
+    rightClick(pGameWnidow)
+
+
+bringGameToFront()
 while True:
     #checkBufferStatus()
+    previousTime = time.time()
     checkHp()
+    if time.time()-previousTime > 5:
+        Debug.user("pause a while, need to bring game to front")
+        bringGameToFront()
+
     sleep(0.3)

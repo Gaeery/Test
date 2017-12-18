@@ -71,7 +71,7 @@
 </div>
 <pre class="sikuli-code">
 <span class="kw">import</span> random
-
+<span class="kw">import</span> time
 <span class="kw">import</span> ControlLib
 <span class="kw">from</span> ControlLib <span class="kw">import</span> *
 
@@ -134,7 +134,7 @@ regionHp = Region(<span class="dig">140</span>,<span class="dig">370</span>,<spa
 imageHp90 = Pattern(<img src="imageHp90.png" />).similar(<span class="dig">0.90</span>)
 imageHp65 = Pattern(<img src="imageHp65.png" />).similar(<span class="dig">0.85</span>)
 imageHp40 = Pattern(<img src="imageHp40.png" />).similar(<span class="dig">0.85</span>)
-imageMp90 = Pattern(<img src="imageMp90.png" />).similar(<span class="dig">0.85</span>)
+imageMp90 = Pattern(<img src="imageMp90.png" />).similar(<span class="dig">0.95</span>)
 imageMp50 = Pattern(<img src="imageMp50.png" />).similar(<span class="dig">0.85</span>)
 imageMp10 = Pattern(<img src="imageMp0.png" />).similar(<span class="dig">0.80</span>)
 imageParty = <img src="imageParty.png" />
@@ -143,6 +143,9 @@ pRecoverMp = Location(<span class="dig">1037</span>, <span class="dig">916</span
 pParty = Location(<span class="dig">228</span>, <span class="dig">270</span>)
 pHpWater = Location(<span class="dig">808</span>, <span class="dig">921</span>)
 pGoToTown = Location(<span class="dig">1160</span>, <span class="dig">916</span>)
+pGameWnidow = Location(<span class="dig">800</span>, <span class="dig">14</span>)
+bUseFightingSkill = False
+
 
 <span class="kw">def</span> checkHp():
     <span class="kw">global</span> nBackHomeCount
@@ -154,11 +157,13 @@ pGoToTown = Location(<span class="dig">1160</span>, <span class="dig">916</span>
 
     <span class="kw">if</span> regionHp.exists(imageHp90, <span class="dig">0.3</span>):
         nBackHomeCount = <span class="dig">0</span>
-        <span class="kw">if</span> <span class="kw">not</span> regionHp.exists(imageMp90, <span class="dig">0</span>):
+        <span class="kw">if</span> <span class="kw">not</span> regionHp.exists(imageMp90, <span class="dig">0.1</span>):
             Debug.user(<span class="str">"Hp is OK"</span>)
             recoverMp()
         <span class="kw">else</span>:
             Debug.user(<span class="str">"Hp &amp; Mp are OK"</span>)
+            usingFightingSkill(True)
+
 
     <span class="kw">elif</span> regionHp.exists(imageHp65, <span class="dig">0.3</span>):
         Debug.user(<span class="str">"Hp is 65~90"</span>)
@@ -169,6 +174,7 @@ pGoToTown = Location(<span class="dig">1160</span>, <span class="dig">916</span>
             <span class="skw">sleep</span>(<span class="dig">1</span>)
         <span class="kw">else</span>:
             Debug.user(<span class="str">"no mp"</span>)
+            usingFightingSkill(False)
             recoverMp()
             <span class="skw">sleep</span>(<span class="dig">1</span>)
         nBackHomeCount = <span class="dig">0</span>
@@ -181,6 +187,7 @@ pGoToTown = Location(<span class="dig">1160</span>, <span class="dig">916</span>
             <span class="skw">sleep</span>(<span class="dig">1</span>)
         <span class="kw">else</span>:
             Debug.user(<span class="str">"no mp"</span>)
+            usingFightingSkill(False)
             recoverMp()
             <span class="skw">sleep</span>(<span class="dig">1</span>)
         nBackHomeCount = <span class="dig">0</span>
@@ -219,10 +226,48 @@ pGoToTown = Location(<span class="dig">1160</span>, <span class="dig">916</span>
         <span class="skw">sleep</span>(<span class="dig">0.5</span>)
     lib.clickImage( <span class="str">"use skill to rescue self"</span>, imageSelfRecover)
 
+bUsingFightingSkill = False
+<span class="kw">def</span> usingFightingSkill( bOn ):
+    <span class="kw">global</span> bUsingFightingSkill
+    <span class="kw">if</span> <span class="kw">not</span> bUseFightingSkill:
+        <span class="kw">return</span>
+    regionSkill = Region(<span class="dig">1574</span>,<span class="dig">863</span>,<span class="dig">100</span>,<span class="dig">130</span>)
+    <span class="kw">if</span> bOn:
+        <span class="kw">if</span> <span class="kw">not</span> regionSkill.exists(<img src="1513525529844.png" />, <span class="dig">0.1</span>):
+            Debug.user(<span class="str">"This skill doesn't support 'auto'"</span>)
+            <span class="kw">return</span>
+    <span class="kw">else</span>:
+        <span class="kw">if</span> <span class="kw">not</span> regionSkill.exists(<img src="1513524888200.png" />, <span class="dig">0.1</span>):
+            Debug.user(<span class="str">"no 'auto'"</span>)
+            <span class="kw">return</span>
 
+    switchAutoBuff(Location(<span class="dig">1624</span>, <span class="dig">924</span>), bOn)
+    bUsingFightingSkill = bOn
+
+<span class="kw">def</span> switchAutoBuff( loc, bOn ):
+    mouseMove(loc)
+    mouseDown(Button.LEFT)
+    <span class="kw">if</span> <span class="kw">not</span> bOn:
+        Debug.user(<span class="str">"Turn off skill %s"</span> % loc)
+        mouseMove( loc.offset(<span class="dig">0</span>, -<span class="dig">30</span>) )
+    <span class="kw">else</span>:
+        Debug.user(<span class="str">"Turn on skill %s"</span> % loc)
+        mouseMove( loc.offset(<span class="dig">0</span>, <span class="dig">30</span>) )
+    mouseUp(Button.LEFT)
+
+<span class="kw">def</span> bringGameToFront():
+    <span class="skw">rightClick</span>(pGameWnidow)
+
+
+bringGameToFront()
 <span class="kw">while</span> True:
     <span class="cmt">#checkBufferStatus()</span>
+    previousTime = time.time()
     checkHp()
+    <span class="kw">if</span> time.time()-previousTime &gt; <span class="dig">5</span>:
+        Debug.user(<span class="str">"pause a while, need to bring game to front"</span>)
+        bringGameToFront()
+
     <span class="skw">sleep</span>(<span class="dig">0.3</span>)
 </pre>
 </body>
