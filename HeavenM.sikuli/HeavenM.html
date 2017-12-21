@@ -129,7 +129,7 @@ BufferList = [
 
 nBackHomeCount = <span class="dig">0</span>
 
-
+regionLeftScreen = Region(<span class="dig">503</span>,<span class="dig">144</span>,<span class="dig">91</span>,<span class="dig">88</span>)
 regionParty = Region(<span class="dig">302</span>,<span class="dig">343</span>,<span class="dig">28</span>,<span class="dig">363</span>)
 regionHpFirst = Region(<span class="dig">140</span>,<span class="dig">370</span>,<span class="dig">161</span>,<span class="dig">40</span>)
 regionHp = Region()
@@ -154,6 +154,7 @@ pEscape = Location(<span class="dig">493</span>, <span class="dig">808</span>)
 
 
 lib = GaeeryLib()
+lib.setRoi(regionParty)
 
 <span class="kw">def</span> checkHp():
     <span class="kw">global</span> nBackHomeCount
@@ -161,7 +162,7 @@ lib = GaeeryLib()
     <span class="kw">global</span> regionHp
     <span class="kw">global</span> regionStatus
 
-    lib.setRoi(regionParty)
+
     locParty = lib.<span class="skw">find</span>(<span class="str">"party"</span>, imageParty)
 
     partyMembers = lib.findAll(<span class="str">"party members"</span>, imageParty)
@@ -172,6 +173,14 @@ lib = GaeeryLib()
 
 
     <span class="kw">if</span> locParty == None:
+        leftRoi = GaeeryLib()
+        leftRoi.setRoi(regionLeftScreen)
+        characterPage = leftRoi.<span class="skw">find</span>(<span class="str">"character data"</span>, <img src="1513897038903.png" />)
+        <span class="kw">if</span> characterPage != None:
+            Debug.user(<span class="str">"close characterPage"</span>)
+            <span class="skw">click</span>(characterPage)
+            <span class="kw">return</span>
+
         Debug.user(<span class="str">"Change to party page"</span>)
         <span class="skw">click</span>( locPartyPage )
         <span class="kw">return</span>
@@ -244,6 +253,7 @@ lib = GaeeryLib()
         screenCapture()
         <span class="skw">click</span>(pGoToTown)
         exit(<span class="dig">1</span>)
+
 
 <span class="kw">def</span> escape():
     Debug.user(<span class="str">"Run away"</span>)
@@ -333,7 +343,6 @@ bUsingFightingSkill = False
         <span class="skw">sleep</span>(<span class="dig">5</span>)
         <span class="skw">click</span>(imageLoginButton)
 
-<span class="cmt">#login()</span>
 bringGameToFront()
 <span class="kw">while</span> True:
     <span class="cmt">#checkBufferStatus()</span>

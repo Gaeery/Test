@@ -57,7 +57,7 @@ def doPositionSteps( steps ):
 
 nBackHomeCount = 0
 
-
+regionLeftScreen = Region(503,144,91,88)
 regionParty = Region(302,343,28,363)
 regionHpFirst = Region(140,370,161,40)
 regionHp = Region()
@@ -82,6 +82,7 @@ pEscape = Location(493, 808)
 
 
 lib = GaeeryLib()
+lib.setRoi(regionParty)
 
 def checkHp():
     global nBackHomeCount
@@ -89,7 +90,7 @@ def checkHp():
     global regionHp
     global regionStatus
     
-    lib.setRoi(regionParty)
+
     locParty = lib.find("party", imageParty)
     
     partyMembers = lib.findAll("party members", imageParty)
@@ -100,6 +101,14 @@ def checkHp():
  
     
     if locParty == None:
+        leftRoi = GaeeryLib()
+        leftRoi.setRoi(regionLeftScreen)
+        characterPage = leftRoi.find("character data", "1513897038903.png")
+        if characterPage != None:
+            Debug.user("close characterPage")
+            click(characterPage)
+            return
+        
         Debug.user("Change to party page")
         click( locPartyPage )
         return
@@ -261,7 +270,6 @@ def login():
         sleep(5)
         click(imageLoginButton)
 
-#login()
 bringGameToFront()
 while True:
     #checkBufferStatus()
