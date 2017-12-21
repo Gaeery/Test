@@ -1,7 +1,8 @@
-import random
 import time
 import ControlLib
 from ControlLib import *
+import HeavenM_hotkeys
+from HeavenM_hotkeys import *
 
 bufferRegion =  Region(145,155,466,40)
 
@@ -57,31 +58,53 @@ def doPositionSteps( steps ):
 nBackHomeCount = 0
 
 
-regionParty = Region(53,337,75,319)
-regionHp = Region(140,370,161,40)
+regionParty = Region(302,343,28,363)
+regionHpFirst = Region(140,370,161,40)
+regionHp = Region()
+regionStatusFirst = Region(345,333,86,96)
+regionStatus = Region()
 imageHp90 = Pattern("imageHp90.png").similar(0.90)
 imageHp65 = Pattern("imageHp65.png").similar(0.85)
 imageHp40 = Pattern("imageHp40.png").similar(0.85)
 imageMp90 = Pattern("imageMp90.png").similar(0.95)
 imageMp50 = Pattern("imageMp50.png").similar(0.85)
-imageMp10 = Pattern("imageMp0.png").similar(0.80)
-imageParty = "imageParty.png"
+imageMp10 = Pattern("imageMp0.png").similar(0.83)
+imageParty = Pattern("imageParty.png").similar(0.95)
 pRecoverHp = Location(921, 921)
 pRecoverMp = Location(1037, 916)
-pParty = Location(228, 270)
+
 pHpWater = Location(808, 921)
 pGoToTown = Location(1160, 916)
 pGameWnidow = Location(800, 14)
 bUseFightingSkill = False
+bFlyIfNoHp = True
+pEscape = Location(493, 808)
 
+
+lib = GaeeryLib()
 
 def checkHp():
     global nBackHomeCount
-            
-    if not regionParty.exists(imageParty, 1):
+    global lib
+    global regionHp
+    global regionStatus
+    
+    lib.setRoi(regionParty)
+    locParty = lib.find("party", imageParty)
+    if locParty == None:
         Debug.user("Change to party page")
-        click(pParty)
+        click( locPartyPage )
         return
+    else:
+        regionHpCurrent = Region( regionHpFirst.x, locParty.y, regionHpFirst.w, regionHpFirst.h )
+        if regionHpCurrent.y != regionHp.y:
+            regionHp = regionHpCurrent
+            regionStatus = Region( regionStatusFirst.x, locParty.y-40, regionStatusFirst.w, regionStatusFirst.h ) 
+            regionHp.highlight()
+            regionStatus.highlight()
+            sleep(1)
+            regionHp.highlight()
+            regionStatus.highlight()
     
     if regionHp.exists(imageHp90, 0.3):
         nBackHomeCount = 0
@@ -99,12 +122,11 @@ def checkHp():
         if regionHp.exists(imageMp10, 0.3):     
             Debug.user("has mp")
             recoverHp()
-            sleep(1)
         else:
             Debug.user("no mp")
             usingFightingSkill(False)
             recoverMp()
-            sleep(1)
+            escape()
         nBackHomeCount = 0
     elif regionHp.exists(imageHp40, 0.5):
         Debug.user("Hp is 40~65")
@@ -113,16 +135,27 @@ def checkHp():
         if regionHp.exists(imageMp10, 0.3):     
             Debug.user("has mp")
             recoverHp()
-            sleep(1)
         else:
             Debug.user("no mp")
             usingFightingSkill(False)
             recoverMp()
-            sleep(1)
+            #escape()
+        escape()
         nBackHomeCount = 0
     else:
+        if checkStatus():
+            return
+        
         Debug.user("Hp is lower than 40")
         drinkWater()
+        escape()
+        if regionHp.exists(imageMp10, 0.3):     
+            Debug.user("has mp")
+            recoverHp()
+
+        if not bFlyIfNoHp:
+            return
+            
         nBackHomeCount = nBackHomeCount + 1
         if nBackHomeCount < 2:
             return
@@ -132,17 +165,42 @@ def checkHp():
         click(pGoToTown)
         exit(1)
 
+def escape():
+    Debug.user("Run away")
+    type(keyTransport)
+    sleep(0.5)
+    click( pEscape )    
+    sleep(1)
+    #click(Location(1400, 752))
+
+# return True if in special status
+def checkStatus():
+    if regionStatus.exists("1513870172508.png", 0.2):
+        recoverPoison()
+        return True
+    if regionStatus.exists("1513870381521.png", 0.2):
+        Debug.user("You became a stone.....")
+        return True
+    return False
+    
 def recoverMp():
     Debug.user("Use MP recover skill")
-    type(Key.F3)
+    type(keyMpRecover)
+    sleep(1.7)
     
 def recoverHp():
     Debug.user("Use HP recover skill")
-    type(Key.F2)
+    type(keyHpRecover)
+    sleep(0.6)
+
+def recoverPoison():
+    Debug.user("Use rescue poison skill")
+    type(keyPoisonRescue)
+    sleep(0.6)
 
 def drinkWater():
     Debug.user("Drink water!")
-    type(Key.F1)
+    type(keyHpWater)
     
 def useSelfRecoverOldWay():
     lib = GaeeryLib()

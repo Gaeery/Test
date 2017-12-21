@@ -128,7 +128,7 @@ class GaeeryLib:
         #constructor   
         self.region = Screen().getBounds()
         
-    def setROI(self, roiRectangle):
+    def setRoi(self, roiRectangle):
         #Debug.user( "setROI = %d, %d, %d, %d" % (roiRectangle.x , roiRectangle.y , roiRectangle.w , roiRectangle.h) )
         self.roiRectangle = roiRectangle
 
@@ -148,12 +148,12 @@ class GaeeryLib:
             return False
 
     def find( self, message, image, timeout = 0 ):
-        Debug.user(message)
+        #Debug.user(message)
         self.sc.setAutoWaitTimeout(timeout)
         self.sc.setROI(self.roiRectangle)
         try:
             target = self.sc.find(image)
-            Debug.user("Found %s" % message )
+            #Debug.user("Found %s" % message )
             return target
         except FindFailed:
             Debug.user("can't find %s" % message )

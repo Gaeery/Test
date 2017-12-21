@@ -200,7 +200,7 @@ def findLocation(reg, target, timeout = 1):
         <span class="cmt">#constructor   </span>
         self.region = Screen().getBounds()
 
-    <span class="kw">def</span> setROI(self, roiRectangle):
+    <span class="kw">def</span> setRoi(self, roiRectangle):
         <span class="cmt">#Debug.user( "setROI = %d, %d, %d, %d" % (roiRectangle.x , roiRectangle.y , roiRectangle.w , roiRectangle.h) )</span>
         self.roiRectangle = roiRectangle
 
@@ -220,12 +220,12 @@ def findLocation(reg, target, timeout = 1):
             <span class="kw">return</span> False
 
     <span class="kw">def</span> <span class="skw">find</span>( self, message, image, timeout = <span class="dig">0</span> ):
-        Debug.user(message)
+        <span class="cmt">#Debug.user(message)</span>
         self.sc.setAutoWaitTimeout(timeout)
         self.sc.setROI(self.roiRectangle)
         <span class="kw">try</span>:
             target = self.sc.<span class="skw">find</span>(image)
-            Debug.user(<span class="str">"Found %s"</span> % message )
+            <span class="cmt">#Debug.user("Found %s" % message )</span>
             <span class="kw">return</span> target
         <span class="kw">except</span> FindFailed:
             Debug.user(<span class="str">"can't find %s"</span> % message )

@@ -70,10 +70,11 @@
 <h2>HeavenM.sikuli</h2> <a href="HeavenM.zip">(Download this script)</a>
 </div>
 <pre class="sikuli-code">
-<span class="kw">import</span> random
 <span class="kw">import</span> time
 <span class="kw">import</span> ControlLib
 <span class="kw">from</span> ControlLib <span class="kw">import</span> *
+<span class="kw">import</span> HeavenM_hotkeys
+<span class="kw">from</span> HeavenM_hotkeys <span class="kw">import</span> *
 
 bufferRegion =  Region(<span class="dig">145</span>,<span class="dig">155</span>,<span class="dig">466</span>,<span class="dig">40</span>)
 
@@ -129,31 +130,53 @@ BufferList = [
 nBackHomeCount = <span class="dig">0</span>
 
 
-regionParty = Region(<span class="dig">53</span>,<span class="dig">337</span>,<span class="dig">75</span>,<span class="dig">319</span>)
-regionHp = Region(<span class="dig">140</span>,<span class="dig">370</span>,<span class="dig">161</span>,<span class="dig">40</span>)
+regionParty = Region(<span class="dig">302</span>,<span class="dig">343</span>,<span class="dig">28</span>,<span class="dig">363</span>)
+regionHpFirst = Region(<span class="dig">140</span>,<span class="dig">370</span>,<span class="dig">161</span>,<span class="dig">40</span>)
+regionHp = Region()
+regionStatusFirst = Region(<span class="dig">345</span>,<span class="dig">333</span>,<span class="dig">86</span>,<span class="dig">96</span>)
+regionStatus = Region()
 imageHp90 = Pattern(<img src="imageHp90.png" />).similar(<span class="dig">0.90</span>)
 imageHp65 = Pattern(<img src="imageHp65.png" />).similar(<span class="dig">0.85</span>)
 imageHp40 = Pattern(<img src="imageHp40.png" />).similar(<span class="dig">0.85</span>)
 imageMp90 = Pattern(<img src="imageMp90.png" />).similar(<span class="dig">0.95</span>)
 imageMp50 = Pattern(<img src="imageMp50.png" />).similar(<span class="dig">0.85</span>)
-imageMp10 = Pattern(<img src="imageMp0.png" />).similar(<span class="dig">0.80</span>)
-imageParty = <img src="imageParty.png" />
+imageMp10 = Pattern(<img src="imageMp0.png" />).similar(<span class="dig">0.83</span>)
+imageParty = Pattern(<img src="imageParty.png" />).similar(<span class="dig">0.95</span>)
 pRecoverHp = Location(<span class="dig">921</span>, <span class="dig">921</span>)
 pRecoverMp = Location(<span class="dig">1037</span>, <span class="dig">916</span>)
-pParty = Location(<span class="dig">228</span>, <span class="dig">270</span>)
+
 pHpWater = Location(<span class="dig">808</span>, <span class="dig">921</span>)
 pGoToTown = Location(<span class="dig">1160</span>, <span class="dig">916</span>)
 pGameWnidow = Location(<span class="dig">800</span>, <span class="dig">14</span>)
 bUseFightingSkill = False
+bFlyIfNoHp = True
+pEscape = Location(<span class="dig">493</span>, <span class="dig">808</span>)
 
+
+lib = GaeeryLib()
 
 <span class="kw">def</span> checkHp():
     <span class="kw">global</span> nBackHomeCount
+    <span class="kw">global</span> lib
+    <span class="kw">global</span> regionHp
+    <span class="kw">global</span> regionStatus
 
-    <span class="kw">if</span> <span class="kw">not</span> regionParty.exists(imageParty, <span class="dig">1</span>):
+    lib.setRoi(regionParty)
+    locParty = lib.<span class="skw">find</span>(<span class="str">"party"</span>, imageParty)
+    <span class="kw">if</span> locParty == None:
         Debug.user(<span class="str">"Change to party page"</span>)
-        <span class="skw">click</span>(pParty)
+        <span class="skw">click</span>( locPartyPage )
         <span class="kw">return</span>
+    <span class="kw">else</span>:
+        regionHpCurrent = Region( regionHpFirst.x, locParty.y, regionHpFirst.w, regionHpFirst.h )
+        <span class="kw">if</span> regionHpCurrent.y != regionHp.y:
+            regionHp = regionHpCurrent
+            regionStatus = Region( regionStatusFirst.x, locParty.y-<span class="dig">40</span>, regionStatusFirst.w, regionStatusFirst.h )
+            regionHp.highlight()
+            regionStatus.highlight()
+            <span class="skw">sleep</span>(<span class="dig">1</span>)
+            regionHp.highlight()
+            regionStatus.highlight()
 
     <span class="kw">if</span> regionHp.exists(imageHp90, <span class="dig">0.3</span>):
         nBackHomeCount = <span class="dig">0</span>
@@ -171,12 +194,11 @@ bUseFightingSkill = False
         <span class="kw">if</span> regionHp.exists(imageMp10, <span class="dig">0.3</span>):
             Debug.user(<span class="str">"has mp"</span>)
             recoverHp()
-            <span class="skw">sleep</span>(<span class="dig">1</span>)
         <span class="kw">else</span>:
             Debug.user(<span class="str">"no mp"</span>)
             usingFightingSkill(False)
             recoverMp()
-            <span class="skw">sleep</span>(<span class="dig">1</span>)
+            escape()
         nBackHomeCount = <span class="dig">0</span>
     <span class="kw">elif</span> regionHp.exists(imageHp40, <span class="dig">0.5</span>):
         Debug.user(<span class="str">"Hp is 40~65"</span>)
@@ -185,16 +207,27 @@ bUseFightingSkill = False
         <span class="kw">if</span> regionHp.exists(imageMp10, <span class="dig">0.3</span>):
             Debug.user(<span class="str">"has mp"</span>)
             recoverHp()
-            <span class="skw">sleep</span>(<span class="dig">1</span>)
         <span class="kw">else</span>:
             Debug.user(<span class="str">"no mp"</span>)
             usingFightingSkill(False)
             recoverMp()
-            <span class="skw">sleep</span>(<span class="dig">1</span>)
+            <span class="cmt">#escape()</span>
+        escape()
         nBackHomeCount = <span class="dig">0</span>
     <span class="kw">else</span>:
+        <span class="kw">if</span> checkStatus():
+            <span class="kw">return</span>
+
         Debug.user(<span class="str">"Hp is lower than 40"</span>)
         drinkWater()
+        escape()
+        <span class="kw">if</span> regionHp.exists(imageMp10, <span class="dig">0.3</span>):
+            Debug.user(<span class="str">"has mp"</span>)
+            recoverHp()
+
+        <span class="kw">if</span> <span class="kw">not</span> bFlyIfNoHp:
+            <span class="kw">return</span>
+
         nBackHomeCount = nBackHomeCount + <span class="dig">1</span>
         <span class="kw">if</span> nBackHomeCount &lt; <span class="dig">2</span>:
             <span class="kw">return</span>
@@ -204,17 +237,42 @@ bUseFightingSkill = False
         <span class="skw">click</span>(pGoToTown)
         exit(<span class="dig">1</span>)
 
+<span class="kw">def</span> escape():
+    Debug.user(<span class="str">"Run away"</span>)
+    <span class="skw">type</span>(keyTransport)
+    <span class="skw">sleep</span>(<span class="dig">0.5</span>)
+    <span class="skw">click</span>( pEscape )
+    <span class="skw">sleep</span>(<span class="dig">1</span>)
+    <span class="cmt">#click(Location(1400, 752))</span>
+
+<span class="cmt"># return True if in special status</span>
+<span class="kw">def</span> checkStatus():
+    <span class="kw">if</span> regionStatus.exists(<img src="1513870172508.png" />, <span class="dig">0.2</span>):
+        recoverPoison()
+        <span class="kw">return</span> True
+    <span class="kw">if</span> regionStatus.exists(<img src="1513870381521.png" />, <span class="dig">0.2</span>):
+        Debug.user(<span class="str">"You became a stone....."</span>)
+        <span class="kw">return</span> True
+    <span class="kw">return</span> False
+
 <span class="kw">def</span> recoverMp():
     Debug.user(<span class="str">"Use MP recover skill"</span>)
-    <span class="skw">type</span>(Key.F3)
+    <span class="skw">type</span>(keyMpRecover)
+    <span class="skw">sleep</span>(<span class="dig">1.7</span>)
 
 <span class="kw">def</span> recoverHp():
     Debug.user(<span class="str">"Use HP recover skill"</span>)
-    <span class="skw">type</span>(Key.F2)
+    <span class="skw">type</span>(keyHpRecover)
+    <span class="skw">sleep</span>(<span class="dig">0.6</span>)
+
+<span class="kw">def</span> recoverPoison():
+    Debug.user(<span class="str">"Use rescue poison skill"</span>)
+    <span class="skw">type</span>(keyPoisonRescue)
+    <span class="skw">sleep</span>(<span class="dig">0.6</span>)
 
 <span class="kw">def</span> drinkWater():
     Debug.user(<span class="str">"Drink water!"</span>)
-    <span class="skw">type</span>(Key.F1)
+    <span class="skw">type</span>(keyHpWater)
 
 <span class="kw">def</span> useSelfRecoverOldWay():
     lib = GaeeryLib()
