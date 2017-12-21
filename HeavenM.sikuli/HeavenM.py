@@ -91,6 +91,14 @@ def checkHp():
     
     lib.setRoi(regionParty)
     locParty = lib.find("party", imageParty)
+    
+    partyMembers = lib.findAll("party members", imageParty)
+    if partyMembers != None:
+        sortedPartyMembers = sorted(partyMembers, key=by_y)
+        locParty = sortedPartyMembers[0]
+    
+ 
+    
     if locParty == None:
         Debug.user("Change to party page")
         click( locPartyPage )
@@ -112,7 +120,7 @@ def checkHp():
             Debug.user("Hp is OK")            
             recoverMp()
         else:
-            Debug.user("Hp & Mp are OK")
+            #Debug.user("Hp & Mp are OK")
             usingFightingSkill(True)
                 
             

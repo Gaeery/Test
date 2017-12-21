@@ -163,6 +163,14 @@ lib = GaeeryLib()
 
     lib.setRoi(regionParty)
     locParty = lib.<span class="skw">find</span>(<span class="str">"party"</span>, imageParty)
+
+    partyMembers = lib.findAll(<span class="str">"party members"</span>, imageParty)
+    <span class="kw">if</span> partyMembers != None:
+        sortedPartyMembers = sorted(partyMembers, key=by_y)
+        locParty = sortedPartyMembers[<span class="dig">0</span>]
+
+
+
     <span class="kw">if</span> locParty == None:
         Debug.user(<span class="str">"Change to party page"</span>)
         <span class="skw">click</span>( locPartyPage )
@@ -184,7 +192,7 @@ lib = GaeeryLib()
             Debug.user(<span class="str">"Hp is OK"</span>)
             recoverMp()
         <span class="kw">else</span>:
-            Debug.user(<span class="str">"Hp &amp; Mp are OK"</span>)
+            <span class="cmt">#Debug.user("Hp &amp; Mp are OK")</span>
             usingFightingSkill(True)
 
 

@@ -189,6 +189,9 @@ def findLocation(reg, target, timeout = 1):
 <span class="kw">from</span> sikuli <span class="kw">import</span> *
 <span class="kw">import</span> shutil
 
+<span class="cmt">#compare function</span>
+<span class="kw">def</span> by_y(match):
+    <span class="kw">return</span> match.y
 
 
 <span class="kw">class</span> GaeeryLib:
@@ -225,6 +228,18 @@ def findLocation(reg, target, timeout = 1):
         self.sc.setROI(self.roiRectangle)
         <span class="kw">try</span>:
             target = self.sc.<span class="skw">find</span>(image)
+            <span class="cmt">#Debug.user("Found %s" % message )</span>
+            <span class="kw">return</span> target
+        <span class="kw">except</span> FindFailed:
+            Debug.user(<span class="str">"can't find %s"</span> % message )
+            <span class="kw">return</span> None
+
+    <span class="kw">def</span> findAll( self, message, image, timeout = <span class="dig">0</span> ):
+        <span class="cmt">#Debug.user(message)</span>
+        self.sc.setAutoWaitTimeout(timeout)
+        self.sc.setROI(self.roiRectangle)
+        <span class="kw">try</span>:
+            target = self.sc.findAll(image)
             <span class="cmt">#Debug.user("Found %s" % message )</span>
             <span class="kw">return</span> target
         <span class="kw">except</span> FindFailed:

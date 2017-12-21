@@ -117,6 +117,9 @@ class ImageOffset(Automation):
 from sikuli import *
 import shutil
 
+#compare function
+def by_y(match):
+    return match.y
 
 
 class GaeeryLib:
@@ -153,6 +156,18 @@ class GaeeryLib:
         self.sc.setROI(self.roiRectangle)
         try:
             target = self.sc.find(image)
+            #Debug.user("Found %s" % message )
+            return target
+        except FindFailed:
+            Debug.user("can't find %s" % message )
+            return None
+
+    def findAll( self, message, image, timeout = 0 ):
+        #Debug.user(message)
+        self.sc.setAutoWaitTimeout(timeout)
+        self.sc.setROI(self.roiRectangle)
+        try:
+            target = self.sc.findAll(image)
             #Debug.user("Found %s" % message )
             return target
         except FindFailed:
