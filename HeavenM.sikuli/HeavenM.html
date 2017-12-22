@@ -240,15 +240,16 @@ lib.setRoi(regionParty)
         escape()
         nBackHomeCount = <span class="dig">0</span>
     <span class="kw">else</span>:
-        <span class="kw">if</span> checkStatus():
-            <span class="kw">return</span>
-
         Debug.user(<span class="str">"Hp is lower than 40"</span>)
         drinkWater()
-        escape()
         <span class="kw">if</span> regionHp.exists(imageMp10, <span class="dig">0.3</span>):
             Debug.user(<span class="str">"has mp"</span>)
             recoverHp()
+
+        <span class="kw">if</span> checkStatus():
+            <span class="kw">return</span>
+
+        escape()
 
         <span class="kw">if</span> <span class="kw">not</span> bFlyIfNoHp:
             <span class="kw">return</span>
@@ -281,7 +282,10 @@ lib.setRoi(regionParty)
         recoverPoison()
         <span class="kw">return</span> True
     <span class="kw">if</span> regionStatus.exists(<img src="1513870381521.png" />, <span class="dig">0.2</span>):
-        Debug.user(<span class="str">"You became a stone....."</span>)
+        Debug.user(<span class="str">"You have become a stone....."</span>)
+        <span class="kw">return</span> True
+    <span class="kw">if</span> regionStatus.exists(<img src="1513955946438.png" />, <span class="dig">0.2</span>):
+        Debug.user(<span class="str">"You are stunned....."</span>)
         <span class="kw">return</span> True
     <span class="kw">return</span> False
 
@@ -360,7 +364,7 @@ bringGameToFront()
     <span class="cmt">#checkBufferStatus()</span>
     previousTime = time.time()
     checkHp()
-    <span class="kw">if</span> time.time()-previousTime &gt; <span class="dig">3</span>:
+    <span class="kw">if</span> time.time()-previousTime &gt; <span class="dig">4</span>:
         Debug.user(<span class="str">"pause a while, need to bring game to front"</span>)
         bringGameToFront()
 

@@ -167,16 +167,17 @@ def checkHp():
             #escape()
         escape()
         nBackHomeCount = 0
-    else:
-        if checkStatus():
-            return
-        
+    else:       
         Debug.user("Hp is lower than 40")
         drinkWater()
-        escape()
         if regionHp.exists(imageMp10, 0.3):     
             Debug.user("has mp")
             recoverHp()
+        
+        if checkStatus():
+            return
+
+        escape()
 
         if not bFlyIfNoHp:
             return
@@ -209,7 +210,10 @@ def checkStatus():
         recoverPoison()
         return True
     if regionStatus.exists("1513870381521.png", 0.2):
-        Debug.user("You became a stone.....")
+        Debug.user("You have become a stone.....")
+        return True
+    if regionStatus.exists("1513955946438.png", 0.2):
+        Debug.user("You are stunned.....")
         return True
     return False
     
@@ -288,7 +292,7 @@ while True:
     #checkBufferStatus()
     previousTime = time.time()
     checkHp()
-    if time.time()-previousTime > 5:
+    if time.time()-previousTime > 4:
         Debug.user("pause a while, need to bring game to front")
         bringGameToFront()
 
