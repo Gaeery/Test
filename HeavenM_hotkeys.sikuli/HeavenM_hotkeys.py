@@ -9,3 +9,5 @@ keyTransport = Key.F8  #run away
 
 
 locPartyPage = Location(228, 270)
+locCreateParty = Location(96, 377)
+locCreatePartyConfirm = Location(1071, 850)

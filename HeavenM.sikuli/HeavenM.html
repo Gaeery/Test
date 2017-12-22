@@ -76,6 +76,9 @@
 <span class="kw">import</span> HeavenM_hotkeys
 <span class="kw">from</span> HeavenM_hotkeys <span class="kw">import</span> *
 
+Settings.MoveMouseDelay = <span class="dig">0.1</span>
+
+
 bufferRegion =  Region(<span class="dig">145</span>,<span class="dig">155</span>,<span class="dig">466</span>,<span class="dig">40</span>)
 
 
@@ -140,7 +143,7 @@ imageHp65 = Pattern(<img src="imageHp65.png" />).similar(<span class="dig">0.85<
 imageHp40 = Pattern(<img src="imageHp40.png" />).similar(<span class="dig">0.85</span>)
 imageMp90 = Pattern(<img src="imageMp90.png" />).similar(<span class="dig">0.95</span>)
 imageMp50 = Pattern(<img src="imageMp50.png" />).similar(<span class="dig">0.85</span>)
-imageMp10 = Pattern(<img src="test.png" />).similar(<span class="dig">0.80</span>)
+imageMp10 = <img src="test.png" />
 imageParty = Pattern(<img src="imageParty.png" />).similar(<span class="dig">0.95</span>)
 pRecoverHp = Location(<span class="dig">921</span>, <span class="dig">921</span>)
 pRecoverMp = Location(<span class="dig">1037</span>, <span class="dig">916</span>)
@@ -182,7 +185,12 @@ lib.setRoi(regionParty)
             <span class="kw">return</span>
 
         Debug.user(<span class="str">"Change to party page"</span>)
-        <span class="skw">click</span>( locPartyPage )
+        <span class="kw">if</span> Region(<span class="dig">194</span>,<span class="dig">241</span>,<span class="dig">69</span>,<span class="dig">54</span>).exists(<img src="1513943945882.png" />, <span class="dig">0.3</span>):
+            <span class="skw">click</span>( locPartyPage )
+        <span class="kw">if</span> Region(<span class="dig">72</span>,<span class="dig">353</span>,<span class="dig">53</span>,<span class="dig">47</span>).exists(<img src="1513948889607.png" />, <span class="dig">0.3</span>):
+            <span class="skw">click</span>( locCreateParty )
+        <span class="kw">if</span> Region(<span class="dig">945</span>,<span class="dig">816</span>,<span class="dig">322</span>,<span class="dig">78</span>).exists(<img src="1513949150393.png" />, <span class="dig">3</span>):
+            <span class="skw">click</span>( locCreatePartyConfirm )
         <span class="kw">return</span>
     <span class="kw">else</span>:
         regionHpCurrent = Region( regionHpFirst.x, locParty.y, regionHpFirst.w, regionHpFirst.h )
@@ -257,10 +265,14 @@ lib.setRoi(regionParty)
 
 <span class="kw">def</span> escape():
     Debug.user(<span class="str">"Run away"</span>)
-    <span class="skw">type</span>(keyTransport)
-    <span class="skw">sleep</span>(<span class="dig">0.5</span>)
     <span class="skw">click</span>( pEscape )
+    screenCapture()
     <span class="skw">sleep</span>(<span class="dig">1</span>)
+    <span class="skw">type</span>(keyTransport)
+    <span class="skw">sleep</span>(<span class="dig">1</span>)
+    drinkWater()
+    <span class="skw">sleep</span>(<span class="dig">0.5</span>)
+    recoverHp()
     <span class="cmt">#click(Location(1400, 752))</span>
 
 <span class="cmt"># return True if in special status</span>
@@ -348,7 +360,7 @@ bringGameToFront()
     <span class="cmt">#checkBufferStatus()</span>
     previousTime = time.time()
     checkHp()
-    <span class="kw">if</span> time.time()-previousTime &gt; <span class="dig">5</span>:
+    <span class="kw">if</span> time.time()-previousTime &gt; <span class="dig">3</span>:
         Debug.user(<span class="str">"pause a while, need to bring game to front"</span>)
         bringGameToFront()
 

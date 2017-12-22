@@ -4,6 +4,9 @@ from ControlLib import *
 import HeavenM_hotkeys
 from HeavenM_hotkeys import *
 
+Settings.MoveMouseDelay = 0.1
+
+
 bufferRegion =  Region(145,155,466,40)
 
 
@@ -68,7 +71,7 @@ imageHp65 = Pattern("imageHp65.png").similar(0.85)
 imageHp40 = Pattern("imageHp40.png").similar(0.85)
 imageMp90 = Pattern("imageMp90.png").similar(0.95)
 imageMp50 = Pattern("imageMp50.png").similar(0.85)
-imageMp10 = Pattern("test.png").similar(0.80)
+imageMp10 = "test.png"
 imageParty = Pattern("imageParty.png").similar(0.95)
 pRecoverHp = Location(921, 921)
 pRecoverMp = Location(1037, 916)
@@ -110,7 +113,12 @@ def checkHp():
             return
         
         Debug.user("Change to party page")
-        click( locPartyPage )
+        if Region(194,241,69,54).exists("1513943945882.png", 0.3):
+            click( locPartyPage )
+        if Region(72,353,53,47).exists("1513948889607.png", 0.3):
+            click( locCreateParty )
+        if Region(945,816,322,78).exists("1513949150393.png", 3):
+            click( locCreatePartyConfirm )
         return
     else:
         regionHpCurrent = Region( regionHpFirst.x, locParty.y, regionHpFirst.w, regionHpFirst.h )
@@ -182,12 +190,17 @@ def checkHp():
         click(pGoToTown)
         exit(1)
 
+
 def escape():
     Debug.user("Run away")
-    type(keyTransport)
-    sleep(0.5)
-    click( pEscape )    
+    click( pEscape )   
+    screenCapture()
     sleep(1)
+    type(keyTransport)
+    sleep(1)
+    drinkWater()
+    sleep(0.5)
+    recoverHp()
     #click(Location(1400, 752))
 
 # return True if in special status
