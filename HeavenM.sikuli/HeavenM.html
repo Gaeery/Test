@@ -71,6 +71,7 @@
 </div>
 <pre class="sikuli-code">
 <span class="kw">import</span> time
+<span class="kw">import</span> math
 <span class="kw">import</span> ControlLib
 <span class="kw">from</span> ControlLib <span class="kw">import</span> *
 <span class="kw">import</span> HeavenM_hotkeys
@@ -143,7 +144,7 @@ imageHp65 = Pattern(<img src="imageHp65.png" />).similar(<span class="dig">0.85<
 imageHp40 = Pattern(<img src="imageHp40.png" />).similar(<span class="dig">0.85</span>)
 imageMp90 = Pattern(<img src="imageMp90.png" />).similar(<span class="dig">0.95</span>)
 imageMp50 = Pattern(<img src="imageMp50.png" />).similar(<span class="dig">0.85</span>)
-imageMp10 = <img src="test.png" />
+imageMp10 = Pattern(<img src="imageMp10.png" />).similar(<span class="dig">0.58</span>)
 imageParty = Pattern(<img src="imageParty.png" />).similar(<span class="dig">0.95</span>)
 pRecoverHp = Location(<span class="dig">921</span>, <span class="dig">921</span>)
 pRecoverMp = Location(<span class="dig">1037</span>, <span class="dig">916</span>)
@@ -194,7 +195,7 @@ lib.setRoi(regionParty)
         <span class="kw">return</span>
     <span class="kw">else</span>:
         regionHpCurrent = Region( regionHpFirst.x, locParty.y, regionHpFirst.w, regionHpFirst.h )
-        <span class="kw">if</span> regionHpCurrent.y != regionHp.y:
+        <span class="kw">if</span> math.fabs(regionHpCurrent.y - regionHp.y)&gt;<span class="dig">5</span>:
             regionHp = regionHpCurrent
             regionStatus = Region( regionStatusFirst.x, locParty.y-<span class="dig">40</span>, regionStatusFirst.w, regionStatusFirst.h )
             regionHp.highlight()

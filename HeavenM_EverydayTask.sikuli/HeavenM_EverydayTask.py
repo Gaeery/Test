@@ -15,6 +15,8 @@ def clickTarget():
        target = lib.find(image, 0) 
 #
 
+Screen().getPixelColor( Location(161, 397) )
+exit(0)
 while True:
     type(Key.F9)
 

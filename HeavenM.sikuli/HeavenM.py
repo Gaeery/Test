@@ -1,4 +1,5 @@
 import time
+import math
 import ControlLib
 from ControlLib import *
 import HeavenM_hotkeys
@@ -71,7 +72,7 @@ imageHp65 = Pattern("imageHp65.png").similar(0.85)
 imageHp40 = Pattern("imageHp40.png").similar(0.85)
 imageMp90 = Pattern("imageMp90.png").similar(0.95)
 imageMp50 = Pattern("imageMp50.png").similar(0.85)
-imageMp10 = "test.png"
+imageMp10 = Pattern("imageMp10.png").similar(0.58)
 imageParty = Pattern("imageParty.png").similar(0.95)
 pRecoverHp = Location(921, 921)
 pRecoverMp = Location(1037, 916)
@@ -122,7 +123,7 @@ def checkHp():
         return
     else:
         regionHpCurrent = Region( regionHpFirst.x, locParty.y, regionHpFirst.w, regionHpFirst.h )
-        if regionHpCurrent.y != regionHp.y:
+        if math.fabs(regionHpCurrent.y - regionHp.y)>5:
             regionHp = regionHpCurrent
             regionStatus = Region( regionStatusFirst.x, locParty.y-40, regionStatusFirst.w, regionStatusFirst.h ) 
             regionHp.highlight()
