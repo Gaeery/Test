@@ -190,9 +190,9 @@ def checkHp():
         if mpPercent >= 10:   
             recoverHp()
         else:
+            escape()
             recoverMp()
-            #escape()
-        escape()
+        #escape()
         nBackHomeCount = 0
     else:       
         Debug.user("Hp is lower than 40")
@@ -290,12 +290,12 @@ def checkStatus():
     return False
     
 def recoverMp():
-    Debug.user("Use MP recover skill")
+    #Debug.user("Use MP recover skill")
     type(keyMpRecover)
     sleep(1.8)
     
 def recoverHp():
-    Debug.user("Use HP recover skill")
+    #Debug.user("Use HP recover skill")
     type(keyHpRecover)
     sleep(0.6)
 
@@ -309,7 +309,7 @@ def drinkWater():
     type(keyHpWater)
 
 def useTripleArrow():
-    Debug.user("Use HP recover skill")
+    Debug.user("useTripleArrow")
     type(keyTripleArrow)
     sleep(0.6)
     

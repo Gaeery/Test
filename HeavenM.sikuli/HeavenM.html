@@ -262,9 +262,9 @@ lib.setRoi(regionParty)
         <span class="kw">if</span> mpPercent &gt;= <span class="dig">10</span>:
             recoverHp()
         <span class="kw">else</span>:
+            escape()
             recoverMp()
-            <span class="cmt">#escape()</span>
-        escape()
+        <span class="cmt">#escape()</span>
         nBackHomeCount = <span class="dig">0</span>
     <span class="kw">else</span>:
         Debug.user(<span class="str">"Hp is lower than 40"</span>)
@@ -362,12 +362,12 @@ lib.setRoi(regionParty)
     <span class="kw">return</span> False
 
 <span class="kw">def</span> recoverMp():
-    Debug.user(<span class="str">"Use MP recover skill"</span>)
+    <span class="cmt">#Debug.user("Use MP recover skill")</span>
     <span class="skw">type</span>(keyMpRecover)
     <span class="skw">sleep</span>(<span class="dig">1.8</span>)
 
 <span class="kw">def</span> recoverHp():
-    Debug.user(<span class="str">"Use HP recover skill"</span>)
+    <span class="cmt">#Debug.user("Use HP recover skill")</span>
     <span class="skw">type</span>(keyHpRecover)
     <span class="skw">sleep</span>(<span class="dig">0.6</span>)
 
@@ -381,7 +381,7 @@ lib.setRoi(regionParty)
     <span class="skw">type</span>(keyHpWater)
 
 <span class="kw">def</span> useTripleArrow():
-    Debug.user(<span class="str">"Use HP recover skill"</span>)
+    Debug.user(<span class="str">"useTripleArrow"</span>)
     <span class="skw">type</span>(keyTripleArrow)
     <span class="skw">sleep</span>(<span class="dig">0.6</span>)
 
