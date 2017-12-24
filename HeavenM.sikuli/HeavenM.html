@@ -76,9 +76,11 @@
 <span class="kw">from</span> ControlLib <span class="kw">import</span> *
 <span class="kw">import</span> HeavenM_hotkeys
 <span class="kw">from</span> HeavenM_hotkeys <span class="kw">import</span> *
+<span class="kw">from</span> java.awt <span class="kw">import</span> Robot
 
 Settings.MoveMouseDelay = <span class="dig">0.1</span>
 
+r = Robot()
 
 bufferRegion =  Region(<span class="dig">145</span>,<span class="dig">155</span>,<span class="dig">466</span>,<span class="dig">40</span>)
 
@@ -137,6 +139,7 @@ regionLeftScreen = Region(<span class="dig">503</span>,<span class="dig">144</sp
 regionParty = Region(<span class="dig">302</span>,<span class="dig">343</span>,<span class="dig">28</span>,<span class="dig">363</span>)
 regionHpFirst = Region(<span class="dig">140</span>,<span class="dig">370</span>,<span class="dig">161</span>,<span class="dig">40</span>)
 regionHp = Region()
+regionMp = Region(<span class="dig">140</span>,<span class="dig">77</span>,<span class="dig">294</span>,<span class="dig">25</span>)
 regionStatusFirst = Region(<span class="dig">345</span>,<span class="dig">333</span>,<span class="dig">86</span>,<span class="dig">96</span>)
 regionStatus = Region()
 imageHp90 = Pattern(<img src="imageHp90.png" />).similar(<span class="dig">0.90</span>)
@@ -144,7 +147,8 @@ imageHp65 = Pattern(<img src="imageHp65.png" />).similar(<span class="dig">0.85<
 imageHp40 = Pattern(<img src="imageHp40.png" />).similar(<span class="dig">0.85</span>)
 imageMp90 = Pattern(<img src="imageMp90.png" />).similar(<span class="dig">0.95</span>)
 imageMp50 = Pattern(<img src="imageMp50.png" />).similar(<span class="dig">0.85</span>)
-imageMp10 = Pattern(<img src="imageMp10.png" />).similar(<span class="dig">0.90</span>)
+imageMp10 = <img src="imageMp10.png" />
+imageMp10_1 = <img src="imageMp10_1.png" />
 imageParty = Pattern(<img src="imageParty.png" />).similar(<span class="dig">0.95</span>)
 pRecoverHp = Location(<span class="dig">921</span>, <span class="dig">921</span>)
 pRecoverMp = Location(<span class="dig">1037</span>, <span class="dig">916</span>)
@@ -206,7 +210,7 @@ lib.setRoi(regionParty)
 
     <span class="kw">if</span> regionHp.exists(imageHp90, <span class="dig">0.3</span>):
         nBackHomeCount = <span class="dig">0</span>
-        <span class="kw">if</span> <span class="kw">not</span> regionHp.exists(imageMp90, <span class="dig">0.1</span>):
+        <span class="kw">if</span> <span class="kw">not</span> isMpFull():
             Debug.user(<span class="str">"Hp is OK"</span>)
             recoverMp()
         <span class="kw">else</span>:
@@ -217,7 +221,7 @@ lib.setRoi(regionParty)
     <span class="kw">elif</span> regionHp.exists(imageHp65, <span class="dig">0.3</span>):
         Debug.user(<span class="str">"Hp is 65~90"</span>)
         <span class="cmt">#click(pHpWater)  </span>
-        <span class="kw">if</span> regionHp.exists(imageMp10, <span class="dig">0.3</span>):
+        <span class="kw">if</span> hasMp():
             Debug.user(<span class="str">"has mp"</span>)
             recoverHp()
         <span class="kw">else</span>:
@@ -229,7 +233,7 @@ lib.setRoi(regionParty)
         Debug.user(<span class="str">"Hp is 40~65"</span>)
         bringGameToFront()
         drinkWater()
-        <span class="kw">if</span> regionHp.exists(imageMp10, <span class="dig">0.3</span>):
+        <span class="kw">if</span> hasMp():
             Debug.user(<span class="str">"has mp"</span>)
             recoverHp()
         <span class="kw">else</span>:
@@ -242,7 +246,7 @@ lib.setRoi(regionParty)
     <span class="kw">else</span>:
         Debug.user(<span class="str">"Hp is lower than 40"</span>)
         drinkWater()
-        <span class="kw">if</span> regionHp.exists(imageMp10, <span class="dig">0.3</span>):
+        <span class="kw">if</span> hasMp():
             Debug.user(<span class="str">"has mp"</span>)
             recoverHp()
 
@@ -275,6 +279,22 @@ lib.setRoi(regionParty)
     <span class="skw">sleep</span>(<span class="dig">0.5</span>)
     recoverHp()
     <span class="cmt">#click(Location(1400, 752))</span>
+
+<span class="kw">def</span> hasMp():
+    locLowMp = Location(<span class="dig">164</span>, <span class="dig">88</span>)
+    lowMpColor = r.getPixelColor(locLowMp.x, locLowMp.y) <span class="cmt"># get the color object</span>
+    printColor( <span class="str">"lowMpColor"</span>, lowMpColor)
+    <span class="kw">if</span> lowMpColor.getBlue() &gt;= <span class="dig">139</span> &amp; lowMpColor.getRed() &lt; <span class="dig">50</span>:
+        <span class="kw">return</span> True
+    <span class="kw">return</span> False
+
+<span class="kw">def</span> isMpFull():
+    locHighMp = Location(<span class="dig">397</span>, <span class="dig">89</span>)
+    highMpColor = r.getPixelColor(locHighMp.x, locHighMp.y) <span class="cmt"># get the color object</span>
+    printColor( <span class="str">"highMpColor"</span>, highMpColor)
+    <span class="kw">if</span> highMpColor.getBlue() &gt;= <span class="dig">139</span> &amp; highMpColor.getRed() &lt; <span class="dig">50</span>:
+        <span class="kw">return</span> True
+    <span class="kw">return</span> False
 
 <span class="cmt"># return True if in special status</span>
 <span class="kw">def</span> checkStatus():
@@ -351,13 +371,10 @@ bUsingFightingSkill = False
 <span class="kw">def</span> bringGameToFront():
     <span class="skw">rightClick</span>(pGameWnidow)
 
-<span class="kw">def</span> login():
-    imageWaitForLogin = <img src="imageWaitForLogin.png" />
-    imageLoginButton = <img src="imageLoginButton.png" />
+<span class="kw">def</span> printColor(strName, rgb):
+    Debug.user(<span class="str">"%s = %d,%d,%d"</span> % (strName, rgb.getRed(), rgb.getGreen(), rgb.getBlue() ) )
 
-    <span class="kw">if</span> Region(<span class="dig">753</span>,<span class="dig">689</span>,<span class="dig">393</span>,<span class="dig">120</span>).waitVanish(imageWaitForLogin):
-        <span class="skw">sleep</span>(<span class="dig">5</span>)
-        <span class="skw">click</span>(imageLoginButton)
+
 
 bringGameToFront()
 <span class="kw">while</span> True:

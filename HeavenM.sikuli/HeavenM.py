@@ -4,9 +4,11 @@ import ControlLib
 from ControlLib import *
 import HeavenM_hotkeys
 from HeavenM_hotkeys import *
+from java.awt import Robot
 
 Settings.MoveMouseDelay = 0.1
 
+r = Robot()
 
 bufferRegion =  Region(145,155,466,40)
 
@@ -65,6 +67,7 @@ regionLeftScreen = Region(503,144,91,88)
 regionParty = Region(302,343,28,363)
 regionHpFirst = Region(140,370,161,40)
 regionHp = Region()
+regionMp = Region(140,77,294,25)
 regionStatusFirst = Region(345,333,86,96)
 regionStatus = Region()
 imageHp90 = Pattern("imageHp90.png").similar(0.90)
@@ -72,7 +75,8 @@ imageHp65 = Pattern("imageHp65.png").similar(0.85)
 imageHp40 = Pattern("imageHp40.png").similar(0.85)
 imageMp90 = Pattern("imageMp90.png").similar(0.95)
 imageMp50 = Pattern("imageMp50.png").similar(0.85)
-imageMp10 = Pattern("imageMp10.png").similar(0.90)
+imageMp10 = "imageMp10.png"
+imageMp10_1 = "imageMp10_1.png"
 imageParty = Pattern("imageParty.png").similar(0.95)
 pRecoverHp = Location(921, 921)
 pRecoverMp = Location(1037, 916)
@@ -134,7 +138,7 @@ def checkHp():
     
     if regionHp.exists(imageHp90, 0.3):
         nBackHomeCount = 0
-        if not regionHp.exists(imageMp90, 0.1):     
+        if not isMpFull():     
             Debug.user("Hp is OK")            
             recoverMp()
         else:
@@ -145,7 +149,7 @@ def checkHp():
     elif regionHp.exists(imageHp65, 0.3):
         Debug.user("Hp is 65~90")
         #click(pHpWater)  
-        if regionHp.exists(imageMp10, 0.3):     
+        if hasMp():     
             Debug.user("has mp")
             recoverHp()
         else:
@@ -153,11 +157,11 @@ def checkHp():
             usingFightingSkill(False)
             recoverMp()
         nBackHomeCount = 0
-    elif regionHp.exists(imageHp40, 0.5):
+    elif regionHp.exists(imageHp40, 0.5):        
         Debug.user("Hp is 40~65")
         bringGameToFront()
         drinkWater()
-        if regionHp.exists(imageMp10, 0.3):     
+        if hasMp():  
             Debug.user("has mp")
             recoverHp()
         else:
@@ -170,7 +174,7 @@ def checkHp():
     else:       
         Debug.user("Hp is lower than 40")
         drinkWater()
-        if regionHp.exists(imageMp10, 0.3):     
+        if hasMp():  
             Debug.user("has mp")
             recoverHp()
         
@@ -203,6 +207,22 @@ def escape():
     sleep(0.5)
     recoverHp()
     #click(Location(1400, 752))
+
+def hasMp():
+    locLowMp = Location(164, 88)
+    lowMpColor = r.getPixelColor(locLowMp.x, locLowMp.y) # get the color object
+    printColor( "lowMpColor", lowMpColor)
+    if lowMpColor.getBlue() >= 139 & lowMpColor.getRed() < 50:
+        return True
+    return False
+
+def isMpFull():
+    locHighMp = Location(397, 89)
+    highMpColor = r.getPixelColor(locHighMp.x, locHighMp.y) # get the color object
+    printColor( "highMpColor", highMpColor)
+    if highMpColor.getBlue() >= 139 & highMpColor.getRed() < 50:
+        return True
+    return False
 
 # return True if in special status
 def checkStatus():
@@ -279,13 +299,10 @@ def switchAutoBuff( loc, bOn ):
 def bringGameToFront():
     rightClick(pGameWnidow)
 
-def login():
-    imageWaitForLogin = "imageWaitForLogin.png"
-    imageLoginButton = "imageLoginButton.png"
-    
-    if Region(753,689,393,120).waitVanish(imageWaitForLogin):
-        sleep(5)
-        click(imageLoginButton)
+def printColor(strName, rgb):
+    Debug.user("%s = %d,%d,%d" % (strName, rgb.getRed(), rgb.getGreen(), rgb.getBlue() ) )
+
+
 
 bringGameToFront()
 while True:

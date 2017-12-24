@@ -20,15 +20,15 @@ def clickTarget():
             click(target)
             click(target)
             ret = True
-            sleep(1)
+            sleep(5)
     return ret   
 #
 
 #Screen().getPixelColor( Location(161, 397) )
 #exit(0)
 while True:
-    #clickTarget():
+    #clickTarget()
     #Debug.user("found")
-    type(Key.F9)
+    type(keyPracticeTask)
 
     sleep(0.6)
