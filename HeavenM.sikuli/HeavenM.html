@@ -150,6 +150,12 @@ imageMp50 = Pattern(<img src="imageMp50.png" />).similar(<span class="dig">0.85<
 imageMp10 = <img src="imageMp10.png" />
 imageMp10_1 = <img src="imageMp10_1.png" />
 imageParty = Pattern(<img src="imageParty.png" />).similar(<span class="dig">0.95</span>)
+
+nHploc_y = <span class="dig">385</span>
+nMploc_y = <span class="dig">400</span>
+nPercent_x = [ <span class="dig">275</span>, <span class="dig">240</span>, <span class="dig">202</span>, <span class="dig">190</span>, <span class="dig">157</span> ]
+nPercent = [<span class="dig">90</span>, <span class="dig">60</span>, <span class="dig">40</span>, <span class="dig">30</span>, <span class="dig">10</span>]
+
 pRecoverHp = Location(<span class="dig">921</span>, <span class="dig">921</span>)
 pRecoverMp = Location(<span class="dig">1037</span>, <span class="dig">916</span>)
 
@@ -169,6 +175,8 @@ lib.setRoi(regionParty)
     <span class="kw">global</span> lib
     <span class="kw">global</span> regionHp
     <span class="kw">global</span> regionStatus
+    <span class="kw">global</span> nHploc_y
+    <span class="kw">global</span> nMploc_y
 
 
     locParty = lib.<span class="skw">find</span>(<span class="str">"party"</span>, imageParty)
@@ -177,13 +185,23 @@ lib.setRoi(regionParty)
     <span class="kw">if</span> partyMembers != None:
         sortedPartyMembers = sorted(partyMembers, key=by_y)
         locParty = sortedPartyMembers[<span class="dig">0</span>]
-
-
+        <span class="cmt">#Debug.user("locParty.y=%d", locParty.y)</span>
+        nHploc_y = locParty.y + <span class="dig">14</span>
+        nMploc_y = nHploc_y + <span class="dig">15</span>
 
     <span class="kw">if</span> locParty == None:
         leftRoi = GaeeryLib()
         leftRoi.setRoi(regionLeftScreen)
         characterPage = leftRoi.<span class="skw">find</span>(<span class="str">"character data"</span>, <img src="1513897038903.png" />)
+        <span class="kw">if</span> characterPage != None:
+            Debug.user(<span class="str">"close characterPage"</span>)
+            <span class="skw">click</span>(characterPage)
+            <span class="kw">return</span>
+
+        <span class="kw">if</span> exists( <img src="1514109969796.png" />, <span class="dig">0</span>):  <span class="cmt">#mission page</span>
+            <span class="skw">click</span>( <img src="1514109969796.png" /> )
+            <span class="kw">return</span>
+
         <span class="kw">if</span> characterPage != None:
             Debug.user(<span class="str">"close characterPage"</span>)
             <span class="skw">click</span>(characterPage)
@@ -202,43 +220,44 @@ lib.setRoi(regionParty)
         <span class="kw">if</span> math.fabs(regionHpCurrent.y - regionHp.y)&gt;<span class="dig">5</span>:
             regionHp = regionHpCurrent
             regionStatus = Region( regionStatusFirst.x, locParty.y-<span class="dig">40</span>, regionStatusFirst.w, regionStatusFirst.h )
-            regionHp.highlight()
+
+            <span class="cmt">#regionHp.highlight()</span>
             regionStatus.highlight()
             <span class="skw">sleep</span>(<span class="dig">1</span>)
-            regionHp.highlight()
+            <span class="cmt">#regionHp.highlight()</span>
             regionStatus.highlight()
 
-    <span class="kw">if</span> regionHp.exists(imageHp90, <span class="dig">0.3</span>):
+    hpPercent = getHpStatus()
+    mpPercent = getMpStatus()
+
+    Debug.user(<span class="str">"Hp: %d, Mp: %d"</span> % (hpPercent, mpPercent) )
+
+    <span class="kw">if</span> mpPercent &lt;= <span class="dig">40</span>:
+        usingFightingSkill(False)
+
+    <span class="kw">if</span> hpPercent &gt;= <span class="dig">90</span>:
         nBackHomeCount = <span class="dig">0</span>
-        <span class="kw">if</span> <span class="kw">not</span> isMpFull():
-            Debug.user(<span class="str">"Hp is OK"</span>)
+        <span class="kw">if</span> mpPercent &lt; <span class="dig">90</span>:
             recoverMp()
         <span class="kw">else</span>:
-            <span class="cmt">#Debug.user("Hp &amp; Mp are OK")</span>
             usingFightingSkill(True)
 
-
-    <span class="kw">elif</span> regionHp.exists(imageHp65, <span class="dig">0.3</span>):
-        Debug.user(<span class="str">"Hp is 65~90"</span>)
+    <span class="kw">elif</span> hpPercent &gt;= <span class="dig">60</span>:
+        <span class="cmt">#Debug.user("Hp is 60~90")</span>
         <span class="cmt">#click(pHpWater)  </span>
-        <span class="kw">if</span> hasMp():
-            Debug.user(<span class="str">"has mp"</span>)
+        <span class="kw">if</span> mpPercent &gt;= <span class="dig">10</span>:
             recoverHp()
         <span class="kw">else</span>:
-            Debug.user(<span class="str">"no mp"</span>)
             usingFightingSkill(False)
             recoverMp()
         nBackHomeCount = <span class="dig">0</span>
-    <span class="kw">elif</span> regionHp.exists(imageHp40, <span class="dig">0.5</span>):
-        Debug.user(<span class="str">"Hp is 40~65"</span>)
+    <span class="kw">elif</span> hpPercent &gt;= <span class="dig">40</span>:
+        <span class="cmt">#Debug.user("Hp is 40~60")</span>
         bringGameToFront()
         drinkWater()
-        <span class="kw">if</span> hasMp():
-            Debug.user(<span class="str">"has mp"</span>)
+        <span class="kw">if</span> mpPercent &gt;= <span class="dig">10</span>:
             recoverHp()
         <span class="kw">else</span>:
-            Debug.user(<span class="str">"no mp"</span>)
-            usingFightingSkill(False)
             recoverMp()
             <span class="cmt">#escape()</span>
         escape()
@@ -247,7 +266,6 @@ lib.setRoi(regionParty)
         Debug.user(<span class="str">"Hp is lower than 40"</span>)
         drinkWater()
         <span class="kw">if</span> hasMp():
-            Debug.user(<span class="str">"has mp"</span>)
             recoverHp()
 
         <span class="kw">if</span> checkStatus():
@@ -296,6 +314,32 @@ lib.setRoi(regionParty)
         <span class="kw">return</span> True
     <span class="kw">return</span> False
 
+<span class="kw">def</span> getHpStatus():
+    <span class="kw">for</span> i <span class="kw">in</span> range( len(nPercent_x) ):
+        color = r.getPixelColor(nPercent_x[i], nHploc_y)
+        <span class="cmt">#printColor( format("Hp %d Color" % nPercent[i]), color)</span>
+        <span class="kw">if</span> color.getRed() &gt;= <span class="dig">139</span> <span class="kw">and</span> color.getBlue() &lt; <span class="dig">50</span>:
+            <span class="kw">return</span> nPercent[i]
+    <span class="kw">return</span> -<span class="dig">1</span>
+
+<span class="kw">def</span> getMpStatus():
+    <span class="kw">for</span> i <span class="kw">in</span> range( len(nPercent_x) ):
+        color = r.getPixelColor(nPercent_x[i], nMploc_y)
+        <span class="cmt">#printColor( format("Mp %d Color" % nPercent[i]), color)</span>
+        <span class="kw">if</span> color.getBlue() &gt;= <span class="dig">125</span> <span class="kw">and</span> color.getRed() &lt; <span class="dig">30</span>:
+            <span class="kw">return</span> nPercent[i]
+    <span class="kw">return</span> -<span class="dig">1</span>
+
+<span class="kw">def</span> isMpFull():
+    locHighMp = Location(<span class="dig">397</span>, <span class="dig">89</span>)
+    highMpColor = r.getPixelColor(locHighMp.x, locHighMp.y) <span class="cmt"># get the color object</span>
+    <span class="cmt">#printColor( "highMpColor", highMpColor)</span>
+    <span class="kw">if</span> highMpColor.getBlue() &gt;= <span class="dig">125</span> &amp; highMpColor.getRed() &lt; <span class="dig">30</span>:
+        <span class="kw">return</span> True
+    <span class="kw">return</span> False
+
+
+
 <span class="cmt"># return True if in special status</span>
 <span class="kw">def</span> checkStatus():
     <span class="kw">if</span> regionStatus.exists(<img src="1513870172508.png" />, <span class="dig">0.2</span>):
@@ -307,12 +351,16 @@ lib.setRoi(regionParty)
     <span class="kw">if</span> regionStatus.exists(<img src="1513955946438.png" />, <span class="dig">0.2</span>):
         Debug.user(<span class="str">"You are stunned....."</span>)
         <span class="kw">return</span> True
+
+    <span class="kw">if</span> regionStatus.exists(<img src="1514110143993.png" />, <span class="dig">0.2</span>):
+        Debug.user(<span class="str">"You are stunned (case 2)....."</span>)
+        <span class="kw">return</span> True
     <span class="kw">return</span> False
 
 <span class="kw">def</span> recoverMp():
     Debug.user(<span class="str">"Use MP recover skill"</span>)
     <span class="skw">type</span>(keyMpRecover)
-    <span class="skw">sleep</span>(<span class="dig">1.7</span>)
+    <span class="skw">sleep</span>(<span class="dig">1.8</span>)
 
 <span class="kw">def</span> recoverHp():
     Debug.user(<span class="str">"Use HP recover skill"</span>)
@@ -351,7 +399,7 @@ bUsingFightingSkill = False
             <span class="kw">return</span>
     <span class="kw">else</span>:
         <span class="kw">if</span> <span class="kw">not</span> regionSkill.exists(<img src="1513524888200.png" />, <span class="dig">0.1</span>):
-            Debug.user(<span class="str">"no 'auto'"</span>)
+            <span class="cmt">#Debug.user("no 'auto'")</span>
             <span class="kw">return</span>
 
     switchAutoBuff(Location(<span class="dig">1624</span>, <span class="dig">924</span>), bOn)
@@ -375,6 +423,11 @@ bUsingFightingSkill = False
     Debug.user(<span class="str">"%s = %d,%d,%d"</span> % (strName, rgb.getRed(), rgb.getGreen(), rgb.getBlue() ) )
 
 
+<span class="cmt">#while True:</span>
+<span class="cmt">#    Debug.user("Hp status: %d" % getHpStatus())</span>
+<span class="cmt">#    Debug.user("Mp status: %d" % getMpStatus())</span>
+<span class="cmt">#    sleep(0.3)</span>
+<span class="cmt">#    continue</span>
 
 bringGameToFront()
 <span class="kw">while</span> True:

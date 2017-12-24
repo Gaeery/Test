@@ -13,5 +13,5 @@ locCreateParty = Location(96, 377)
 locCreatePartyConfirm = Location(1071, 850)
 
 
-#bUseFightingSkill = True
 bUseFightingSkill = False
+#bUseFightingSkill = True

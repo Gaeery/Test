@@ -78,6 +78,12 @@ imageMp50 = Pattern("imageMp50.png").similar(0.85)
 imageMp10 = "imageMp10.png"
 imageMp10_1 = "imageMp10_1.png"
 imageParty = Pattern("imageParty.png").similar(0.95)
+
+nHploc_y = 385
+nMploc_y = 400
+nPercent_x = [ 275, 240, 202, 190, 157 ]
+nPercent = [90, 60, 40, 30, 10]
+
 pRecoverHp = Location(921, 921)
 pRecoverMp = Location(1037, 916)
 
@@ -97,6 +103,8 @@ def checkHp():
     global lib
     global regionHp
     global regionStatus
+    global nHploc_y
+    global nMploc_y
     
 
     locParty = lib.find("party", imageParty)
@@ -105,13 +113,23 @@ def checkHp():
     if partyMembers != None:
         sortedPartyMembers = sorted(partyMembers, key=by_y)
         locParty = sortedPartyMembers[0]
-    
- 
+        #Debug.user("locParty.y=%d", locParty.y)
+        nHploc_y = locParty.y + 14
+        nMploc_y = nHploc_y + 15
     
     if locParty == None:
         leftRoi = GaeeryLib()
         leftRoi.setRoi(regionLeftScreen)
         characterPage = leftRoi.find("character data", "1513897038903.png")
+        if characterPage != None:
+            Debug.user("close characterPage")
+            click(characterPage)
+            return
+
+        if exists( "1514109969796.png", 0):  #mission page
+            click( "1514109969796.png" )
+            return
+            
         if characterPage != None:
             Debug.user("close characterPage")
             click(characterPage)
@@ -130,43 +148,44 @@ def checkHp():
         if math.fabs(regionHpCurrent.y - regionHp.y)>5:
             regionHp = regionHpCurrent
             regionStatus = Region( regionStatusFirst.x, locParty.y-40, regionStatusFirst.w, regionStatusFirst.h ) 
-            regionHp.highlight()
+            
+            #regionHp.highlight()
             regionStatus.highlight()
             sleep(1)
-            regionHp.highlight()
+            #regionHp.highlight()
             regionStatus.highlight()
-    
-    if regionHp.exists(imageHp90, 0.3):
+
+    hpPercent = getHpStatus()
+    mpPercent = getMpStatus()
+
+    Debug.user("Hp: %d, Mp: %d" % (hpPercent, mpPercent) )
+
+    if mpPercent <= 40:
+        usingFightingSkill(False)
+
+    if hpPercent >= 90:
         nBackHomeCount = 0
-        if not isMpFull():     
-            Debug.user("Hp is OK")            
+        if mpPercent < 90:     
             recoverMp()
         else:
-            #Debug.user("Hp & Mp are OK")
             usingFightingSkill(True)
-                
             
-    elif regionHp.exists(imageHp65, 0.3):
-        Debug.user("Hp is 65~90")
+    elif hpPercent >= 60:
+        #Debug.user("Hp is 60~90")
         #click(pHpWater)  
-        if hasMp():     
-            Debug.user("has mp")
+        if mpPercent >= 10:     
             recoverHp()
         else:
-            Debug.user("no mp")
             usingFightingSkill(False)
             recoverMp()
         nBackHomeCount = 0
-    elif regionHp.exists(imageHp40, 0.5):        
-        Debug.user("Hp is 40~65")
+    elif hpPercent >= 40:       
+        #Debug.user("Hp is 40~60")
         bringGameToFront()
         drinkWater()
-        if hasMp():  
-            Debug.user("has mp")
+        if mpPercent >= 10:   
             recoverHp()
         else:
-            Debug.user("no mp")
-            usingFightingSkill(False)
             recoverMp()
             #escape()
         escape()
@@ -175,7 +194,6 @@ def checkHp():
         Debug.user("Hp is lower than 40")
         drinkWater()
         if hasMp():  
-            Debug.user("has mp")
             recoverHp()
         
         if checkStatus():
@@ -224,6 +242,32 @@ def isMpFull():
         return True
     return False
 
+def getHpStatus():
+    for i in range( len(nPercent_x) ):
+        color = r.getPixelColor(nPercent_x[i], nHploc_y) 
+        #printColor( format("Hp %d Color" % nPercent[i]), color)
+        if color.getRed() >= 139 and color.getBlue() < 50:
+            return nPercent[i]
+    return -1
+
+def getMpStatus():
+    for i in range( len(nPercent_x) ):
+        color = r.getPixelColor(nPercent_x[i], nMploc_y) 
+        #printColor( format("Mp %d Color" % nPercent[i]), color)
+        if color.getBlue() >= 125 and color.getRed() < 30:
+            return nPercent[i]
+    return -1
+
+def isMpFull():
+    locHighMp = Location(397, 89)
+    highMpColor = r.getPixelColor(locHighMp.x, locHighMp.y) # get the color object
+    #printColor( "highMpColor", highMpColor)
+    if highMpColor.getBlue() >= 125 & highMpColor.getRed() < 30:
+        return True
+    return False
+
+
+
 # return True if in special status
 def checkStatus():
     if regionStatus.exists("1513870172508.png", 0.2):
@@ -235,12 +279,16 @@ def checkStatus():
     if regionStatus.exists("1513955946438.png", 0.2):
         Debug.user("You are stunned.....")
         return True
+
+    if regionStatus.exists("1514110143993.png", 0.2):
+        Debug.user("You are stunned (case 2).....")
+        return True
     return False
     
 def recoverMp():
     Debug.user("Use MP recover skill")
     type(keyMpRecover)
-    sleep(1.7)
+    sleep(1.8)
     
 def recoverHp():
     Debug.user("Use HP recover skill")
@@ -279,7 +327,7 @@ def usingFightingSkill( bOn ):
             return
     else:
         if not regionSkill.exists("1513524888200.png", 0.1):
-            Debug.user("no 'auto'")
+            #Debug.user("no 'auto'")
             return
     
     switchAutoBuff(Location(1624, 924), bOn)
@@ -303,6 +351,11 @@ def printColor(strName, rgb):
     Debug.user("%s = %d,%d,%d" % (strName, rgb.getRed(), rgb.getGreen(), rgb.getBlue() ) )
 
 
+#while True:
+#    Debug.user("Hp status: %d" % getHpStatus())
+#    Debug.user("Mp status: %d" % getMpStatus())
+#    sleep(0.3)
+#    continue
 
 bringGameToFront()
 while True:
