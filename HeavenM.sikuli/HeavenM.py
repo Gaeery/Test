@@ -94,6 +94,7 @@ pGameWnidow = Location(800, 14)
 bFlyIfNoHp = True
 pEscape = Location(493, 808)
 
+previousTripleArrowTime = 0
 
 lib = GaeeryLib()
 lib.setRoi(regionParty)
@@ -105,7 +106,7 @@ def checkHp():
     global regionStatus
     global nHploc_y
     global nMploc_y
-    
+    global previousTripleArrowTime
 
     locParty = lib.find("party", imageParty)
     
@@ -160,15 +161,18 @@ def checkHp():
 
     Debug.user("Hp: %d, Mp: %d" % (hpPercent, mpPercent) )
 
-    if mpPercent <= 40:
-        usingFightingSkill(False)
+    if bUseFightingSkill and mpPercent >= nMinMpPercentTripleArrow:
+        if time.time()-previousTripleArrowTime >= nIntervalTripleArrow:
+            useTripleArrow()
+            previousTripleArrowTime = time.time()
+            
 
     if hpPercent >= 90:
         nBackHomeCount = 0
         if mpPercent < 90:     
             recoverMp()
-        else:
-            usingFightingSkill(True)
+        #else:
+            #usingFightingSkill(True)
             
     elif hpPercent >= 60:
         #Debug.user("Hp is 60~90")
@@ -176,7 +180,7 @@ def checkHp():
         if mpPercent >= 10:     
             recoverHp()
         else:
-            usingFightingSkill(False)
+            #usingFightingSkill(False)
             recoverMp()
         nBackHomeCount = 0
     elif hpPercent >= 40:       
@@ -303,6 +307,11 @@ def recoverPoison():
 def drinkWater():
     Debug.user("Drink water!")
     type(keyHpWater)
+
+def useTripleArrow():
+    Debug.user("Use HP recover skill")
+    type(keyTripleArrow)
+    sleep(0.6)
     
 def useSelfRecoverOldWay():
     lib = GaeeryLib()
@@ -322,16 +331,26 @@ def usingFightingSkill( bOn ):
         return
     regionSkill = Region(1574,863,100,130)
     if bOn: 
+        if regionSkill.exists("1513524888200.png", 0):
+            #Debug.user("already on")
+            return
+        
         if not regionSkill.exists("1513525529844.png", 0.1):
             Debug.user("This skill doesn't support 'auto'")
             return
     else:
+        if regionSkill.exists("1513525529844.png", 0):
+            #Debug.user("already off")
+            return            
+
         if not regionSkill.exists("1513524888200.png", 0.1):
             #Debug.user("no 'auto'")
             return
     
     switchAutoBuff(Location(1624, 924), bOn)
     bUsingFightingSkill = bOn
+
+
 
 def switchAutoBuff( loc, bOn ):
     mouseMove(loc)
@@ -358,6 +377,7 @@ def printColor(strName, rgb):
 #    continue
 
 bringGameToFront()
+screenCapture()
 while True:
     #checkBufferStatus()
     previousTime = time.time()

@@ -166,6 +166,7 @@ pGameWnidow = Location(<span class="dig">800</span>, <span class="dig">14</span>
 bFlyIfNoHp = True
 pEscape = Location(<span class="dig">493</span>, <span class="dig">808</span>)
 
+previousTripleArrowTime = <span class="dig">0</span>
 
 lib = GaeeryLib()
 lib.setRoi(regionParty)
@@ -177,7 +178,7 @@ lib.setRoi(regionParty)
     <span class="kw">global</span> regionStatus
     <span class="kw">global</span> nHploc_y
     <span class="kw">global</span> nMploc_y
-
+    <span class="kw">global</span> previousTripleArrowTime
 
     locParty = lib.<span class="skw">find</span>(<span class="str">"party"</span>, imageParty)
 
@@ -232,15 +233,18 @@ lib.setRoi(regionParty)
 
     Debug.user(<span class="str">"Hp: %d, Mp: %d"</span> % (hpPercent, mpPercent) )
 
-    <span class="kw">if</span> mpPercent &lt;= <span class="dig">40</span>:
-        usingFightingSkill(False)
+    <span class="kw">if</span> bUseFightingSkill <span class="kw">and</span> mpPercent &gt;= nMinMpPercentTripleArrow:
+        <span class="kw">if</span> time.time()-previousTripleArrowTime &gt;= nIntervalTripleArrow:
+            useTripleArrow()
+            previousTripleArrowTime = time.time()
+
 
     <span class="kw">if</span> hpPercent &gt;= <span class="dig">90</span>:
         nBackHomeCount = <span class="dig">0</span>
         <span class="kw">if</span> mpPercent &lt; <span class="dig">90</span>:
             recoverMp()
-        <span class="kw">else</span>:
-            usingFightingSkill(True)
+        <span class="cmt">#else:</span>
+            <span class="cmt">#usingFightingSkill(True)</span>
 
     <span class="kw">elif</span> hpPercent &gt;= <span class="dig">60</span>:
         <span class="cmt">#Debug.user("Hp is 60~90")</span>
@@ -248,7 +252,7 @@ lib.setRoi(regionParty)
         <span class="kw">if</span> mpPercent &gt;= <span class="dig">10</span>:
             recoverHp()
         <span class="kw">else</span>:
-            usingFightingSkill(False)
+            <span class="cmt">#usingFightingSkill(False)</span>
             recoverMp()
         nBackHomeCount = <span class="dig">0</span>
     <span class="kw">elif</span> hpPercent &gt;= <span class="dig">40</span>:
@@ -376,6 +380,11 @@ lib.setRoi(regionParty)
     Debug.user(<span class="str">"Drink water!"</span>)
     <span class="skw">type</span>(keyHpWater)
 
+<span class="kw">def</span> useTripleArrow():
+    Debug.user(<span class="str">"Use HP recover skill"</span>)
+    <span class="skw">type</span>(keyTripleArrow)
+    <span class="skw">sleep</span>(<span class="dig">0.6</span>)
+
 <span class="kw">def</span> useSelfRecoverOldWay():
     lib = GaeeryLib()
     lib.setROI(Region(<span class="dig">751</span>,<span class="dig">869</span>,<span class="dig">1038</span>,<span class="dig">104</span>))
@@ -394,16 +403,26 @@ bUsingFightingSkill = False
         <span class="kw">return</span>
     regionSkill = Region(<span class="dig">1574</span>,<span class="dig">863</span>,<span class="dig">100</span>,<span class="dig">130</span>)
     <span class="kw">if</span> bOn:
+        <span class="kw">if</span> regionSkill.exists(<img src="1513524888200.png" />, <span class="dig">0</span>):
+            <span class="cmt">#Debug.user("already on")</span>
+            <span class="kw">return</span>
+
         <span class="kw">if</span> <span class="kw">not</span> regionSkill.exists(<img src="1513525529844.png" />, <span class="dig">0.1</span>):
             Debug.user(<span class="str">"This skill doesn't support 'auto'"</span>)
             <span class="kw">return</span>
     <span class="kw">else</span>:
+        <span class="kw">if</span> regionSkill.exists(<img src="1513525529844.png" />, <span class="dig">0</span>):
+            <span class="cmt">#Debug.user("already off")</span>
+            <span class="kw">return</span>
+
         <span class="kw">if</span> <span class="kw">not</span> regionSkill.exists(<img src="1513524888200.png" />, <span class="dig">0.1</span>):
             <span class="cmt">#Debug.user("no 'auto'")</span>
             <span class="kw">return</span>
 
     switchAutoBuff(Location(<span class="dig">1624</span>, <span class="dig">924</span>), bOn)
     bUsingFightingSkill = bOn
+
+
 
 <span class="kw">def</span> switchAutoBuff( loc, bOn ):
     mouseMove(loc)
@@ -430,6 +449,7 @@ bUsingFightingSkill = False
 <span class="cmt">#    continue</span>
 
 bringGameToFront()
+screenCapture()
 <span class="kw">while</span> True:
     <span class="cmt">#checkBufferStatus()</span>
     previousTime = time.time()
