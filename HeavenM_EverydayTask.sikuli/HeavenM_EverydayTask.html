@@ -78,18 +78,29 @@
 
 
 
-images = [  <img src="1513956456661.png" />  ]
+images = [ <img src="1514022375233.png" />, Pattern(<img src="1513956456661.png" />).similar(<span class="dig">0.90</span>) , <img src="1514022180377.png" /> ]
 
 lib = GaeeryLib()
 
 <span class="kw">def</span> clickTarget():
+    ret = False
+    i = <span class="dig">0</span>
     <span class="kw">for</span> image <span class="kw">in</span> images:
-       target = lib.<span class="skw">find</span>(image, <span class="dig">0</span>)
+       target = lib.<span class="skw">find</span>(<span class="str">"target "</span> + str(i),image, <span class="dig">0</span>)
+       i = i + <span class="dig">1</span>
+       <span class="kw">if</span> target != None:
+            <span class="skw">click</span>(target)
+            <span class="skw">click</span>(target)
+            ret = True
+            <span class="skw">sleep</span>(<span class="dig">1</span>)
+    <span class="kw">return</span> ret
 <span class="cmt">#</span>
 
-Screen().getPixelColor( Location(<span class="dig">161</span>, <span class="dig">397</span>) )
-exit(<span class="dig">0</span>)
+<span class="cmt">#Screen().getPixelColor( Location(161, 397) )</span>
+<span class="cmt">#exit(0)</span>
 <span class="kw">while</span> True:
+    <span class="cmt">#clickTarget():</span>
+    <span class="cmt">#Debug.user("found")</span>
     <span class="skw">type</span>(Key.F9)
 
     <span class="skw">sleep</span>(<span class="dig">0.6</span>)

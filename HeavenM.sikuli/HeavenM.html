@@ -144,7 +144,7 @@ imageHp65 = Pattern(<img src="imageHp65.png" />).similar(<span class="dig">0.85<
 imageHp40 = Pattern(<img src="imageHp40.png" />).similar(<span class="dig">0.85</span>)
 imageMp90 = Pattern(<img src="imageMp90.png" />).similar(<span class="dig">0.95</span>)
 imageMp50 = Pattern(<img src="imageMp50.png" />).similar(<span class="dig">0.85</span>)
-imageMp10 = Pattern(<img src="imageMp10.png" />).similar(<span class="dig">0.58</span>)
+imageMp10 = Pattern(<img src="imageMp10.png" />).similar(<span class="dig">0.90</span>)
 imageParty = Pattern(<img src="imageParty.png" />).similar(<span class="dig">0.95</span>)
 pRecoverHp = Location(<span class="dig">921</span>, <span class="dig">921</span>)
 pRecoverMp = Location(<span class="dig">1037</span>, <span class="dig">916</span>)
@@ -152,7 +152,7 @@ pRecoverMp = Location(<span class="dig">1037</span>, <span class="dig">916</span
 pHpWater = Location(<span class="dig">808</span>, <span class="dig">921</span>)
 pGoToTown = Location(<span class="dig">1160</span>, <span class="dig">916</span>)
 pGameWnidow = Location(<span class="dig">800</span>, <span class="dig">14</span>)
-bUseFightingSkill = False
+
 bFlyIfNoHp = True
 pEscape = Location(<span class="dig">493</span>, <span class="dig">808</span>)
 
@@ -224,7 +224,6 @@ lib.setRoi(regionParty)
             Debug.user(<span class="str">"no mp"</span>)
             usingFightingSkill(False)
             recoverMp()
-            escape()
         nBackHomeCount = <span class="dig">0</span>
     <span class="kw">elif</span> regionHp.exists(imageHp40, <span class="dig">0.5</span>):
         Debug.user(<span class="str">"Hp is 40~65"</span>)

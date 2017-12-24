@@ -72,7 +72,7 @@ imageHp65 = Pattern("imageHp65.png").similar(0.85)
 imageHp40 = Pattern("imageHp40.png").similar(0.85)
 imageMp90 = Pattern("imageMp90.png").similar(0.95)
 imageMp50 = Pattern("imageMp50.png").similar(0.85)
-imageMp10 = Pattern("imageMp10.png").similar(0.58)
+imageMp10 = Pattern("imageMp10.png").similar(0.90)
 imageParty = Pattern("imageParty.png").similar(0.95)
 pRecoverHp = Location(921, 921)
 pRecoverMp = Location(1037, 916)
@@ -80,7 +80,7 @@ pRecoverMp = Location(1037, 916)
 pHpWater = Location(808, 921)
 pGoToTown = Location(1160, 916)
 pGameWnidow = Location(800, 14)
-bUseFightingSkill = False
+
 bFlyIfNoHp = True
 pEscape = Location(493, 808)
 
@@ -152,7 +152,6 @@ def checkHp():
             Debug.user("no mp")
             usingFightingSkill(False)
             recoverMp()
-            escape()
         nBackHomeCount = 0
     elif regionHp.exists(imageHp40, 0.5):
         Debug.user("Hp is 40~65")
@@ -241,7 +240,7 @@ def useSelfRecoverOldWay():
     lib = GaeeryLib()
     lib.setROI(Region(751,869,1038,104))
     imageSelfRecover = Pattern("imageSelfRecover.png").similar(0.95)
-    imageRecover = "imageRecover.png"
+    imageRecover = "imageRecover.png"    
     skill = lib.find( "find self recover skill", imageSelfRecover )
     if skill == None:
         click(pRecoverHp)
