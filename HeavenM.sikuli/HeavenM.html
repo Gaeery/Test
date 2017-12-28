@@ -454,7 +454,7 @@ bUsingFightingSkill = False
 <span class="kw">def</span> getGiftFromMail():
     locMenu = Location(<span class="dig">1796</span>, <span class="dig">73</span>)
     menuColor = getColor(locMenu)
-    printColor(<span class="str">"menuColor"</span>, menuColor)
+    <span class="cmt">#printColor("menuColor", menuColor)</span>
     <span class="kw">if</span> menuColor.getRed() &lt; <span class="dig">200</span> <span class="kw">or</span> menuColor.getBlue() &gt; <span class="dig">50</span>:
         <span class="kw">return</span>
     <span class="kw">if</span> <span class="kw">not</span> Region(<span class="dig">1431</span>,<span class="dig">465</span>,<span class="dig">53</span>,<span class="dig">67</span>).exists(Pattern(<img src="1514418272184.png" />).similar(<span class="dig">0.60</span>), <span class="dig">0</span>):

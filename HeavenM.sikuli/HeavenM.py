@@ -382,7 +382,7 @@ def getColor(loc):
 def getGiftFromMail():
     locMenu = Location(1796, 73)
     menuColor = getColor(locMenu)
-    printColor("menuColor", menuColor)
+    #printColor("menuColor", menuColor)
     if menuColor.getRed() < 200 or menuColor.getBlue() > 50:
         return
     if not Region(1431,465,53,67).exists(Pattern("1514418272184.png").similar(0.60), 0):
