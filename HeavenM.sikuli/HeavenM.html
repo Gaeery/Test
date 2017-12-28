@@ -199,6 +199,14 @@ lib.setRoi(regionParty)
             <span class="skw">click</span>(characterPage)
             <span class="kw">return</span>
 
+        menuRoi = GaeeryLib()
+        menuRoi.setRoi(Region(<span class="dig">1726</span>,<span class="dig">47</span>,<span class="dig">93</span>,<span class="dig">85</span>))
+        menuPage = menuRoi.<span class="skw">find</span>(<span class="str">"menu"</span>, <img src="1513897038903.png" />)
+        <span class="kw">if</span> menuPage != None:
+            Debug.user(<span class="str">"close menu"</span>)
+            <span class="skw">click</span>(menuPage)
+            <span class="kw">return</span>
+
         <span class="kw">if</span> exists( <img src="1514109969796.png" />, <span class="dig">0</span>):  <span class="cmt">#mission page</span>
             <span class="skw">click</span>( <img src="1514109969796.png" /> )
             <span class="kw">return</span>
@@ -262,7 +270,7 @@ lib.setRoi(regionParty)
         <span class="kw">if</span> mpPercent &gt;= <span class="dig">10</span>:
             recoverHp()
         <span class="kw">else</span>:
-            escape()
+            <span class="cmt">#escape()</span>
             recoverMp()
         <span class="cmt">#escape()</span>
         nBackHomeCount = <span class="dig">0</span>
@@ -275,13 +283,12 @@ lib.setRoi(regionParty)
         <span class="kw">if</span> checkStatus():
             <span class="kw">return</span>
 
-        escape()
-
         <span class="kw">if</span> <span class="kw">not</span> bFlyIfNoHp:
             <span class="kw">return</span>
 
         nBackHomeCount = nBackHomeCount + <span class="dig">1</span>
         <span class="kw">if</span> nBackHomeCount &lt; <span class="dig">2</span>:
+            escape()
             <span class="kw">return</span>
 
         Debug.user(<span class="str">"return to town!!"</span>)
@@ -441,6 +448,34 @@ bUsingFightingSkill = False
 <span class="kw">def</span> printColor(strName, rgb):
     Debug.user(<span class="str">"%s = %d,%d,%d"</span> % (strName, rgb.getRed(), rgb.getGreen(), rgb.getBlue() ) )
 
+<span class="kw">def</span> getColor(loc):
+    <span class="kw">return</span> r.getPixelColor(loc.x, loc.y)
+
+<span class="kw">def</span> getGiftFromMail():
+    locMenu = Location(<span class="dig">1796</span>, <span class="dig">73</span>)
+    menuColor = getColor(locMenu)
+    printColor(<span class="str">"menuColor"</span>, menuColor)
+    <span class="kw">if</span> menuColor.getRed() &lt; <span class="dig">200</span> <span class="kw">or</span> menuColor.getBlue() &gt; <span class="dig">50</span>:
+        <span class="kw">return</span>
+    <span class="kw">if</span> <span class="kw">not</span> Region(<span class="dig">1431</span>,<span class="dig">465</span>,<span class="dig">53</span>,<span class="dig">67</span>).exists(Pattern(<img src="1514418272184.png" />).similar(<span class="dig">0.60</span>), <span class="dig">0</span>):
+
+        <span class="skw">click</span>(locMenu)
+        <span class="skw">sleep</span>(<span class="dig">1</span>)
+    locMail = Location(<span class="dig">1483</span>, <span class="dig">466</span>)
+    mailColor = getColor(locMail)
+    printColor(<span class="str">"mailColor"</span>, mailColor)
+    <span class="kw">if</span> menuColor.getRed() &lt; <span class="dig">200</span> <span class="kw">or</span> menuColor.getBlue() &gt; <span class="dig">50</span>:
+        <span class="kw">return</span>
+    <span class="skw">click</span>(locMail)
+    <span class="skw">sleep</span>(<span class="dig">1</span>)
+    <span class="kw">while</span> True:
+        imageReceiveGift = <img src="1514418813566.png" />
+        <span class="kw">if</span> Region(<span class="dig">1395</span>,<span class="dig">169</span>,<span class="dig">422</span>,<span class="dig">497</span>).exists(imageReceiveGift, <span class="dig">0</span>):
+            <span class="skw">click</span>(imageReceiveGift)
+            <span class="skw">sleep</span>(<span class="dig">1</span>)
+        <span class="kw">else</span>:
+            <span class="kw">break</span>
+
 
 <span class="cmt">#while True:</span>
 <span class="cmt">#    Debug.user("Hp status: %d" % getHpStatus())</span>
@@ -450,9 +485,12 @@ bUsingFightingSkill = False
 
 bringGameToFront()
 screenCapture()
+
+
 <span class="kw">while</span> True:
     <span class="cmt">#checkBufferStatus()</span>
     previousTime = time.time()
+    getGiftFromMail()
     checkHp()
     <span class="kw">if</span> time.time()-previousTime &gt; <span class="dig">4</span>:
         Debug.user(<span class="str">"pause a while, need to bring game to front"</span>)

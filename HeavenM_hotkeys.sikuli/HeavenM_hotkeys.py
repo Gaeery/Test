@@ -17,5 +17,5 @@ locCreatePartyConfirm = Location(1071, 850)
 
 bUseFightingSkill = True
 keyTripleArrow = Key.F7
-nMinMpPercentTripleArrow = 40
+nMinMpPercentTripleArrow = 60
 nIntervalTripleArrow = 4

@@ -127,6 +127,14 @@ def checkHp():
             click(characterPage)
             return
 
+        menuRoi = GaeeryLib()
+        menuRoi.setRoi(Region(1726,47,93,85))
+        menuPage = menuRoi.find("menu", "1513897038903.png")
+        if menuPage != None:
+            Debug.user("close menu")
+            click(menuPage)
+            return
+
         if exists( "1514109969796.png", 0):  #mission page
             click( "1514109969796.png" )
             return
@@ -190,7 +198,7 @@ def checkHp():
         if mpPercent >= 10:   
             recoverHp()
         else:
-            escape()
+            #escape()
             recoverMp()
         #escape()
         nBackHomeCount = 0
@@ -203,13 +211,12 @@ def checkHp():
         if checkStatus():
             return
 
-        escape()
-
         if not bFlyIfNoHp:
             return
             
         nBackHomeCount = nBackHomeCount + 1
         if nBackHomeCount < 2:
+            escape()
             return
         
         Debug.user("return to town!!")
@@ -369,7 +376,35 @@ def bringGameToFront():
 def printColor(strName, rgb):
     Debug.user("%s = %d,%d,%d" % (strName, rgb.getRed(), rgb.getGreen(), rgb.getBlue() ) )
 
+def getColor(loc):
+    return r.getPixelColor(loc.x, loc.y)
 
+def getGiftFromMail():
+    locMenu = Location(1796, 73)
+    menuColor = getColor(locMenu)
+    printColor("menuColor", menuColor)
+    if menuColor.getRed() < 200 or menuColor.getBlue() > 50:
+        return
+    if not Region(1431,465,53,67).exists(Pattern("1514418272184.png").similar(0.60), 0):
+        
+        click(locMenu)
+        sleep(1)
+    locMail = Location(1483, 466)
+    mailColor = getColor(locMail)
+    printColor("mailColor", mailColor)
+    if menuColor.getRed() < 200 or menuColor.getBlue() > 50:
+        return
+    click(locMail)
+    sleep(1)
+    while True:
+        imageReceiveGift = "1514418813566.png"
+        if Region(1395,169,422,497).exists(imageReceiveGift, 0):
+            click(imageReceiveGift)
+            sleep(1)
+        else:
+            break
+
+    
 #while True:
 #    Debug.user("Hp status: %d" % getHpStatus())
 #    Debug.user("Mp status: %d" % getMpStatus())
@@ -378,9 +413,12 @@ def printColor(strName, rgb):
 
 bringGameToFront()
 screenCapture()
+
+
 while True:
     #checkBufferStatus()
     previousTime = time.time()
+    getGiftFromMail()
     checkHp()
     if time.time()-previousTime > 4:
         Debug.user("pause a while, need to bring game to front")
