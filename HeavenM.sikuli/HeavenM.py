@@ -211,6 +211,8 @@ def checkHp():
         nBackHomeCount = 0
     else:       
         Debug.user("Hp is lower than 40")
+        if checkStatus():
+            return
         drinkWater()
         if hasMp():  
             recoverHp()
@@ -288,8 +290,15 @@ def isMpFull():
 
 # return True if in special status
 def checkStatus():
+    regionSelfStatus = Region(138,197,88,42)
+    if regionSelfStatus.exists("1513870172508.png", 0.2):
+        recoverPoison()
+        sleep(0.5)
+        return True
+    
     if regionStatus.exists("1513870172508.png", 0.2):
         recoverPoison()
+        sleep(0.5)
         return True
     if regionStatus.exists("1513870381521.png", 0.2):
         Debug.user("You have become a stone.....")
@@ -401,8 +410,9 @@ def getGiftFromMail():
         sleep(1)
     locMail = Location(1483, 466)
     mailColor = getColor(locMail)
-    printColor("mailColor", mailColor)
-    if menuColor.getRed() < 200 or menuColor.getBlue() > 50:
+    #printColor("mailColor", mailColor)
+
+    if mailColor.getRed() < 200 or mailColor.getBlue() > 50:
         return
     click(locMail)
     sleep(1)
@@ -424,11 +434,16 @@ def getGiftFromMail():
 bringGameToFront()
 screenCapture()
 
+def closeMission():
+    if Region(1021,750,101,54).exists("1514556735445.png", 0):
+        click(Location(1065, 775))
+        sleep(1)
 
 while True:
     #checkBufferStatus()
     previousTime = time.time()
     getGiftFromMail()
+    closeMission()
     checkHp()
     if time.time()-previousTime > 4:
         Debug.user("pause a while, need to bring game to front")

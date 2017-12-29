@@ -283,6 +283,8 @@ lib.setRoi(regionParty)
         nBackHomeCount = <span class="dig">0</span>
     <span class="kw">else</span>:
         Debug.user(<span class="str">"Hp is lower than 40"</span>)
+        <span class="kw">if</span> checkStatus():
+            <span class="kw">return</span>
         drinkWater()
         <span class="kw">if</span> hasMp():
             recoverHp()
@@ -360,8 +362,15 @@ lib.setRoi(regionParty)
 
 <span class="cmt"># return True if in special status</span>
 <span class="kw">def</span> checkStatus():
+    regionSelfStatus = Region(<span class="dig">138</span>,<span class="dig">197</span>,<span class="dig">88</span>,<span class="dig">42</span>)
+    <span class="kw">if</span> regionSelfStatus.exists(<img src="1513870172508.png" />, <span class="dig">0.2</span>):
+        recoverPoison()
+        <span class="skw">sleep</span>(<span class="dig">0.5</span>)
+        <span class="kw">return</span> True
+
     <span class="kw">if</span> regionStatus.exists(<img src="1513870172508.png" />, <span class="dig">0.2</span>):
         recoverPoison()
+        <span class="skw">sleep</span>(<span class="dig">0.5</span>)
         <span class="kw">return</span> True
     <span class="kw">if</span> regionStatus.exists(<img src="1513870381521.png" />, <span class="dig">0.2</span>):
         Debug.user(<span class="str">"You have become a stone....."</span>)
@@ -473,8 +482,9 @@ bUsingFightingSkill = False
         <span class="skw">sleep</span>(<span class="dig">1</span>)
     locMail = Location(<span class="dig">1483</span>, <span class="dig">466</span>)
     mailColor = getColor(locMail)
-    printColor(<span class="str">"mailColor"</span>, mailColor)
-    <span class="kw">if</span> menuColor.getRed() &lt; <span class="dig">200</span> <span class="kw">or</span> menuColor.getBlue() &gt; <span class="dig">50</span>:
+    <span class="cmt">#printColor("mailColor", mailColor)</span>
+
+    <span class="kw">if</span> mailColor.getRed() &lt; <span class="dig">200</span> <span class="kw">or</span> mailColor.getBlue() &gt; <span class="dig">50</span>:
         <span class="kw">return</span>
     <span class="skw">click</span>(locMail)
     <span class="skw">sleep</span>(<span class="dig">1</span>)
@@ -496,11 +506,16 @@ bUsingFightingSkill = False
 bringGameToFront()
 screenCapture()
 
+<span class="kw">def</span> closeMission():
+    <span class="kw">if</span> Region(<span class="dig">1021</span>,<span class="dig">750</span>,<span class="dig">101</span>,<span class="dig">54</span>).exists(<img src="1514556735445.png" />, <span class="dig">0</span>):
+        <span class="skw">click</span>(Location(<span class="dig">1065</span>, <span class="dig">775</span>))
+        <span class="skw">sleep</span>(<span class="dig">1</span>)
 
 <span class="kw">while</span> True:
     <span class="cmt">#checkBufferStatus()</span>
     previousTime = time.time()
     getGiftFromMail()
+    closeMission()
     checkHp()
     <span class="kw">if</span> time.time()-previousTime &gt; <span class="dig">4</span>:
         Debug.user(<span class="str">"pause a while, need to bring game to front"</span>)
