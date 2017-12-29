@@ -6,7 +6,9 @@ from HeavenM_hotkeys import *
 
 
 
-images = [ "1514022375233.png", Pattern("1513956456661.png").similar(0.90) , "1514022180377.png" ]
+images = [  "1514022180377.png" ]
+#images = [ "1514022375233.png", Pattern("1513956456661.png").similar(0.90) , "1514022180377.png" ]
+images = []
 
 lib = GaeeryLib()
 
@@ -27,7 +29,7 @@ def clickTarget():
 #Screen().getPixelColor( Location(161, 397) )
 #exit(0)
 while True:
-    #clickTarget()
+    clickTarget()
     #Debug.user("found")
     type(keyPracticeTask)
 

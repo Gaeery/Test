@@ -207,8 +207,15 @@ lib.setRoi(regionParty)
             <span class="skw">click</span>(menuPage)
             <span class="kw">return</span>
 
-        <span class="kw">if</span> exists( <img src="1514109969796.png" />, <span class="dig">0</span>):  <span class="cmt">#mission page</span>
+        <span class="cmt">#talk</span>
+        <span class="kw">if</span> Region(<span class="dig">1541</span>,<span class="dig">670</span>,<span class="dig">118</span>,<span class="dig">40</span>).exists(<img src="1514506603250.png" />, <span class="dig">0</span>):
+            <span class="skw">click</span>(Location(<span class="dig">1637</span>, <span class="dig">874</span>))
+            <span class="skw">sleep</span>(<span class="dig">1</span>)
+            <span class="kw">return</span>
+
+        <span class="kw">if</span> Region(<span class="dig">925</span>,<span class="dig">711</span>,<span class="dig">294</span>,<span class="dig">123</span>).exists( <img src="1514109969796.png" />, <span class="dig">0</span>):  <span class="cmt">#mission page</span>
             <span class="skw">click</span>( <img src="1514109969796.png" /> )
+            <span class="skw">sleep</span>(<span class="dig">1</span>)
             <span class="kw">return</span>
 
         <span class="kw">if</span> characterPage != None:
@@ -389,6 +396,9 @@ lib.setRoi(regionParty)
 
 <span class="kw">def</span> useTripleArrow():
     Debug.user(<span class="str">"useTripleArrow"</span>)
+    <span class="kw">if</span> Region(<span class="dig">786</span>,<span class="dig">106</span>,<span class="dig">86</span>,<span class="dig">96</span>).exists(<img src="1514469461757.png" />, <span class="dig">0</span>):
+        Debug.user(<span class="str">"targeting a player..."</span>)
+        <span class="kw">return</span>
     <span class="skw">type</span>(keyTripleArrow)
     <span class="skw">sleep</span>(<span class="dig">0.6</span>)
 

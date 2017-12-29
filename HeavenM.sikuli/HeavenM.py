@@ -135,8 +135,15 @@ def checkHp():
             click(menuPage)
             return
 
-        if exists( "1514109969796.png", 0):  #mission page
+        #talk
+        if Region(1541,670,118,40).exists("1514506603250.png", 0):
+            click(Location(1637, 874))
+            sleep(1)
+            return
+
+        if Region(925,711,294,123).exists( "1514109969796.png", 0):  #mission page
             click( "1514109969796.png" )
+            sleep(1)            
             return
             
         if characterPage != None:
@@ -317,6 +324,9 @@ def drinkWater():
 
 def useTripleArrow():
     Debug.user("useTripleArrow")
+    if Region(786,106,86,96).exists("1514469461757.png", 0):
+        Debug.user("targeting a player...")
+        return
     type(keyTripleArrow)
     sleep(0.6)
     
