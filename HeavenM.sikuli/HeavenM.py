@@ -107,6 +107,7 @@ def checkHp():
     global nHploc_y
     global nMploc_y
     global previousTripleArrowTime
+    global previousCheckStayTime
 
     locParty = lib.find("party", imageParty)
     
@@ -180,7 +181,8 @@ def checkHp():
         if time.time()-previousTripleArrowTime >= nIntervalTripleArrow:
             useTripleArrow()
             previousTripleArrowTime = time.time()
-            
+
+
 
     if hpPercent >= 90:
         nBackHomeCount = 0
@@ -398,22 +400,57 @@ def printColor(strName, rgb):
 def getColor(loc):
     return r.getPixelColor(loc.x, loc.y)
 
+
+
+previousCheckStayTime = 0 
+# check if map contains stayRegions.  if not, click moveToStayRegion
+def stayInMapRegion():
+    global previousCheckStayTime
+    if nIntervalCheckStayInterval < 0 or time.time()-previousCheckStayTime <= nIntervalCheckStayInterval:
+        return
+    
+    previousCheckStayTime = time.time()
+    regionMap = Region(1548,206,249,222)
+    for stay in stayRegions:
+        if regionMap.exists(stay, 0):
+            Debug.user("found stay region")
+            return
+    Debug.user("move to stay region")
+    click( locMoveToStayRegion )
+    type(keyPickup)
+
+previousCheckMailTime = 0 
 def getGiftFromMail():
+    global previousCheckMailTime
+    if nIntervalCheckMailInterval < 0 or time.time()-previousCheckMailTime <= nIntervalCheckMailInterval:
+        return
+    previousCheckMailTime = time.time()
+
+    Debug.user("check mail")
+    
     locMenu = Location(1796, 73)
     menuColor = getColor(locMenu)
     #printColor("menuColor", menuColor)
     if menuColor.getRed() < 200 or menuColor.getBlue() > 50:
         return
+    # menu is red
     if not Region(1431,465,53,67).exists(Pattern("1514418272184.png").similar(0.60), 0):
         
         click(locMenu)
         sleep(1)
+        
+    #menu opened
     locMail = Location(1483, 466)
     mailColor = getColor(locMail)
     #printColor("mailColor", mailColor)
 
     if mailColor.getRed() < 200 or mailColor.getBlue() > 50:
+        #no mail, close menu
+        click(locMenu)
+        sleep(1)
         return
+    
+    #mail is red
     click(locMail)
     sleep(1)
     while True:
@@ -423,7 +460,9 @@ def getGiftFromMail():
             sleep(1)
         else:
             break
-
+    #close menu
+    click(locMenu)
+    sleep(1)
     
 #while True:
 #    Debug.user("Hp status: %d" % getHpStatus())
@@ -445,6 +484,7 @@ while True:
     getGiftFromMail()
     closeMission()
     checkHp()
+    stayInMapRegion()
     if time.time()-previousTime > 4:
         Debug.user("pause a while, need to bring game to front")
         bringGameToFront()

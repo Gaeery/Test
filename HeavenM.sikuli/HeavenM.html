@@ -179,6 +179,7 @@ lib.setRoi(regionParty)
     <span class="kw">global</span> nHploc_y
     <span class="kw">global</span> nMploc_y
     <span class="kw">global</span> previousTripleArrowTime
+    <span class="kw">global</span> previousCheckStayTime
 
     locParty = lib.<span class="skw">find</span>(<span class="str">"party"</span>, imageParty)
 
@@ -252,6 +253,7 @@ lib.setRoi(regionParty)
         <span class="kw">if</span> time.time()-previousTripleArrowTime &gt;= nIntervalTripleArrow:
             useTripleArrow()
             previousTripleArrowTime = time.time()
+
 
 
     <span class="kw">if</span> hpPercent &gt;= <span class="dig">90</span>:
@@ -470,22 +472,57 @@ bUsingFightingSkill = False
 <span class="kw">def</span> getColor(loc):
     <span class="kw">return</span> r.getPixelColor(loc.x, loc.y)
 
+
+
+previousCheckStayTime = <span class="dig">0</span>
+<span class="cmt"># check if map contains stayRegions.  if not, click moveToStayRegion</span>
+<span class="kw">def</span> stayInMapRegion():
+    <span class="kw">global</span> previousCheckStayTime
+    <span class="kw">if</span> nIntervalCheckStayInterval &lt; <span class="dig">0</span> <span class="kw">or</span> time.time()-previousCheckStayTime &lt;= nIntervalCheckStayInterval:
+        <span class="kw">return</span>
+
+    previousCheckStayTime = time.time()
+    regionMap = Region(<span class="dig">1548</span>,<span class="dig">206</span>,<span class="dig">249</span>,<span class="dig">222</span>)
+    <span class="kw">for</span> stay <span class="kw">in</span> stayRegions:
+        <span class="kw">if</span> regionMap.exists(stay, <span class="dig">0</span>):
+            Debug.user(<span class="str">"found stay region"</span>)
+            <span class="kw">return</span>
+    Debug.user(<span class="str">"move to stay region"</span>)
+    <span class="skw">click</span>( locMoveToStayRegion )
+    <span class="skw">type</span>(keyPickup)
+
+previousCheckMailTime = <span class="dig">0</span>
 <span class="kw">def</span> getGiftFromMail():
+    <span class="kw">global</span> previousCheckMailTime
+    <span class="kw">if</span> nIntervalCheckMailInterval &lt; <span class="dig">0</span> <span class="kw">or</span> time.time()-previousCheckMailTime &lt;= nIntervalCheckMailInterval:
+        <span class="kw">return</span>
+    previousCheckMailTime = time.time()
+
+    Debug.user(<span class="str">"check mail"</span>)
+
     locMenu = Location(<span class="dig">1796</span>, <span class="dig">73</span>)
     menuColor = getColor(locMenu)
     <span class="cmt">#printColor("menuColor", menuColor)</span>
     <span class="kw">if</span> menuColor.getRed() &lt; <span class="dig">200</span> <span class="kw">or</span> menuColor.getBlue() &gt; <span class="dig">50</span>:
         <span class="kw">return</span>
+    <span class="cmt"># menu is red</span>
     <span class="kw">if</span> <span class="kw">not</span> Region(<span class="dig">1431</span>,<span class="dig">465</span>,<span class="dig">53</span>,<span class="dig">67</span>).exists(Pattern(<img src="1514418272184.png" />).similar(<span class="dig">0.60</span>), <span class="dig">0</span>):
 
         <span class="skw">click</span>(locMenu)
         <span class="skw">sleep</span>(<span class="dig">1</span>)
+
+    <span class="cmt">#menu opened</span>
     locMail = Location(<span class="dig">1483</span>, <span class="dig">466</span>)
     mailColor = getColor(locMail)
     <span class="cmt">#printColor("mailColor", mailColor)</span>
 
     <span class="kw">if</span> mailColor.getRed() &lt; <span class="dig">200</span> <span class="kw">or</span> mailColor.getBlue() &gt; <span class="dig">50</span>:
+        <span class="cmt">#no mail, close menu</span>
+        <span class="skw">click</span>(locMenu)
+        <span class="skw">sleep</span>(<span class="dig">1</span>)
         <span class="kw">return</span>
+
+    <span class="cmt">#mail is red</span>
     <span class="skw">click</span>(locMail)
     <span class="skw">sleep</span>(<span class="dig">1</span>)
     <span class="kw">while</span> True:
@@ -495,7 +532,9 @@ bUsingFightingSkill = False
             <span class="skw">sleep</span>(<span class="dig">1</span>)
         <span class="kw">else</span>:
             <span class="kw">break</span>
-
+    <span class="cmt">#close menu</span>
+    <span class="skw">click</span>(locMenu)
+    <span class="skw">sleep</span>(<span class="dig">1</span>)
 
 <span class="cmt">#while True:</span>
 <span class="cmt">#    Debug.user("Hp status: %d" % getHpStatus())</span>
@@ -517,6 +556,7 @@ screenCapture()
     getGiftFromMail()
     closeMission()
     checkHp()
+    stayInMapRegion()
     <span class="kw">if</span> time.time()-previousTime &gt; <span class="dig">4</span>:
         Debug.user(<span class="str">"pause a while, need to bring game to front"</span>)
         bringGameToFront()
