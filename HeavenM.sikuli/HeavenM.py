@@ -4,11 +4,11 @@ import ControlLib
 from ControlLib import *
 import HeavenM_hotkeys
 from HeavenM_hotkeys import *
-from java.awt import Robot
+
 
 Settings.MoveMouseDelay = 0.1
 
-r = Robot()
+
 
 bufferRegion =  Region(145,155,466,40)
 
@@ -68,8 +68,8 @@ regionParty = Region(302,343,28,363)
 regionHpFirst = Region(140,370,161,40)
 regionHp = Region()
 regionMp = Region(140,77,294,25)
-regionStatusFirst = Region(345,333,86,96)
-regionStatus = Region()
+
+regionStatus = Region(142,194,87,41)
 imageHp90 = Pattern("imageHp90.png").similar(0.90)
 imageHp65 = Pattern("imageHp65.png").similar(0.85)
 imageHp40 = Pattern("imageHp40.png").similar(0.85)
@@ -99,6 +99,20 @@ previousTripleArrowTime = 0
 lib = GaeeryLib()
 lib.setRoi(regionParty)
 
+
+class Status():
+    Normal = 0
+    Poison = -2
+
+    currentStatus = Normal
+    def setStatus(self, status):
+        if status != self.Normal:
+            Debug.user("change status to %d" % status)
+        self.currentStatus = status
+    def getCurrentStatus(self):
+        return self.currentStatus
+    
+status = Status()
 def checkHp():
     global nBackHomeCount
     global lib
@@ -109,132 +123,51 @@ def checkHp():
     global previousTripleArrowTime
     global previousCheckStayTime
 
-    locParty = lib.find("party", imageParty)
-    
-    partyMembers = lib.findAll("party members", imageParty)
-    if partyMembers != None:
-        sortedPartyMembers = sorted(partyMembers, key=by_y)
-        locParty = sortedPartyMembers[0]
-        #Debug.user("locParty.y=%d", locParty.y)
-        nHploc_y = locParty.y + 14
-        nMploc_y = nHploc_y + 15
-    
-    if locParty == None:
-        leftRoi = GaeeryLib()
-        leftRoi.setRoi(regionLeftScreen)
-        characterPage = leftRoi.find("character data", "1513897038903.png")
-        if characterPage != None:
-            Debug.user("close characterPage")
-            click(characterPage)
-            return
-
-        menuRoi = GaeeryLib()
-        menuRoi.setRoi(Region(1726,47,93,85))
-        menuPage = menuRoi.find("menu", "1513897038903.png")
-        if menuPage != None:
-            Debug.user("close menu")
-            click(menuPage)
-            return
-
-        #talk
-        if Region(1541,670,118,40).exists("1514506603250.png", 0):
-            click(Location(1637, 874))
-            sleep(1)
-            return
-
-        if Region(925,711,294,123).exists( "1514109969796.png", 0):  #mission page
-            click( "1514109969796.png" )
-            sleep(1)            
-            return
-            
-        if characterPage != None:
-            Debug.user("close characterPage")
-            click(characterPage)
-            return
-        
-        Debug.user("Change to party page")
-        if Region(194,241,69,54).exists("1513943945882.png", 0.3):
-            click( locPartyPage )
-        if Region(72,353,53,47).exists("1513948889607.png", 0.3):
-            click( locCreateParty )
-        if Region(945,816,322,78).exists("1513949150393.png", 3):
-            click( locCreatePartyConfirm )
-        return
-    else:
-        regionHpCurrent = Region( regionHpFirst.x, locParty.y, regionHpFirst.w, regionHpFirst.h )
-        if math.fabs(regionHpCurrent.y - regionHp.y)>5:
-            regionHp = regionHpCurrent
-            regionStatus = Region( regionStatusFirst.x, locParty.y-40, regionStatusFirst.w, regionStatusFirst.h ) 
-            
-            #regionHp.highlight()
-            regionStatus.highlight()
-            sleep(1)
-            #regionHp.highlight()
-            regionStatus.highlight()
+    #locParty = lib.find("party", imageParty)
 
     hpPercent = getHpStatus()
     mpPercent = getMpStatus()
 
     Debug.user("Hp: %d, Mp: %d" % (hpPercent, mpPercent) )
 
+    if hpPercent >= 0 and hpPercent <= nBackToTownThreshold:
+        Debug.user("warning: no hp!!")
+        nBackHomeCount = nBackHomeCount + 1
+        screenCapture()
+        if nBackHomeCount >= nBackHomeCountdownTimes:
+            Debug.user("return to town!!")
+            click(pGoToTown)
+            exit(1)
+        sleep(1)
+    else:
+        nBackHomeCount = 0
+        
+    if status.getCurrentStatus() == Status.Poison:
+        recoverPoison()
+
+    if hpPercent < 0:
+        Debug.user("warning: can't detect HP")
+        return
+
     if bUseFightingSkill and mpPercent >= nMinMpPercentTripleArrow:
         if time.time()-previousTripleArrowTime >= nIntervalTripleArrow:
             useTripleArrow()
             previousTripleArrowTime = time.time()
 
-
-
-    if hpPercent >= 90:
-        nBackHomeCount = 0
-        if mpPercent < 90:     
-            recoverMp()
-        #else:
-            #usingFightingSkill(True)
-            
-    elif hpPercent >= 60:
-        #Debug.user("Hp is 60~90")
-        #click(pHpWater)  
-        if mpPercent >= 10:     
-            recoverHp()
-        else:
-            #usingFightingSkill(False)
-            recoverMp()
-        nBackHomeCount = 0
-    elif hpPercent >= 40:       
-        #Debug.user("Hp is 40~60")
+    if hpPercent >= 0 and hpPercent <= nDrinkWaterThreshold:
         bringGameToFront()
         drinkWater()
-        if mpPercent >= 10:   
-            recoverHp()
-        else:
-            #escape()
-            recoverMp()
-        #escape()
-        nBackHomeCount = 0
-    else:       
-        Debug.user("Hp is lower than 40")
-        if checkStatus():
-            return
-        drinkWater()
-        if hasMp():  
-            recoverHp()
-        
-        if checkStatus():
-            return
 
-        if not bFlyIfNoHp:
-            return
-            
-        nBackHomeCount = nBackHomeCount + 1
-        if nBackHomeCount < 2:
-            escape()
-            return
+    if hpPercent >= 0 and hpPercent <= nRecoverHpThreshold:
+        recoverHp() 
         
-        Debug.user("return to town!!")
-        screenCapture()
-        click(pGoToTown)
-        exit(1)
+    if mpPercent <= 10 or (mpPercent < nRecoverMpThreshold and hpPercent >= nRecoverHpThreshold):     
+        recoverMp()
 
+
+        
+    if hpPercent < 0:
+        Debug.user("warning: can't find Hp bar")
 
 def escape():
     Debug.user("Run away")
@@ -264,35 +197,71 @@ def isMpFull():
         return True
     return False
 
+
 def getHpStatus():
-    for i in range( len(nPercent_x) ):
-        color = r.getPixelColor(nPercent_x[i], nHploc_y) 
-        #printColor( format("Hp %d Color" % nPercent[i]), color)
-        if color.getRed() >= 139 and color.getBlue() < 50:
-            return nPercent[i]
+    x100 = 425
+    x0 = 162
+    nAverageAmount = 3
+    for i in range( 10 ):  #hp 10~90%
+        nHploc_y = 76
+        r = 0
+        g = 0
+        b = 0
+        for j in range(nAverageAmount):  #hp color average
+            color = getColor( Location( x100 - (x100-x0) * i / 10 , nHploc_y-j)  )
+            #printColor( format("Hp %d Color" % (10-i)), color)
+            r = r + color.getRed()
+            g = g + color.getGreen()
+            b = b + color.getBlue()
+        r = r/nAverageAmount
+        g = g/nAverageAmount
+        b = b/nAverageAmount
+        
+        if r > g+100 and r > b+100:
+            status.setStatus(Status.Normal)
+            Debug.user( "Hp %d average Color = %d,%d,%d" % (10-i,r,g,b) )
+            return 100-i*10
+        elif g >= r+40 and g >= b+40:
+            Debug.user("poison")
+            status.setStatus(Status.Poison)
+            Debug.user( "Hp %d average Color = %d,%d,%d" % (10-i,r,g,b) )
+            return 100-i*10
+    status.setStatus(Status.Normal)
     return -1
+
 
 def getMpStatus():
-    for i in range( len(nPercent_x) ):
-        color = r.getPixelColor(nPercent_x[i], nMploc_y) 
-        #printColor( format("Mp %d Color" % nPercent[i]), color)
-        if color.getBlue() >= 125 and color.getRed() < 30:
-            return nPercent[i]
-    return -1
+    x100 = 425
+    x0 = 162
 
-def isMpFull():
-    locHighMp = Location(397, 89)
-    highMpColor = r.getPixelColor(locHighMp.x, locHighMp.y) # get the color object
-    #printColor( "highMpColor", highMpColor)
-    if highMpColor.getBlue() >= 125 & highMpColor.getRed() < 30:
-        return True
-    return False
+    nAverageAmount = 3
+    for i in range( 10 ):  #hp 10~90%  
+        nHploc_y = 92
+        r = 0
+        g = 0
+        b = 0
+        for j in range(nAverageAmount):  #hp color average
+            color = getColor( Location( x100 - (x100-x0) * i / 10 , nHploc_y-j)  )
+            #printColor( format("(x=%d) Mp %d Color" % ( ( x100 - (x100-x0) * i / 10), (10-i) )), color)
+            r = r + color.getRed()
+            g = g + color.getGreen()
+            b = b + color.getBlue()
+        r = r/nAverageAmount
+        g = g/nAverageAmount
+        b = b/nAverageAmount
+        
+
+        if b > r+100 and b > g+10:
+            Debug.user( "Mp %d average Color = %d,%d,%d" % (10-i,r,g,b) )
+            return 100-i*10
+    return -1
 
 
 
 # return True if in special status
 def checkStatus():
     regionSelfStatus = Region(138,197,88,42)
+    '''
     if regionSelfStatus.exists("1513870172508.png", 0.2):
         recoverPoison()
         sleep(0.5)
@@ -302,7 +271,8 @@ def checkStatus():
         recoverPoison()
         sleep(0.5)
         return True
-    if regionStatus.exists("1513870381521.png", 0.2):
+    '''
+    if regionStatus.exists("1513870381521.png", 0.5):
         Debug.user("You have become a stone.....")
         return True
     if regionStatus.exists("1513955946438.png", 0.2):
@@ -327,7 +297,7 @@ def recoverHp():
 def recoverPoison():
     Debug.user("Use rescue poison skill")
     type(keyPoisonRescue)
-    sleep(0.6)
+    sleep(1)
 
 def drinkWater():
     Debug.user("Drink water!")
@@ -397,8 +367,7 @@ def bringGameToFront():
 def printColor(strName, rgb):
     Debug.user("%s = %d,%d,%d" % (strName, rgb.getRed(), rgb.getGreen(), rgb.getBlue() ) )
 
-def getColor(loc):
-    return r.getPixelColor(loc.x, loc.y)
+
 
 
 
@@ -460,6 +429,9 @@ def getGiftFromMail():
             sleep(1)
         else:
             break
+    #close mail
+    click(locMenu)
+    sleep(2)
     #close menu
     click(locMenu)
     sleep(1)
@@ -470,14 +442,34 @@ def getGiftFromMail():
 #    sleep(0.3)
 #    continue
 
-bringGameToFront()
-screenCapture()
+
 
 def closeMission():
     if Region(1021,750,101,54).exists("1514556735445.png", 0):
         click(Location(1065, 775))
         sleep(1)
 
+def isAutoFighting():
+    r = 0
+    g = 0
+    b = 0
+    for i in range(50):
+        color = getColor(Location(1376, 753))
+        r = r+color.getRed()
+        g = g+color.getGreen()
+        b = b+color.getBlue()
+        
+    printColor("color",color)
+
+
+#isAutoFighting()
+#exit(0)
+
+
+
+
+bringGameToFront()
+screenCapture()
 while True:
     #checkBufferStatus()
     previousTime = time.time()

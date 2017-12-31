@@ -272,10 +272,13 @@ def findLocation(reg, target, timeout = 1):
      <span class="cmt">#def excuteAutomation(automation):</span>
      <span class="cmt">#    automation.execute()</span>
 
+
+<span class="kw">from</span> java.awt <span class="kw">import</span> Robot
+ControlLib_robot = Robot()
+<span class="kw">def</span> getColor(loc):
+    <span class="kw">return</span> ControlLib_robot.getPixelColor(loc.x, loc.y)
+
 <span class="kw">import</span> time
-
-
-
 <span class="cmt"># log text to file with timestamp</span>
 <span class="kw">def</span> logToFile( strMessage, strFileName = os.path.join( getBundlePath(), <span class="str">"log.txt"</span>) ):
     localtime = time.localtime(time.time())
@@ -297,6 +300,27 @@ def findLocation(reg, target, timeout = 1):
         strFileName = time.strftime (<span class="str">'%Y-%m-%d %H_%M_%S'</span>) + <img src=".png" />
     shutil.move(img, os.path.join( strPath, strFileName))
     Debug.user(<span class="str">"screen captured : "</span>+strFileName)
+
+<span class="str">'''
+def getRegionColorRate(region, color, rTolerence=10, gTolerence=10, bTolerence=10):
+    matchPixels = 0
+    for x in range(region.w):
+        for y in range(region.h):
+            Debug.user("x=%d y=%d" % (x, y))
+            c = getColor(Location(region.x+x, region.y+y))
+            if abs( c.getRed()-color.getRed() ) &gt; rTolerence:
+                continue
+            matchPixels = matchPixels + 1
+                    # and abs( c.getGreen()-color.getGreen() ) &lt; gTolerence and abs( c.getBlue()-color.getBlue() ) &lt; bTolerence
+    result = matchPixels / region.w*region.h
+    Debug.user("result=%f" % result)
+    return result
+
+
+Debug.user( "type test = %s" % getColor(Location(1365, 748)).__class__ )
+from java.awt import Color
+getRegionColorRate(Region(1357,747,85,8), Color(200,0,0) )
+'''</span>
 </pre>
 </body>
 </html>

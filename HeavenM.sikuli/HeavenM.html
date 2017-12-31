@@ -76,11 +76,11 @@
 <span class="kw">from</span> ControlLib <span class="kw">import</span> *
 <span class="kw">import</span> HeavenM_hotkeys
 <span class="kw">from</span> HeavenM_hotkeys <span class="kw">import</span> *
-<span class="kw">from</span> java.awt <span class="kw">import</span> Robot
+
 
 Settings.MoveMouseDelay = <span class="dig">0.1</span>
 
-r = Robot()
+
 
 bufferRegion =  Region(<span class="dig">145</span>,<span class="dig">155</span>,<span class="dig">466</span>,<span class="dig">40</span>)
 
@@ -140,8 +140,8 @@ regionParty = Region(<span class="dig">302</span>,<span class="dig">343</span>,<
 regionHpFirst = Region(<span class="dig">140</span>,<span class="dig">370</span>,<span class="dig">161</span>,<span class="dig">40</span>)
 regionHp = Region()
 regionMp = Region(<span class="dig">140</span>,<span class="dig">77</span>,<span class="dig">294</span>,<span class="dig">25</span>)
-regionStatusFirst = Region(<span class="dig">345</span>,<span class="dig">333</span>,<span class="dig">86</span>,<span class="dig">96</span>)
-regionStatus = Region()
+
+regionStatus = Region(<span class="dig">142</span>,<span class="dig">194</span>,<span class="dig">87</span>,<span class="dig">41</span>)
 imageHp90 = Pattern(<img src="imageHp90.png" />).similar(<span class="dig">0.90</span>)
 imageHp65 = Pattern(<img src="imageHp65.png" />).similar(<span class="dig">0.85</span>)
 imageHp40 = Pattern(<img src="imageHp40.png" />).similar(<span class="dig">0.85</span>)
@@ -171,6 +171,20 @@ previousTripleArrowTime = <span class="dig">0</span>
 lib = GaeeryLib()
 lib.setRoi(regionParty)
 
+
+<span class="kw">class</span> Status():
+    Normal = <span class="dig">0</span>
+    Poison = -<span class="dig">2</span>
+
+    currentStatus = Normal
+    <span class="kw">def</span> setStatus(self, status):
+        <span class="kw">if</span> status != self.Normal:
+            Debug.user(<span class="str">"change status to %d"</span> % status)
+        self.currentStatus = status
+    <span class="kw">def</span> getCurrentStatus(self):
+        <span class="kw">return</span> self.currentStatus
+
+status = Status()
 <span class="kw">def</span> checkHp():
     <span class="kw">global</span> nBackHomeCount
     <span class="kw">global</span> lib
@@ -181,132 +195,51 @@ lib.setRoi(regionParty)
     <span class="kw">global</span> previousTripleArrowTime
     <span class="kw">global</span> previousCheckStayTime
 
-    locParty = lib.<span class="skw">find</span>(<span class="str">"party"</span>, imageParty)
-
-    partyMembers = lib.findAll(<span class="str">"party members"</span>, imageParty)
-    <span class="kw">if</span> partyMembers != None:
-        sortedPartyMembers = sorted(partyMembers, key=by_y)
-        locParty = sortedPartyMembers[<span class="dig">0</span>]
-        <span class="cmt">#Debug.user("locParty.y=%d", locParty.y)</span>
-        nHploc_y = locParty.y + <span class="dig">14</span>
-        nMploc_y = nHploc_y + <span class="dig">15</span>
-
-    <span class="kw">if</span> locParty == None:
-        leftRoi = GaeeryLib()
-        leftRoi.setRoi(regionLeftScreen)
-        characterPage = leftRoi.<span class="skw">find</span>(<span class="str">"character data"</span>, <img src="1513897038903.png" />)
-        <span class="kw">if</span> characterPage != None:
-            Debug.user(<span class="str">"close characterPage"</span>)
-            <span class="skw">click</span>(characterPage)
-            <span class="kw">return</span>
-
-        menuRoi = GaeeryLib()
-        menuRoi.setRoi(Region(<span class="dig">1726</span>,<span class="dig">47</span>,<span class="dig">93</span>,<span class="dig">85</span>))
-        menuPage = menuRoi.<span class="skw">find</span>(<span class="str">"menu"</span>, <img src="1513897038903.png" />)
-        <span class="kw">if</span> menuPage != None:
-            Debug.user(<span class="str">"close menu"</span>)
-            <span class="skw">click</span>(menuPage)
-            <span class="kw">return</span>
-
-        <span class="cmt">#talk</span>
-        <span class="kw">if</span> Region(<span class="dig">1541</span>,<span class="dig">670</span>,<span class="dig">118</span>,<span class="dig">40</span>).exists(<img src="1514506603250.png" />, <span class="dig">0</span>):
-            <span class="skw">click</span>(Location(<span class="dig">1637</span>, <span class="dig">874</span>))
-            <span class="skw">sleep</span>(<span class="dig">1</span>)
-            <span class="kw">return</span>
-
-        <span class="kw">if</span> Region(<span class="dig">925</span>,<span class="dig">711</span>,<span class="dig">294</span>,<span class="dig">123</span>).exists( <img src="1514109969796.png" />, <span class="dig">0</span>):  <span class="cmt">#mission page</span>
-            <span class="skw">click</span>( <img src="1514109969796.png" /> )
-            <span class="skw">sleep</span>(<span class="dig">1</span>)
-            <span class="kw">return</span>
-
-        <span class="kw">if</span> characterPage != None:
-            Debug.user(<span class="str">"close characterPage"</span>)
-            <span class="skw">click</span>(characterPage)
-            <span class="kw">return</span>
-
-        Debug.user(<span class="str">"Change to party page"</span>)
-        <span class="kw">if</span> Region(<span class="dig">194</span>,<span class="dig">241</span>,<span class="dig">69</span>,<span class="dig">54</span>).exists(<img src="1513943945882.png" />, <span class="dig">0.3</span>):
-            <span class="skw">click</span>( locPartyPage )
-        <span class="kw">if</span> Region(<span class="dig">72</span>,<span class="dig">353</span>,<span class="dig">53</span>,<span class="dig">47</span>).exists(<img src="1513948889607.png" />, <span class="dig">0.3</span>):
-            <span class="skw">click</span>( locCreateParty )
-        <span class="kw">if</span> Region(<span class="dig">945</span>,<span class="dig">816</span>,<span class="dig">322</span>,<span class="dig">78</span>).exists(<img src="1513949150393.png" />, <span class="dig">3</span>):
-            <span class="skw">click</span>( locCreatePartyConfirm )
-        <span class="kw">return</span>
-    <span class="kw">else</span>:
-        regionHpCurrent = Region( regionHpFirst.x, locParty.y, regionHpFirst.w, regionHpFirst.h )
-        <span class="kw">if</span> math.fabs(regionHpCurrent.y - regionHp.y)&gt;<span class="dig">5</span>:
-            regionHp = regionHpCurrent
-            regionStatus = Region( regionStatusFirst.x, locParty.y-<span class="dig">40</span>, regionStatusFirst.w, regionStatusFirst.h )
-
-            <span class="cmt">#regionHp.highlight()</span>
-            regionStatus.highlight()
-            <span class="skw">sleep</span>(<span class="dig">1</span>)
-            <span class="cmt">#regionHp.highlight()</span>
-            regionStatus.highlight()
+    <span class="cmt">#locParty = lib.find("party", imageParty)</span>
 
     hpPercent = getHpStatus()
     mpPercent = getMpStatus()
 
     Debug.user(<span class="str">"Hp: %d, Mp: %d"</span> % (hpPercent, mpPercent) )
 
+    <span class="kw">if</span> hpPercent &gt;= <span class="dig">0</span> <span class="kw">and</span> hpPercent &lt;= nBackToTownThreshold:
+        Debug.user(<span class="str">"warning: no hp!!"</span>)
+        nBackHomeCount = nBackHomeCount + <span class="dig">1</span>
+        screenCapture()
+        <span class="kw">if</span> nBackHomeCount &gt;= nBackHomeCountdownTimes:
+            Debug.user(<span class="str">"return to town!!"</span>)
+            <span class="skw">click</span>(pGoToTown)
+            exit(<span class="dig">1</span>)
+        <span class="skw">sleep</span>(<span class="dig">1</span>)
+    <span class="kw">else</span>:
+        nBackHomeCount = <span class="dig">0</span>
+
+    <span class="kw">if</span> status.getCurrentStatus() == Status.Poison:
+        recoverPoison()
+
+    <span class="kw">if</span> hpPercent &lt; <span class="dig">0</span>:
+        Debug.user(<span class="str">"warning: can't detect HP"</span>)
+        <span class="kw">return</span>
+
     <span class="kw">if</span> bUseFightingSkill <span class="kw">and</span> mpPercent &gt;= nMinMpPercentTripleArrow:
         <span class="kw">if</span> time.time()-previousTripleArrowTime &gt;= nIntervalTripleArrow:
             useTripleArrow()
             previousTripleArrowTime = time.time()
 
-
-
-    <span class="kw">if</span> hpPercent &gt;= <span class="dig">90</span>:
-        nBackHomeCount = <span class="dig">0</span>
-        <span class="kw">if</span> mpPercent &lt; <span class="dig">90</span>:
-            recoverMp()
-        <span class="cmt">#else:</span>
-            <span class="cmt">#usingFightingSkill(True)</span>
-
-    <span class="kw">elif</span> hpPercent &gt;= <span class="dig">60</span>:
-        <span class="cmt">#Debug.user("Hp is 60~90")</span>
-        <span class="cmt">#click(pHpWater)  </span>
-        <span class="kw">if</span> mpPercent &gt;= <span class="dig">10</span>:
-            recoverHp()
-        <span class="kw">else</span>:
-            <span class="cmt">#usingFightingSkill(False)</span>
-            recoverMp()
-        nBackHomeCount = <span class="dig">0</span>
-    <span class="kw">elif</span> hpPercent &gt;= <span class="dig">40</span>:
-        <span class="cmt">#Debug.user("Hp is 40~60")</span>
+    <span class="kw">if</span> hpPercent &gt;= <span class="dig">0</span> <span class="kw">and</span> hpPercent &lt;= nDrinkWaterThreshold:
         bringGameToFront()
         drinkWater()
-        <span class="kw">if</span> mpPercent &gt;= <span class="dig">10</span>:
-            recoverHp()
-        <span class="kw">else</span>:
-            <span class="cmt">#escape()</span>
-            recoverMp()
-        <span class="cmt">#escape()</span>
-        nBackHomeCount = <span class="dig">0</span>
-    <span class="kw">else</span>:
-        Debug.user(<span class="str">"Hp is lower than 40"</span>)
-        <span class="kw">if</span> checkStatus():
-            <span class="kw">return</span>
-        drinkWater()
-        <span class="kw">if</span> hasMp():
-            recoverHp()
 
-        <span class="kw">if</span> checkStatus():
-            <span class="kw">return</span>
+    <span class="kw">if</span> hpPercent &gt;= <span class="dig">0</span> <span class="kw">and</span> hpPercent &lt;= nRecoverHpThreshold:
+        recoverHp()
 
-        <span class="kw">if</span> <span class="kw">not</span> bFlyIfNoHp:
-            <span class="kw">return</span>
+    <span class="kw">if</span> mpPercent &lt;= <span class="dig">10</span> <span class="kw">or</span> (mpPercent &lt; nRecoverMpThreshold <span class="kw">and</span> hpPercent &gt;= nRecoverHpThreshold):
+        recoverMp()
 
-        nBackHomeCount = nBackHomeCount + <span class="dig">1</span>
-        <span class="kw">if</span> nBackHomeCount &lt; <span class="dig">2</span>:
-            escape()
-            <span class="kw">return</span>
 
-        Debug.user(<span class="str">"return to town!!"</span>)
-        screenCapture()
-        <span class="skw">click</span>(pGoToTown)
-        exit(<span class="dig">1</span>)
 
+    <span class="kw">if</span> hpPercent &lt; <span class="dig">0</span>:
+        Debug.user(<span class="str">"warning: can't find Hp bar"</span>)
 
 <span class="kw">def</span> escape():
     Debug.user(<span class="str">"Run away"</span>)
@@ -336,45 +269,82 @@ lib.setRoi(regionParty)
         <span class="kw">return</span> True
     <span class="kw">return</span> False
 
+
 <span class="kw">def</span> getHpStatus():
-    <span class="kw">for</span> i <span class="kw">in</span> range( len(nPercent_x) ):
-        color = r.getPixelColor(nPercent_x[i], nHploc_y)
-        <span class="cmt">#printColor( format("Hp %d Color" % nPercent[i]), color)</span>
-        <span class="kw">if</span> color.getRed() &gt;= <span class="dig">139</span> <span class="kw">and</span> color.getBlue() &lt; <span class="dig">50</span>:
-            <span class="kw">return</span> nPercent[i]
+    x100 = <span class="dig">425</span>
+    x0 = <span class="dig">162</span>
+    nAverageAmount = <span class="dig">3</span>
+    <span class="kw">for</span> i <span class="kw">in</span> range( <span class="dig">10</span> ):  <span class="cmt">#hp 10~90%</span>
+        nHploc_y = <span class="dig">76</span>
+        r = <span class="dig">0</span>
+        g = <span class="dig">0</span>
+        b = <span class="dig">0</span>
+        <span class="kw">for</span> j <span class="kw">in</span> range(nAverageAmount):  <span class="cmt">#hp color average</span>
+            color = getColor( Location( x100 - (x100-x0) * i / <span class="dig">10</span> , nHploc_y-j)  )
+            <span class="cmt">#printColor( format("Hp %d Color" % (10-i)), color)</span>
+            r = r + color.getRed()
+            g = g + color.getGreen()
+            b = b + color.getBlue()
+        r = r/nAverageAmount
+        g = g/nAverageAmount
+        b = b/nAverageAmount
+
+        <span class="kw">if</span> r &gt; g+<span class="dig">100</span> <span class="kw">and</span> r &gt; b+<span class="dig">100</span>:
+            status.setStatus(Status.Normal)
+            Debug.user( <span class="str">"Hp %d average Color = %d,%d,%d"</span> % (<span class="dig">10</span>-i,r,g,b) )
+            <span class="kw">return</span> <span class="dig">100</span>-i*<span class="dig">10</span>
+        <span class="kw">elif</span> g &gt;= r+<span class="dig">40</span> <span class="kw">and</span> g &gt;= b+<span class="dig">40</span>:
+            Debug.user(<span class="str">"poison"</span>)
+            status.setStatus(Status.Poison)
+            Debug.user( <span class="str">"Hp %d average Color = %d,%d,%d"</span> % (<span class="dig">10</span>-i,r,g,b) )
+            <span class="kw">return</span> <span class="dig">100</span>-i*<span class="dig">10</span>
+    status.setStatus(Status.Normal)
     <span class="kw">return</span> -<span class="dig">1</span>
+
 
 <span class="kw">def</span> getMpStatus():
-    <span class="kw">for</span> i <span class="kw">in</span> range( len(nPercent_x) ):
-        color = r.getPixelColor(nPercent_x[i], nMploc_y)
-        <span class="cmt">#printColor( format("Mp %d Color" % nPercent[i]), color)</span>
-        <span class="kw">if</span> color.getBlue() &gt;= <span class="dig">125</span> <span class="kw">and</span> color.getRed() &lt; <span class="dig">30</span>:
-            <span class="kw">return</span> nPercent[i]
-    <span class="kw">return</span> -<span class="dig">1</span>
+    x100 = <span class="dig">425</span>
+    x0 = <span class="dig">162</span>
 
-<span class="kw">def</span> isMpFull():
-    locHighMp = Location(<span class="dig">397</span>, <span class="dig">89</span>)
-    highMpColor = r.getPixelColor(locHighMp.x, locHighMp.y) <span class="cmt"># get the color object</span>
-    <span class="cmt">#printColor( "highMpColor", highMpColor)</span>
-    <span class="kw">if</span> highMpColor.getBlue() &gt;= <span class="dig">125</span> &amp; highMpColor.getRed() &lt; <span class="dig">30</span>:
-        <span class="kw">return</span> True
-    <span class="kw">return</span> False
+    nAverageAmount = <span class="dig">3</span>
+    <span class="kw">for</span> i <span class="kw">in</span> range( <span class="dig">10</span> ):  <span class="cmt">#hp 10~90%  </span>
+        nHploc_y = <span class="dig">92</span>
+        r = <span class="dig">0</span>
+        g = <span class="dig">0</span>
+        b = <span class="dig">0</span>
+        <span class="kw">for</span> j <span class="kw">in</span> range(nAverageAmount):  <span class="cmt">#hp color average</span>
+            color = getColor( Location( x100 - (x100-x0) * i / <span class="dig">10</span> , nHploc_y-j)  )
+            <span class="cmt">#printColor( format("(x=%d) Mp %d Color" % ( ( x100 - (x100-x0) * i / 10), (10-i) )), color)</span>
+            r = r + color.getRed()
+            g = g + color.getGreen()
+            b = b + color.getBlue()
+        r = r/nAverageAmount
+        g = g/nAverageAmount
+        b = b/nAverageAmount
+
+
+        <span class="kw">if</span> b &gt; r+<span class="dig">100</span> <span class="kw">and</span> b &gt; g+<span class="dig">10</span>:
+            Debug.user( <span class="str">"Mp %d average Color = %d,%d,%d"</span> % (<span class="dig">10</span>-i,r,g,b) )
+            <span class="kw">return</span> <span class="dig">100</span>-i*<span class="dig">10</span>
+    <span class="kw">return</span> -<span class="dig">1</span>
 
 
 
 <span class="cmt"># return True if in special status</span>
 <span class="kw">def</span> checkStatus():
     regionSelfStatus = Region(<span class="dig">138</span>,<span class="dig">197</span>,<span class="dig">88</span>,<span class="dig">42</span>)
-    <span class="kw">if</span> regionSelfStatus.exists(<img src="1513870172508.png" />, <span class="dig">0.2</span>):
+    <span class="str">'''
+    if regionSelfStatus.exists("1513870172508.png", 0.2):
         recoverPoison()
-        <span class="skw">sleep</span>(<span class="dig">0.5</span>)
-        <span class="kw">return</span> True
-
-    <span class="kw">if</span> regionStatus.exists(<img src="1513870172508.png" />, <span class="dig">0.2</span>):
+        sleep(0.5)
+        return True
+    
+    if regionStatus.exists("1513870172508.png", 0.2):
         recoverPoison()
-        <span class="skw">sleep</span>(<span class="dig">0.5</span>)
-        <span class="kw">return</span> True
-    <span class="kw">if</span> regionStatus.exists(<img src="1513870381521.png" />, <span class="dig">0.2</span>):
+        sleep(0.5)
+        return True
+    '''</span>
+    <span class="kw">if</span> regionStatus.exists(<img src="1513870381521.png" />, <span class="dig">0.5</span>):
         Debug.user(<span class="str">"You have become a stone....."</span>)
         <span class="kw">return</span> True
     <span class="kw">if</span> regionStatus.exists(<img src="1513955946438.png" />, <span class="dig">0.2</span>):
@@ -399,7 +369,7 @@ lib.setRoi(regionParty)
 <span class="kw">def</span> recoverPoison():
     Debug.user(<span class="str">"Use rescue poison skill"</span>)
     <span class="skw">type</span>(keyPoisonRescue)
-    <span class="skw">sleep</span>(<span class="dig">0.6</span>)
+    <span class="skw">sleep</span>(<span class="dig">1</span>)
 
 <span class="kw">def</span> drinkWater():
     Debug.user(<span class="str">"Drink water!"</span>)
@@ -469,8 +439,7 @@ bUsingFightingSkill = False
 <span class="kw">def</span> printColor(strName, rgb):
     Debug.user(<span class="str">"%s = %d,%d,%d"</span> % (strName, rgb.getRed(), rgb.getGreen(), rgb.getBlue() ) )
 
-<span class="kw">def</span> getColor(loc):
-    <span class="kw">return</span> r.getPixelColor(loc.x, loc.y)
+
 
 
 
@@ -532,6 +501,9 @@ previousCheckMailTime = <span class="dig">0</span>
             <span class="skw">sleep</span>(<span class="dig">1</span>)
         <span class="kw">else</span>:
             <span class="kw">break</span>
+    <span class="cmt">#close mail</span>
+    <span class="skw">click</span>(locMenu)
+    <span class="skw">sleep</span>(<span class="dig">2</span>)
     <span class="cmt">#close menu</span>
     <span class="skw">click</span>(locMenu)
     <span class="skw">sleep</span>(<span class="dig">1</span>)
@@ -542,14 +514,34 @@ previousCheckMailTime = <span class="dig">0</span>
 <span class="cmt">#    sleep(0.3)</span>
 <span class="cmt">#    continue</span>
 
-bringGameToFront()
-screenCapture()
+
 
 <span class="kw">def</span> closeMission():
     <span class="kw">if</span> Region(<span class="dig">1021</span>,<span class="dig">750</span>,<span class="dig">101</span>,<span class="dig">54</span>).exists(<img src="1514556735445.png" />, <span class="dig">0</span>):
         <span class="skw">click</span>(Location(<span class="dig">1065</span>, <span class="dig">775</span>))
         <span class="skw">sleep</span>(<span class="dig">1</span>)
 
+<span class="kw">def</span> isAutoFighting():
+    r = <span class="dig">0</span>
+    g = <span class="dig">0</span>
+    b = <span class="dig">0</span>
+    <span class="kw">for</span> i <span class="kw">in</span> range(<span class="dig">50</span>):
+        color = getColor(Location(<span class="dig">1376</span>, <span class="dig">753</span>))
+        r = r+color.getRed()
+        g = g+color.getGreen()
+        b = b+color.getBlue()
+
+    printColor(<span class="str">"color"</span>,color)
+
+
+<span class="cmt">#isAutoFighting()</span>
+<span class="cmt">#exit(0)</span>
+
+
+
+
+bringGameToFront()
+screenCapture()
 <span class="kw">while</span> True:
     <span class="cmt">#checkBufferStatus()</span>
     previousTime = time.time()

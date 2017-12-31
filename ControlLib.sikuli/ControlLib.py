@@ -200,10 +200,13 @@ class GaeeryLib:
      #def excuteAutomation(automation):
      #    automation.execute()
 
-import time        
+     
+from java.awt import Robot
+ControlLib_robot = Robot()
+def getColor(loc):
+    return ControlLib_robot.getPixelColor(loc.x, loc.y)
 
-
-
+import time   
 # log text to file with timestamp
 def logToFile( strMessage, strFileName = os.path.join( getBundlePath(), "log.txt") ):
     localtime = time.localtime(time.time())
@@ -225,3 +228,24 @@ def screenCapture(strFileName = None, strPath = os.path.join(getBundlePath(),"sc
         strFileName = time.strftime ('%Y-%m-%d %H_%M_%S') + ".png"
     shutil.move(img, os.path.join( strPath, strFileName))
     Debug.user("screen captured : "+strFileName)
+
+'''
+def getRegionColorRate(region, color, rTolerence=10, gTolerence=10, bTolerence=10):
+    matchPixels = 0
+    for x in range(region.w):
+        for y in range(region.h):
+            Debug.user("x=%d y=%d" % (x, y))
+            c = getColor(Location(region.x+x, region.y+y))
+            if abs( c.getRed()-color.getRed() ) > rTolerence:
+                continue
+            matchPixels = matchPixels + 1
+                    # and abs( c.getGreen()-color.getGreen() ) < gTolerence and abs( c.getBlue()-color.getBlue() ) < bTolerence
+    result = matchPixels / region.w*region.h
+    Debug.user("result=%f" % result)
+    return result
+
+
+Debug.user( "type test = %s" % getColor(Location(1365, 748)).__class__ )
+from java.awt import Color
+getRegionColorRate(Region(1357,747,85,8), Color(200,0,0) )
+'''

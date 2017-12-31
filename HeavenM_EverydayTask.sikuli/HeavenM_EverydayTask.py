@@ -6,7 +6,7 @@ from HeavenM_hotkeys import *
 
 
 
-images = [  "1514022180377.png" ]
+images = [  "1514022180377.png", "1514735081091.png" ]
 #images = [ "1514022375233.png", Pattern("1513956456661.png").similar(0.90) , "1514022180377.png" ]
 images = []
 
@@ -16,7 +16,7 @@ def clickTarget():
     ret = False
     i = 0
     for image in images:
-       target = lib.find("target " + str(i),image, 0) 
+       target = lib.find("target " + str(i),image, 0.2) 
        i = i + 1
        if target != None:
             click(target)

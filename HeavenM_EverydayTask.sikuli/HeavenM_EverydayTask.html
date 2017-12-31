@@ -78,7 +78,7 @@
 
 
 
-images = [  <img src="1514022180377.png" /> ]
+images = [  <img src="1514022180377.png" />, <img src="1514735081091.png" /> ]
 <span class="cmt">#images = [ "1514022375233.png", Pattern("1513956456661.png").similar(0.90) , "1514022180377.png" ]</span>
 images = []
 
@@ -88,7 +88,7 @@ lib = GaeeryLib()
     ret = False
     i = <span class="dig">0</span>
     <span class="kw">for</span> image <span class="kw">in</span> images:
-       target = lib.<span class="skw">find</span>(<span class="str">"target "</span> + str(i),image, <span class="dig">0</span>)
+       target = lib.<span class="skw">find</span>(<span class="str">"target "</span> + str(i),image, <span class="dig">0.2</span>)
        i = i + <span class="dig">1</span>
        <span class="kw">if</span> target != None:
             <span class="skw">click</span>(target)

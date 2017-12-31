@@ -15,17 +15,23 @@ locPartyPage = Location(228, 270)
 locCreateParty = Location(96, 377)
 locCreatePartyConfirm = Location(1071, 850)
 
+nRecoverHpThreshold = 80
+nRecoverMpThreshold = 80
+nDrinkWaterThreshold = 50
+nBackToTownThreshold = 30
 
+nBackHomeCountdownTimes = 2
 
 bUseFightingSkill = True
 keyTripleArrow = Key.F7
-nMinMpPercentTripleArrow = 60
-nIntervalTripleArrow = 4
+nMinMpPercentTripleArrow = 80
+nIntervalTripleArrow = 6
 
 
 # stay in a region
 nIntervalCheckStayInterval = -1    # -1: disabled
-stayRegions = ["1514584075718.png", "1514584135275.png","1514584152621.png"]
+#nIntervalCheckStayInterval = 8    # practice 4th floor
+stayRegions = ["1514584075718.png", "1514584135275.png","1514584152621.png", "1514674804123.png"]   # practice 4th floor
 locMoveToStayRegion = Location(353, 486)
 
 # check and receive mail  
