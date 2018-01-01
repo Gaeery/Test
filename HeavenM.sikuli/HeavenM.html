@@ -219,6 +219,7 @@ status = Status()
 
     <span class="kw">if</span> hpPercent &lt; <span class="dig">0</span>:
         Debug.user(<span class="str">"warning: can't detect HP"</span>)
+        checkOtherPages()
         <span class="kw">return</span>
 
     <span class="kw">if</span> bUseFightingSkill <span class="kw">and</span> mpPercent &gt;= nMinMpPercentTripleArrow:
@@ -237,9 +238,21 @@ status = Status()
         recoverMp()
 
 
+<span class="kw">def</span> checkOtherPages():
+    lib = GaeeryLib()
+    <span class="kw">if</span> lib.clickImageInRegion(<span class="str">"menu"</span>, Region(<span class="dig">1726</span>,<span class="dig">47</span>,<span class="dig">93</span>,<span class="dig">85</span>), <img src="1513897038903.png" />, <span class="dig">0</span>):
+        <span class="skw">sleep</span>(<span class="dig">1</span>)
+        <span class="kw">return</span>
 
-    <span class="kw">if</span> hpPercent &lt; <span class="dig">0</span>:
-        Debug.user(<span class="str">"warning: can't find Hp bar"</span>)
+    <span class="kw">if</span> lib.clickImageInRegion(<span class="str">"talking"</span>, Region(<span class="dig">1541</span>,<span class="dig">670</span>,<span class="dig">118</span>,<span class="dig">40</span>), <img src="1514506603250.png" />, <span class="dig">0</span>):
+        <span class="skw">sleep</span>(<span class="dig">1</span>)
+        <span class="kw">return</span>
+    <span class="kw">if</span> lib.clickImageInRegion(<span class="str">"accept the mission"</span>, Region(<span class="dig">925</span>,<span class="dig">711</span>,<span class="dig">294</span>,<span class="dig">123</span>), <img src="1514109969796.png" />, <span class="dig">0</span>):
+        <span class="skw">sleep</span>(<span class="dig">1</span>)
+        <span class="kw">return</span>
+    <span class="kw">if</span> lib.clickImageInRegion(<span class="str">"award"</span>, Region(<span class="dig">909</span>,<span class="dig">348</span>,<span class="dig">68</span>,<span class="dig">44</span>), <img src="1514792827025.png" />, <span class="dig">0</span>):
+        <span class="skw">sleep</span>(<span class="dig">1</span>)
+        <span class="kw">return</span>
 
 <span class="kw">def</span> escape():
     Debug.user(<span class="str">"Run away"</span>)
@@ -281,7 +294,7 @@ status = Status()
         b = <span class="dig">0</span>
         <span class="kw">for</span> j <span class="kw">in</span> range(nAverageAmount):  <span class="cmt">#hp color average</span>
             color = getColor( Location( x100 - (x100-x0) * i / <span class="dig">10</span> , nHploc_y-j)  )
-            <span class="cmt">#printColor( format("Hp %d Color" % (10-i)), color)</span>
+            printColor( format(<span class="str">"Hp %d Color"</span> % (<span class="dig">10</span>-i)), color)
             r = r + color.getRed()
             g = g + color.getGreen()
             b = b + color.getBlue()
@@ -293,7 +306,7 @@ status = Status()
             status.setStatus(Status.Normal)
             Debug.user( <span class="str">"Hp %d average Color = %d,%d,%d"</span> % (<span class="dig">10</span>-i,r,g,b) )
             <span class="kw">return</span> <span class="dig">100</span>-i*<span class="dig">10</span>
-        <span class="kw">elif</span> g &gt;= r+<span class="dig">40</span> <span class="kw">and</span> g &gt;= b+<span class="dig">40</span>:
+        <span class="kw">elif</span> g &gt;= r+<span class="dig">30</span> <span class="kw">and</span> g &gt;= b+<span class="dig">30</span>:
             Debug.user(<span class="str">"poison"</span>)
             status.setStatus(Status.Poison)
             Debug.user( <span class="str">"Hp %d average Color = %d,%d,%d"</span> % (<span class="dig">10</span>-i,r,g,b) )

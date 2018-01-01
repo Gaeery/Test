@@ -147,6 +147,7 @@ def checkHp():
 
     if hpPercent < 0:
         Debug.user("warning: can't detect HP")
+        checkOtherPages()
         return
 
     if bUseFightingSkill and mpPercent >= nMinMpPercentTripleArrow:
@@ -165,9 +166,21 @@ def checkHp():
         recoverMp()
 
 
-        
-    if hpPercent < 0:
-        Debug.user("warning: can't find Hp bar")
+def checkOtherPages():
+    lib = GaeeryLib()
+    if lib.clickImageInRegion("menu", Region(1726,47,93,85), "1513897038903.png", 0):
+        sleep(1)
+        return
+
+    if lib.clickImageInRegion("talking", Region(1541,670,118,40), "1514506603250.png", 0):
+        sleep(1)
+        return
+    if lib.clickImageInRegion("accept the mission", Region(925,711,294,123), "1514109969796.png", 0):
+        sleep(1)
+        return
+    if lib.clickImageInRegion("award", Region(909,348,68,44), "1514792827025.png", 0):
+        sleep(1)
+        return
 
 def escape():
     Debug.user("Run away")
@@ -209,7 +222,7 @@ def getHpStatus():
         b = 0
         for j in range(nAverageAmount):  #hp color average
             color = getColor( Location( x100 - (x100-x0) * i / 10 , nHploc_y-j)  )
-            #printColor( format("Hp %d Color" % (10-i)), color)
+            printColor( format("Hp %d Color" % (10-i)), color)
             r = r + color.getRed()
             g = g + color.getGreen()
             b = b + color.getBlue()
@@ -221,7 +234,7 @@ def getHpStatus():
             status.setStatus(Status.Normal)
             Debug.user( "Hp %d average Color = %d,%d,%d" % (10-i,r,g,b) )
             return 100-i*10
-        elif g >= r+40 and g >= b+40:
+        elif g >= r+30 and g >= b+30:
             Debug.user("poison")
             status.setStatus(Status.Poison)
             Debug.user( "Hp %d average Color = %d,%d,%d" % (10-i,r,g,b) )
