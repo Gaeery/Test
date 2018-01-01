@@ -443,6 +443,8 @@ previousCheckMailTime = <span class="dig">0</span>
         <span class="kw">return</span>
     previousCheckMailTime = time.time()
 
+    enableAutoFighting(True)
+
     Debug.user(<span class="str">"check mail"</span>)
 
     locMenu = Location(<span class="dig">1796</span>, <span class="dig">73</span>)
@@ -498,6 +500,7 @@ previousCheckMailTime = <span class="dig">0</span>
         <span class="skw">sleep</span>(<span class="dig">1</span>)
 
 <span class="kw">def</span> enableAutoFighting(bEnable = True):
+    Debug.user(<span class="str">"enable auto fighting, bEnable=%b"</span>, bEnable)
     <span class="kw">if</span> isAutoFighting() != bEnable:
         <span class="skw">type</span>(keyAutoFighting)
 

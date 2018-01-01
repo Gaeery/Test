@@ -371,6 +371,8 @@ def getGiftFromMail():
         return
     previousCheckMailTime = time.time()
 
+    enableAutoFighting(True)
+
     Debug.user("check mail")
     
     locMenu = Location(1796, 73)
@@ -426,6 +428,7 @@ def closeMission():
         sleep(1)
 
 def enableAutoFighting(bEnable = True):
+    Debug.user("enable auto fighting, bEnable=%b", bEnable)
     if isAutoFighting() != bEnable:
         type(keyAutoFighting)
 
