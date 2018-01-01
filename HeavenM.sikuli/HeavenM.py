@@ -10,7 +10,6 @@ Settings.MoveMouseDelay = 0.1
 
 
 
-bufferRegion =  Region(145,155,466,40)
 
 
 # store image and its offset
@@ -23,27 +22,6 @@ class BufferStatus():
         self.name = unicode(name, "utf8")
         self.useSkillSteps = useSkillSteps
 
-BufferList = [ 
-        BufferStatus("精靈餅乾", "1513000438389.png", [Pattern("1513012091917.png").similar(0.95), Pattern("1513012115279.png").similar(0.95), Pattern("1513012153809.png").similar(0.95), "1513012783396.png", "1513012843741.png"]),
-        BufferStatus("食物", Pattern("1513000766333.png").similar(0.59), [Pattern("1513012091917.png").similar(0.95), Pattern("1513012115279.png").similar(0.95), "1513053707716.png", "1513053720833.png" , "1513012843741.png"]),
-        BufferStatus("保護罩", Pattern("1513000826312.png").similar(0.67), ["1513012904938.png", "1513012930638.png", "1513012940942.png", "1513012843741.png"]),
-        BufferStatus("鎧甲護持", Pattern("1513000907139.png").similar(0.69), ["1513012904938.png","1513013125930.png","1513013138966.png", "1513012843741.png"]),
-        BufferStatus("負重強化", Pattern("1513000932286.png").similar(0.65), ["1513012904938.png","1513013030782.png","1513013041431.png", "1513012843741.png"]),
-        BufferStatus("變身", Pattern("1513001027215.png").similar(0.68)),
-        BufferStatus("強化戰鬥卷軸", Pattern("1513001000565.png").similar(0.59)),
-        BufferStatus("自我加速藥水", Pattern("1513004774208.png").similar(0.72), [Pattern("1513012091917.png").similar(0.95), Pattern("1513012115279.png").similar(0.95), "1513033719938.png", "1513033735138.png", "1513012843741.png"]),
-        ]
-
-def checkBufferStatus():
-    lib = GaeeryLib()
-    lib.setROI(Region(1303,49,502,710))
- 
-    for buffer in BufferList:
-        if not bufferRegion.exists(buffer.image, 0):
-            Debug.user( "no buffer %s" % buffer.name )
-            for step in buffer.useSkillSteps:
-                lib.clickImage( "use skill step", step)
-                sleep(0.5)
 
 def doImageSteps( steps ):
     lib = GaeeryLib()
@@ -63,36 +41,13 @@ def doPositionSteps( steps ):
 
 nBackHomeCount = 0
 
-regionLeftScreen = Region(503,144,91,88)
-regionParty = Region(302,343,28,363)
-regionHpFirst = Region(140,370,161,40)
-regionHp = Region()
-regionMp = Region(140,77,294,25)
 
 regionStatus = Region(142,194,87,41)
-imageHp90 = Pattern("imageHp90.png").similar(0.90)
-imageHp65 = Pattern("imageHp65.png").similar(0.85)
-imageHp40 = Pattern("imageHp40.png").similar(0.85)
-imageMp90 = Pattern("imageMp90.png").similar(0.95)
-imageMp50 = Pattern("imageMp50.png").similar(0.85)
-imageMp10 = "imageMp10.png"
-imageMp10_1 = "imageMp10_1.png"
-imageParty = Pattern("imageParty.png").similar(0.95)
 
-nHploc_y = 385
-nMploc_y = 400
-nPercent_x = [ 275, 240, 202, 190, 157 ]
-nPercent = [90, 60, 40, 30, 10]
 
-pRecoverHp = Location(921, 921)
-pRecoverMp = Location(1037, 916)
-
-pHpWater = Location(808, 921)
-pGoToTown = Location(1160, 916)
 pGameWnidow = Location(800, 14)
 
-bFlyIfNoHp = True
-pEscape = Location(493, 808)
+
 
 previousTripleArrowTime = 0
 
@@ -116,12 +71,7 @@ status = Status()
 def checkHp():
     global nBackHomeCount
     global lib
-    global regionHp
-    global regionStatus
-    global nHploc_y
-    global nMploc_y
     global previousTripleArrowTime
-    global previousCheckStayTime
 
     #locParty = lib.find("party", imageParty)
 
@@ -187,6 +137,7 @@ def checkOtherPagesIfNoHp():
 
 def escape():
     Debug.user("Run away")
+    pEscape = Location(493, 808)
     click( pEscape )   
     screenCapture()
     sleep(1)

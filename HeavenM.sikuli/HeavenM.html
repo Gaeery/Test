@@ -82,7 +82,6 @@ Settings.MoveMouseDelay = <span class="dig">0.1</span>
 
 
 
-bufferRegion =  Region(<span class="dig">145</span>,<span class="dig">155</span>,<span class="dig">466</span>,<span class="dig">40</span>)
 
 
 <span class="cmt"># store image and its offset</span>
@@ -95,27 +94,6 @@ bufferRegion =  Region(<span class="dig">145</span>,<span class="dig">155</span>
         self.name = unicode(name, <span class="str">"utf8"</span>)
         self.useSkillSteps = useSkillSteps
 
-BufferList = [
-        BufferStatus(<span class="str">"精靈餅乾"</span>, <img src="1513000438389.png" />, [Pattern(<img src="1513012091917.png" />).similar(<span class="dig">0.95</span>), Pattern(<img src="1513012115279.png" />).similar(<span class="dig">0.95</span>), Pattern(<img src="1513012153809.png" />).similar(<span class="dig">0.95</span>), <img src="1513012783396.png" />, <img src="1513012843741.png" />]),
-        BufferStatus(<span class="str">"食物"</span>, Pattern(<img src="1513000766333.png" />).similar(<span class="dig">0.59</span>), [Pattern(<img src="1513012091917.png" />).similar(<span class="dig">0.95</span>), Pattern(<img src="1513012115279.png" />).similar(<span class="dig">0.95</span>), <img src="1513053707716.png" />, <img src="1513053720833.png" /> , <img src="1513012843741.png" />]),
-        BufferStatus(<span class="str">"保護罩"</span>, Pattern(<img src="1513000826312.png" />).similar(<span class="dig">0.67</span>), [<img src="1513012904938.png" />, <img src="1513012930638.png" />, <img src="1513012940942.png" />, <img src="1513012843741.png" />]),
-        BufferStatus(<span class="str">"鎧甲護持"</span>, Pattern(<img src="1513000907139.png" />).similar(<span class="dig">0.69</span>), [<img src="1513012904938.png" />,<img src="1513013125930.png" />,<img src="1513013138966.png" />, <img src="1513012843741.png" />]),
-        BufferStatus(<span class="str">"負重強化"</span>, Pattern(<img src="1513000932286.png" />).similar(<span class="dig">0.65</span>), [<img src="1513012904938.png" />,<img src="1513013030782.png" />,<img src="1513013041431.png" />, <img src="1513012843741.png" />]),
-        BufferStatus(<span class="str">"變身"</span>, Pattern(<img src="1513001027215.png" />).similar(<span class="dig">0.68</span>)),
-        BufferStatus(<span class="str">"強化戰鬥卷軸"</span>, Pattern(<img src="1513001000565.png" />).similar(<span class="dig">0.59</span>)),
-        BufferStatus(<span class="str">"自我加速藥水"</span>, Pattern(<img src="1513004774208.png" />).similar(<span class="dig">0.72</span>), [Pattern(<img src="1513012091917.png" />).similar(<span class="dig">0.95</span>), Pattern(<img src="1513012115279.png" />).similar(<span class="dig">0.95</span>), <img src="1513033719938.png" />, <img src="1513033735138.png" />, <img src="1513012843741.png" />]),
-        ]
-
-<span class="kw">def</span> checkBufferStatus():
-    lib = GaeeryLib()
-    lib.setROI(Region(<span class="dig">1303</span>,<span class="dig">49</span>,<span class="dig">502</span>,<span class="dig">710</span>))
-
-    <span class="kw">for</span> buffer <span class="kw">in</span> BufferList:
-        <span class="kw">if</span> <span class="kw">not</span> bufferRegion.exists(buffer.image, <span class="dig">0</span>):
-            Debug.user( <span class="str">"no buffer %s"</span> % buffer.name )
-            <span class="kw">for</span> step <span class="kw">in</span> buffer.useSkillSteps:
-                lib.clickImage( <span class="str">"use skill step"</span>, step)
-                <span class="skw">sleep</span>(<span class="dig">0.5</span>)
 
 <span class="kw">def</span> doImageSteps( steps ):
     lib = GaeeryLib()
@@ -135,36 +113,13 @@ BufferList = [
 
 nBackHomeCount = <span class="dig">0</span>
 
-regionLeftScreen = Region(<span class="dig">503</span>,<span class="dig">144</span>,<span class="dig">91</span>,<span class="dig">88</span>)
-regionParty = Region(<span class="dig">302</span>,<span class="dig">343</span>,<span class="dig">28</span>,<span class="dig">363</span>)
-regionHpFirst = Region(<span class="dig">140</span>,<span class="dig">370</span>,<span class="dig">161</span>,<span class="dig">40</span>)
-regionHp = Region()
-regionMp = Region(<span class="dig">140</span>,<span class="dig">77</span>,<span class="dig">294</span>,<span class="dig">25</span>)
 
 regionStatus = Region(<span class="dig">142</span>,<span class="dig">194</span>,<span class="dig">87</span>,<span class="dig">41</span>)
-imageHp90 = Pattern(<img src="imageHp90.png" />).similar(<span class="dig">0.90</span>)
-imageHp65 = Pattern(<img src="imageHp65.png" />).similar(<span class="dig">0.85</span>)
-imageHp40 = Pattern(<img src="imageHp40.png" />).similar(<span class="dig">0.85</span>)
-imageMp90 = Pattern(<img src="imageMp90.png" />).similar(<span class="dig">0.95</span>)
-imageMp50 = Pattern(<img src="imageMp50.png" />).similar(<span class="dig">0.85</span>)
-imageMp10 = <img src="imageMp10.png" />
-imageMp10_1 = <img src="imageMp10_1.png" />
-imageParty = Pattern(<img src="imageParty.png" />).similar(<span class="dig">0.95</span>)
 
-nHploc_y = <span class="dig">385</span>
-nMploc_y = <span class="dig">400</span>
-nPercent_x = [ <span class="dig">275</span>, <span class="dig">240</span>, <span class="dig">202</span>, <span class="dig">190</span>, <span class="dig">157</span> ]
-nPercent = [<span class="dig">90</span>, <span class="dig">60</span>, <span class="dig">40</span>, <span class="dig">30</span>, <span class="dig">10</span>]
 
-pRecoverHp = Location(<span class="dig">921</span>, <span class="dig">921</span>)
-pRecoverMp = Location(<span class="dig">1037</span>, <span class="dig">916</span>)
-
-pHpWater = Location(<span class="dig">808</span>, <span class="dig">921</span>)
-pGoToTown = Location(<span class="dig">1160</span>, <span class="dig">916</span>)
 pGameWnidow = Location(<span class="dig">800</span>, <span class="dig">14</span>)
 
-bFlyIfNoHp = True
-pEscape = Location(<span class="dig">493</span>, <span class="dig">808</span>)
+
 
 previousTripleArrowTime = <span class="dig">0</span>
 
@@ -188,12 +143,7 @@ status = Status()
 <span class="kw">def</span> checkHp():
     <span class="kw">global</span> nBackHomeCount
     <span class="kw">global</span> lib
-    <span class="kw">global</span> regionHp
-    <span class="kw">global</span> regionStatus
-    <span class="kw">global</span> nHploc_y
-    <span class="kw">global</span> nMploc_y
     <span class="kw">global</span> previousTripleArrowTime
-    <span class="kw">global</span> previousCheckStayTime
 
     <span class="cmt">#locParty = lib.find("party", imageParty)</span>
 
@@ -259,6 +209,7 @@ lib = GaeeryLib()
 
 <span class="kw">def</span> escape():
     Debug.user(<span class="str">"Run away"</span>)
+    pEscape = Location(<span class="dig">493</span>, <span class="dig">808</span>)
     <span class="skw">click</span>( pEscape )
     screenCapture()
     <span class="skw">sleep</span>(<span class="dig">1</span>)

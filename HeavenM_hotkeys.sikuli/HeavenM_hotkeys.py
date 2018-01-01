@@ -26,8 +26,8 @@ nBackHomeCountdownTimes = 2
 nIntervalTripleArrow = 6   
 #nIntervalTripleArrow = -1  #-1: disabled   
 keyTripleArrow = Key.F7
-nMinMpPercentTripleArrow = 90  # larger than skill recovered mp, so it means that using auto recovered mp
-#nMinMpPercentTripleArrow = 80
+#nMinMpPercentTripleArrow = 90  # larger than skill recovered mp, so it means that using auto recovered mp
+nMinMpPercentTripleArrow = 60
 
 
 
