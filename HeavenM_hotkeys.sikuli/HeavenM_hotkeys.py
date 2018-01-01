@@ -22,10 +22,13 @@ nBackToTownThreshold = 30
 
 nBackHomeCountdownTimes = 2
 
-bUseFightingSkill = True
+
+nIntervalTripleArrow = 6   
+#nIntervalTripleArrow = -1  #-1: disabled   
 keyTripleArrow = Key.F7
-nMinMpPercentTripleArrow = 80
-nIntervalTripleArrow = 6
+nMinMpPercentTripleArrow = 90  # larger than skill recovered mp, so it means that using auto recovered mp
+#nMinMpPercentTripleArrow = 80
+
 
 
 # stay in a region

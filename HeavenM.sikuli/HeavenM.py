@@ -147,10 +147,10 @@ def checkHp():
 
     if hpPercent < 0:
         Debug.user("warning: can't detect HP")
-        checkOtherPages()
+        checkOtherPagesIfNoHp()
         return
 
-    if bUseFightingSkill and mpPercent >= nMinMpPercentTripleArrow:
+    if nIntervalTripleArrow > 0 and mpPercent >= nMinMpPercentTripleArrow:
         if time.time()-previousTripleArrowTime >= nIntervalTripleArrow:
             useTripleArrow()
             previousTripleArrowTime = time.time()
@@ -165,16 +165,19 @@ def checkHp():
     if mpPercent <= 10 or (mpPercent < nRecoverMpThreshold and hpPercent >= nRecoverHpThreshold):     
         recoverMp()
 
+lib = GaeeryLib()
+def checkOtherPagesEveryTime():
+    if lib.clickImageInRegion("talking", Region(1541,670,118,40), "1514506603250.png", 0):
+        sleep(1)
+        return
 
-def checkOtherPages():
-    lib = GaeeryLib()
+def checkOtherPagesIfNoHp():
+    
     if lib.clickImageInRegion("menu", Region(1726,47,93,85), "1513897038903.png", 0):
         sleep(1)
         return
 
-    if lib.clickImageInRegion("talking", Region(1541,670,118,40), "1514506603250.png", 0):
-        sleep(1)
-        return
+
     if lib.clickImageInRegion("accept the mission", Region(925,711,294,123), "1514109969796.png", 0):
         sleep(1)
         return
@@ -482,7 +485,7 @@ def isAutoFighting():
 
 
 bringGameToFront()
-screenCapture()
+screenCapture("start.png")
 while True:
     #checkBufferStatus()
     previousTime = time.time()
@@ -490,6 +493,7 @@ while True:
     closeMission()
     checkHp()
     stayInMapRegion()
+    checkOtherPagesEveryTime()
     if time.time()-previousTime > 4:
         Debug.user("pause a while, need to bring game to front")
         bringGameToFront()

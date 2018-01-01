@@ -219,10 +219,10 @@ status = Status()
 
     <span class="kw">if</span> hpPercent &lt; <span class="dig">0</span>:
         Debug.user(<span class="str">"warning: can't detect HP"</span>)
-        checkOtherPages()
+        checkOtherPagesIfNoHp()
         <span class="kw">return</span>
 
-    <span class="kw">if</span> bUseFightingSkill <span class="kw">and</span> mpPercent &gt;= nMinMpPercentTripleArrow:
+    <span class="kw">if</span> nIntervalTripleArrow &gt; <span class="dig">0</span> <span class="kw">and</span> mpPercent &gt;= nMinMpPercentTripleArrow:
         <span class="kw">if</span> time.time()-previousTripleArrowTime &gt;= nIntervalTripleArrow:
             useTripleArrow()
             previousTripleArrowTime = time.time()
@@ -237,16 +237,19 @@ status = Status()
     <span class="kw">if</span> mpPercent &lt;= <span class="dig">10</span> <span class="kw">or</span> (mpPercent &lt; nRecoverMpThreshold <span class="kw">and</span> hpPercent &gt;= nRecoverHpThreshold):
         recoverMp()
 
+lib = GaeeryLib()
+<span class="kw">def</span> checkOtherPagesEveryTime():
+    <span class="kw">if</span> lib.clickImageInRegion(<span class="str">"talking"</span>, Region(<span class="dig">1541</span>,<span class="dig">670</span>,<span class="dig">118</span>,<span class="dig">40</span>), <img src="1514506603250.png" />, <span class="dig">0</span>):
+        <span class="skw">sleep</span>(<span class="dig">1</span>)
+        <span class="kw">return</span>
 
-<span class="kw">def</span> checkOtherPages():
-    lib = GaeeryLib()
+<span class="kw">def</span> checkOtherPagesIfNoHp():
+
     <span class="kw">if</span> lib.clickImageInRegion(<span class="str">"menu"</span>, Region(<span class="dig">1726</span>,<span class="dig">47</span>,<span class="dig">93</span>,<span class="dig">85</span>), <img src="1513897038903.png" />, <span class="dig">0</span>):
         <span class="skw">sleep</span>(<span class="dig">1</span>)
         <span class="kw">return</span>
 
-    <span class="kw">if</span> lib.clickImageInRegion(<span class="str">"talking"</span>, Region(<span class="dig">1541</span>,<span class="dig">670</span>,<span class="dig">118</span>,<span class="dig">40</span>), <img src="1514506603250.png" />, <span class="dig">0</span>):
-        <span class="skw">sleep</span>(<span class="dig">1</span>)
-        <span class="kw">return</span>
+
     <span class="kw">if</span> lib.clickImageInRegion(<span class="str">"accept the mission"</span>, Region(<span class="dig">925</span>,<span class="dig">711</span>,<span class="dig">294</span>,<span class="dig">123</span>), <img src="1514109969796.png" />, <span class="dig">0</span>):
         <span class="skw">sleep</span>(<span class="dig">1</span>)
         <span class="kw">return</span>
@@ -554,7 +557,7 @@ previousCheckMailTime = <span class="dig">0</span>
 
 
 bringGameToFront()
-screenCapture()
+screenCapture(<img src="start.png" />)
 <span class="kw">while</span> True:
     <span class="cmt">#checkBufferStatus()</span>
     previousTime = time.time()
@@ -562,6 +565,7 @@ screenCapture()
     closeMission()
     checkHp()
     stayInMapRegion()
+    checkOtherPagesEveryTime()
     <span class="kw">if</span> time.time()-previousTime &gt; <span class="dig">4</span>:
         Debug.user(<span class="str">"pause a while, need to bring game to front"</span>)
         bringGameToFront()
