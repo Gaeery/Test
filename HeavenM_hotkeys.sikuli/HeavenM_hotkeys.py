@@ -10,6 +10,7 @@ keyTransport = Key.F8  #run away
 keyPracticeTask = Key.F9
 
 keyPickup = "g"
+keyAutoFighting = "q"
 
 locPartyPage = Location(228, 270)
 locCreateParty = Location(96, 377)
@@ -20,6 +21,9 @@ nRecoverMpThreshold = 80
 nDrinkWaterThreshold = 50
 nBackToTownThreshold = 30
 
+nReservedMp = 50
+nReservedMp_FullRecover = 70
+
 nBackHomeCountdownTimes = 2
 
 
@@ -27,7 +31,7 @@ nIntervalTripleArrow = 6
 #nIntervalTripleArrow = -1  #-1: disabled   
 keyTripleArrow = Key.F7
 #nMinMpPercentTripleArrow = 90  # larger than skill recovered mp, so it means that using auto recovered mp
-nMinMpPercentTripleArrow = 60
+nMinMpPercentTripleArrow = 80
 
 
 

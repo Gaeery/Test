@@ -52,7 +52,7 @@ pGameWnidow = Location(800, 14)
 previousTripleArrowTime = 0
 
 lib = GaeeryLib()
-lib.setRoi(regionParty)
+#lib.setRoi(regionParty)
 
 
 class Status():
@@ -109,13 +109,20 @@ def checkHp():
         bringGameToFront()
         drinkWater()
 
-    if hpPercent >= 0 and hpPercent <= nRecoverHpThreshold:
-        recoverHp() 
+    if hpPercent >= 0:
+        if mpPercent < nReservedMp:
+            if hpPercent <= nReservedMp_FullRecover:
+                drinkWater()
+                recoverHp() 
+            else:
+                drinkWater()                
+        elif hpPercent <= nRecoverHpThreshold:
+            recoverHp() 
         
     if mpPercent <= 10 or (mpPercent < nRecoverMpThreshold and hpPercent >= nRecoverHpThreshold):     
         recoverMp()
 
-lib = GaeeryLib()
+
 def checkOtherPagesEveryTime():
     if lib.clickImageInRegion("talking", Region(1541,670,118,40), "1514506603250.png", 0):
         sleep(1)
@@ -129,11 +136,13 @@ def checkOtherPagesIfNoHp():
 
 
     if lib.clickImageInRegion("accept the mission", Region(925,711,294,123), "1514109969796.png", 0):
-        sleep(1)
+        sleep(2)
+        enableAutoFighting(True)
         return
     if lib.clickImageInRegion("award", Region(909,348,68,44), "1514792827025.png", 0):
         sleep(1)
         return
+    
 
 def escape():
     Debug.user("Run away")
@@ -176,7 +185,7 @@ def getHpStatus():
         b = 0
         for j in range(nAverageAmount):  #hp color average
             color = getColor( Location( x100 - (x100-x0) * i / 10 , nHploc_y-j)  )
-            printColor( format("Hp %d Color" % (10-i)), color)
+            #printColor( format("Hp %d Color" % (10-i)), color)
             r = r + color.getRed()
             g = g + color.getGreen()
             b = b + color.getBlue()
@@ -416,27 +425,35 @@ def closeMission():
         click(Location(1065, 775))
         sleep(1)
 
+def enableAutoFighting(bEnable = True):
+    if isAutoFighting() != bEnable:
+        type(keyAutoFighting)
+
 def isAutoFighting():
     r = 0
     g = 0
     b = 0
-    for i in range(50):
-        color = getColor(Location(1376, 753))
-        r = r+color.getRed()
+    for i in range(10):
+        color = getColor(Location(1365, 752))
+        if color.getRed() > r:
+            r = color.getRed()
+            if r >= 255:
+                break
         g = g+color.getGreen()
         b = b+color.getBlue()
-        
-    printColor("color",color)
+        sleep(0.1) 
+    Debug.user("color = %d,%d,%d" % (r,g,b))
+    return r > 230
 
-
-#isAutoFighting()
-#exit(0)
 
 
 
 
 bringGameToFront()
 screenCapture("start.png")
+
+enableAutoFighting(True)
+            
 while True:
     #checkBufferStatus()
     previousTime = time.time()

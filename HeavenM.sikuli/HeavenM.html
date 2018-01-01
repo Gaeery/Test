@@ -124,7 +124,7 @@ pGameWnidow = Location(<span class="dig">800</span>, <span class="dig">14</span>
 previousTripleArrowTime = <span class="dig">0</span>
 
 lib = GaeeryLib()
-lib.setRoi(regionParty)
+<span class="cmt">#lib.setRoi(regionParty)</span>
 
 
 <span class="kw">class</span> Status():
@@ -181,13 +181,20 @@ status = Status()
         bringGameToFront()
         drinkWater()
 
-    <span class="kw">if</span> hpPercent &gt;= <span class="dig">0</span> <span class="kw">and</span> hpPercent &lt;= nRecoverHpThreshold:
-        recoverHp()
+    <span class="kw">if</span> hpPercent &gt;= <span class="dig">0</span>:
+        <span class="kw">if</span> mpPercent &lt; nReservedMp:
+            <span class="kw">if</span> hpPercent &lt;= nReservedMp_FullRecover:
+                drinkWater()
+                recoverHp()
+            <span class="kw">else</span>:
+                drinkWater()
+        <span class="kw">elif</span> hpPercent &lt;= nRecoverHpThreshold:
+            recoverHp()
 
     <span class="kw">if</span> mpPercent &lt;= <span class="dig">10</span> <span class="kw">or</span> (mpPercent &lt; nRecoverMpThreshold <span class="kw">and</span> hpPercent &gt;= nRecoverHpThreshold):
         recoverMp()
 
-lib = GaeeryLib()
+
 <span class="kw">def</span> checkOtherPagesEveryTime():
     <span class="kw">if</span> lib.clickImageInRegion(<span class="str">"talking"</span>, Region(<span class="dig">1541</span>,<span class="dig">670</span>,<span class="dig">118</span>,<span class="dig">40</span>), <img src="1514506603250.png" />, <span class="dig">0</span>):
         <span class="skw">sleep</span>(<span class="dig">1</span>)
@@ -201,11 +208,13 @@ lib = GaeeryLib()
 
 
     <span class="kw">if</span> lib.clickImageInRegion(<span class="str">"accept the mission"</span>, Region(<span class="dig">925</span>,<span class="dig">711</span>,<span class="dig">294</span>,<span class="dig">123</span>), <img src="1514109969796.png" />, <span class="dig">0</span>):
-        <span class="skw">sleep</span>(<span class="dig">1</span>)
+        <span class="skw">sleep</span>(<span class="dig">2</span>)
+        enableAutoFighting(True)
         <span class="kw">return</span>
     <span class="kw">if</span> lib.clickImageInRegion(<span class="str">"award"</span>, Region(<span class="dig">909</span>,<span class="dig">348</span>,<span class="dig">68</span>,<span class="dig">44</span>), <img src="1514792827025.png" />, <span class="dig">0</span>):
         <span class="skw">sleep</span>(<span class="dig">1</span>)
         <span class="kw">return</span>
+
 
 <span class="kw">def</span> escape():
     Debug.user(<span class="str">"Run away"</span>)
@@ -248,7 +257,7 @@ lib = GaeeryLib()
         b = <span class="dig">0</span>
         <span class="kw">for</span> j <span class="kw">in</span> range(nAverageAmount):  <span class="cmt">#hp color average</span>
             color = getColor( Location( x100 - (x100-x0) * i / <span class="dig">10</span> , nHploc_y-j)  )
-            printColor( format(<span class="str">"Hp %d Color"</span> % (<span class="dig">10</span>-i)), color)
+            <span class="cmt">#printColor( format("Hp %d Color" % (10-i)), color)</span>
             r = r + color.getRed()
             g = g + color.getGreen()
             b = b + color.getBlue()
@@ -488,27 +497,35 @@ previousCheckMailTime = <span class="dig">0</span>
         <span class="skw">click</span>(Location(<span class="dig">1065</span>, <span class="dig">775</span>))
         <span class="skw">sleep</span>(<span class="dig">1</span>)
 
+<span class="kw">def</span> enableAutoFighting(bEnable = True):
+    <span class="kw">if</span> isAutoFighting() != bEnable:
+        <span class="skw">type</span>(keyAutoFighting)
+
 <span class="kw">def</span> isAutoFighting():
     r = <span class="dig">0</span>
     g = <span class="dig">0</span>
     b = <span class="dig">0</span>
-    <span class="kw">for</span> i <span class="kw">in</span> range(<span class="dig">50</span>):
-        color = getColor(Location(<span class="dig">1376</span>, <span class="dig">753</span>))
-        r = r+color.getRed()
+    <span class="kw">for</span> i <span class="kw">in</span> range(<span class="dig">10</span>):
+        color = getColor(Location(<span class="dig">1365</span>, <span class="dig">752</span>))
+        <span class="kw">if</span> color.getRed() &gt; r:
+            r = color.getRed()
+            <span class="kw">if</span> r &gt;= <span class="dig">255</span>:
+                <span class="kw">break</span>
         g = g+color.getGreen()
         b = b+color.getBlue()
+        <span class="skw">sleep</span>(<span class="dig">0.1</span>)
+    Debug.user(<span class="str">"color = %d,%d,%d"</span> % (r,g,b))
+    <span class="kw">return</span> r &gt; <span class="dig">230</span>
 
-    printColor(<span class="str">"color"</span>,color)
-
-
-<span class="cmt">#isAutoFighting()</span>
-<span class="cmt">#exit(0)</span>
 
 
 
 
 bringGameToFront()
 screenCapture(<img src="start.png" />)
+
+enableAutoFighting(True)
+
 <span class="kw">while</span> True:
     <span class="cmt">#checkBufferStatus()</span>
     previousTime = time.time()
