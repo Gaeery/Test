@@ -1,3 +1,51 @@
+################################################################################################
+#   Settings
+################################################################################################
+# if HP percent is less than this value, use skill to recover HP
+nRecoverHpThreshold = 80
+# if MP percent is less than this value, use skill to recover MP
+nRecoverMpThreshold = 80
+# if HP percent is less than this value, drink water to recover HP
+nDrinkWaterThreshold = 50
+# if HP percent is less than this value equal to nBackHomeCountdownTimes times, back to town
+nBackToTownThreshold = 30
+nBackHomeCountdownTimes = 2
+
+# if MP is less than reserved value, drink water to recover HP
+nReservedMp = 50
+# if MP is less than reserved value and HP is less than this value, not only drink water but also use skill to recover HP
+nReservedMp_HpThreshold = 70
+
+nIntervalTripleArrow = 15   
+#nIntervalTripleArrow = -1  #-1: disabled   
+
+#nMinMpPercentTripleArrow = 90  # larger than skill recovered mp, so it means using auto recovered mp only
+nMinMpPercentTripleArrow = 80
+
+# stay in a region
+nIntervalCheckStayInterval = -1    # -1: disabled
+#nIntervalCheckStayInterval = 8    # practice 4th floor
+
+# check and receive mail  
+nIntervalCheckMailInterval = 60   #-1: disabled
+
+
+# full-fire mode
+if False:
+	nRecoverHpThreshold = 50
+	nRecoverMpThreshold = 30
+	nDrinkWaterThreshold = 70
+	nReservedMp = 30
+	nMinMpPercentTripleArrow = 30
+
+################################################################################################
+locPartyPage = Location(228, 270)
+locCreateParty = Location(96, 377)
+locCreatePartyConfirm = Location(1071, 850)
+
+stayRegions = ["1514584075718.png", "1514584135275.png","1514584152621.png", "1514674804123.png"]   # practice 4th floor
+locMoveToStayRegion = Location(353, 486)
+
 import time
 import math
 import ControlLib
@@ -7,9 +55,6 @@ from HeavenM_hotkeys import *
 
 
 Settings.MoveMouseDelay = 0.1
-
-
-
 
 
 # store image and its offset
@@ -71,7 +116,6 @@ status = Status()
 def checkHp():
     global nBackHomeCount
     global lib
-    global previousTripleArrowTime
 
     #locParty = lib.find("party", imageParty)
 
@@ -101,17 +145,17 @@ def checkHp():
         return
 
     if nIntervalTripleArrow > 0 and mpPercent >= nMinMpPercentTripleArrow:
-        if time.time()-previousTripleArrowTime >= nIntervalTripleArrow:
-            useTripleArrow()
-            previousTripleArrowTime = time.time()
+        useTripleArrow()
 
     if hpPercent >= 0 and hpPercent <= nDrinkWaterThreshold:
+        Debug.user("Hp is less than drink water threshold")
         bringGameToFront()
         drinkWater()
 
-    if hpPercent >= 0:
+    if hpPercent >= 0 and hpPercent < nRecoverHpThreshold:
         if mpPercent < nReservedMp:
-            if hpPercent <= nReservedMp_FullRecover:
+            if hpPercent <= nReservedMp_HpThreshold:
+                Debug.user("Hp is less than drink water threshold")
                 drinkWater()
                 recoverHp() 
             else:
@@ -268,7 +312,7 @@ def recoverMp():
 def recoverHp():
     #Debug.user("Use HP recover skill")
     type(keyHpRecover)
-    sleep(0.6)
+    sleep(0.8)
 
 def recoverPoison():
     Debug.user("Use rescue poison skill")
@@ -279,13 +323,44 @@ def drinkWater():
     Debug.user("Drink water!")
     type(keyHpWater)
 
-def useTripleArrow():
+#while True:
+#    targetColor = getColor(Location(50, 375))
+#    printColor("target",targetColor)
+
+bTargeting = False   #true: already targeting a monster
+def useTripleArrow(): 
+    global bTargeting
+    global mpPercent
+    global previousTripleArrowTime
+    
     Debug.user("useTripleArrow")
-    if Region(786,106,86,96).exists("1514469461757.png", 0):
-        Debug.user("targeting a player...")
+
+    targetColor = getColor(Location(50, 375))
+    printColor("target",targetColor)
+    
+
+    if targetColor.getRed() > 140:
+        if not bTargeting:
+            bTargeting = True
+            type(keyTripleArrow)
+            sleep(0.6)
+            return
+    else:
+        Debug.user("no fighting target")
+        bTargeting = False
+    
+    if time.time()-previousTripleArrowTime < nIntervalTripleArrow:
         return
-    type(keyTripleArrow)
-    sleep(0.6)
+    else:
+        Debug.user("long time no fighting target")
+        bTargeting = False
+        
+    previousTripleArrowTime = time.time()
+    
+    #if Region(786,106,86,96).exists("1514469461757.png", 0):
+    #    Debug.user("targeting a player...")
+    #    return
+
     
 def useSelfRecoverOldWay():
     lib = GaeeryLib()

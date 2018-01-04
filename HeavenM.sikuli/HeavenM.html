@@ -70,6 +70,46 @@
 <h2>HeavenM.sikuli</h2> <a href="HeavenM.zip">(Download this script)</a>
 </div>
 <pre class="sikuli-code">
+<span class="cmt">################################################################################################</span>
+<span class="cmt">#   Settings</span>
+<span class="cmt">################################################################################################</span>
+<span class="cmt"># if HP percent is less than this value, use skill to recover HP</span>
+nRecoverHpThreshold = <span class="dig">80</span>
+<span class="cmt"># if MP percent is less than this value, use skill to recover MP</span>
+nRecoverMpThreshold = <span class="dig">80</span>
+<span class="cmt"># if HP percent is less than this value, drink water to recover HP</span>
+nDrinkWaterThreshold = <span class="dig">50</span>
+<span class="cmt"># if HP percent is less than this value equal to nBackHomeCountdownTimes times, back to town</span>
+nBackToTownThreshold = <span class="dig">30</span>
+nBackHomeCountdownTimes = <span class="dig">2</span>
+
+
+<span class="cmt"># if MP is less than reserved value, drink water to recover HP</span>
+nReservedMp = <span class="dig">50</span>
+<span class="cmt"># if MP is less than reserved value and HP is less than this value, not only drink water but also use skill to recover HP</span>
+nReservedMp_HpThreshold = <span class="dig">70</span>
+
+nIntervalTripleArrow = <span class="dig">10</span>
+<span class="cmt">#nIntervalTripleArrow = -1  #-1: disabled   </span>
+
+<span class="cmt">#nMinMpPercentTripleArrow = 90  # larger than skill recovered mp, so it means using auto recovered mp only</span>
+nMinMpPercentTripleArrow = <span class="dig">80</span>
+
+<span class="cmt"># stay in a region</span>
+nIntervalCheckStayInterval = -<span class="dig">1</span>    <span class="cmt"># -1: disabled</span>
+<span class="cmt">#nIntervalCheckStayInterval = 8    # practice 4th floor</span>
+
+<span class="cmt"># check and receive mail  </span>
+nIntervalCheckMailInterval = <span class="dig">60</span>   <span class="cmt">#-1: disabled</span>
+
+<span class="cmt">################################################################################################</span>
+locPartyPage = Location(<span class="dig">228</span>, <span class="dig">270</span>)
+locCreateParty = Location(<span class="dig">96</span>, <span class="dig">377</span>)
+locCreatePartyConfirm = Location(<span class="dig">1071</span>, <span class="dig">850</span>)
+
+stayRegions = [<img src="1514584075718.png" />, <img src="1514584135275.png" />,<img src="1514584152621.png" />, <img src="1514674804123.png" />]   <span class="cmt"># practice 4th floor</span>
+locMoveToStayRegion = Location(<span class="dig">353</span>, <span class="dig">486</span>)
+
 <span class="kw">import</span> time
 <span class="kw">import</span> math
 <span class="kw">import</span> ControlLib
@@ -79,9 +119,6 @@
 
 
 Settings.MoveMouseDelay = <span class="dig">0.1</span>
-
-
-
 
 
 <span class="cmt"># store image and its offset</span>
@@ -143,7 +180,6 @@ status = Status()
 <span class="kw">def</span> checkHp():
     <span class="kw">global</span> nBackHomeCount
     <span class="kw">global</span> lib
-    <span class="kw">global</span> previousTripleArrowTime
 
     <span class="cmt">#locParty = lib.find("party", imageParty)</span>
 
@@ -173,17 +209,17 @@ status = Status()
         <span class="kw">return</span>
 
     <span class="kw">if</span> nIntervalTripleArrow &gt; <span class="dig">0</span> <span class="kw">and</span> mpPercent &gt;= nMinMpPercentTripleArrow:
-        <span class="kw">if</span> time.time()-previousTripleArrowTime &gt;= nIntervalTripleArrow:
-            useTripleArrow()
-            previousTripleArrowTime = time.time()
+        useTripleArrow()
 
     <span class="kw">if</span> hpPercent &gt;= <span class="dig">0</span> <span class="kw">and</span> hpPercent &lt;= nDrinkWaterThreshold:
+        Debug.user(<span class="str">"Hp is less than drink water threshold"</span>)
         bringGameToFront()
         drinkWater()
 
-    <span class="kw">if</span> hpPercent &gt;= <span class="dig">0</span>:
+    <span class="kw">if</span> hpPercent &gt;= <span class="dig">0</span> <span class="kw">and</span> hpPercent &lt; nRecoverHpThreshold:
         <span class="kw">if</span> mpPercent &lt; nReservedMp:
-            <span class="kw">if</span> hpPercent &lt;= nReservedMp_FullRecover:
+            <span class="kw">if</span> hpPercent &lt;= nReservedMp_HpThreshold:
+                Debug.user(<span class="str">"Hp is less than drink water threshold"</span>)
                 drinkWater()
                 recoverHp()
             <span class="kw">else</span>:
@@ -340,7 +376,7 @@ status = Status()
 <span class="kw">def</span> recoverHp():
     <span class="cmt">#Debug.user("Use HP recover skill")</span>
     <span class="skw">type</span>(keyHpRecover)
-    <span class="skw">sleep</span>(<span class="dig">0.6</span>)
+    <span class="skw">sleep</span>(<span class="dig">0.8</span>)
 
 <span class="kw">def</span> recoverPoison():
     Debug.user(<span class="str">"Use rescue poison skill"</span>)
@@ -351,13 +387,44 @@ status = Status()
     Debug.user(<span class="str">"Drink water!"</span>)
     <span class="skw">type</span>(keyHpWater)
 
+<span class="cmt">#while True:</span>
+<span class="cmt">#    targetColor = getColor(Location(50, 375))</span>
+<span class="cmt">#    printColor("target",targetColor)</span>
+
+bTargeting = False   <span class="cmt">#true: already targeting a monster</span>
 <span class="kw">def</span> useTripleArrow():
+    <span class="kw">global</span> bTargeting
+    <span class="kw">global</span> mpPercent
+    <span class="kw">global</span> previousTripleArrowTime
+
     Debug.user(<span class="str">"useTripleArrow"</span>)
-    <span class="kw">if</span> Region(<span class="dig">786</span>,<span class="dig">106</span>,<span class="dig">86</span>,<span class="dig">96</span>).exists(<img src="1514469461757.png" />, <span class="dig">0</span>):
-        Debug.user(<span class="str">"targeting a player..."</span>)
+
+    targetColor = getColor(Location(<span class="dig">50</span>, <span class="dig">375</span>))
+    printColor(<span class="str">"target"</span>,targetColor)
+
+
+    <span class="kw">if</span> targetColor.getRed() &gt; <span class="dig">140</span>:
+        <span class="kw">if</span> <span class="kw">not</span> bTargeting:
+            bTargeting = True
+            <span class="skw">type</span>(keyTripleArrow)
+            <span class="skw">sleep</span>(<span class="dig">0.6</span>)
+            <span class="kw">return</span>
+    <span class="kw">else</span>:
+        Debug.user(<span class="str">"no fighting target"</span>)
+        bTargeting = False
+
+    <span class="kw">if</span> time.time()-previousTripleArrowTime &lt; nIntervalTripleArrow:
         <span class="kw">return</span>
-    <span class="skw">type</span>(keyTripleArrow)
-    <span class="skw">sleep</span>(<span class="dig">0.6</span>)
+    <span class="kw">else</span>:
+        Debug.user(<span class="str">"long time no fighting target"</span>)
+        bTargeting = False
+
+    previousTripleArrowTime = time.time()
+
+    <span class="cmt">#if Region(786,106,86,96).exists("1514469461757.png", 0):</span>
+    <span class="cmt">#    Debug.user("targeting a player...")</span>
+    <span class="cmt">#    return</span>
+
 
 <span class="kw">def</span> useSelfRecoverOldWay():
     lib = GaeeryLib()
