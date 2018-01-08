@@ -32,7 +32,7 @@ monsterRegion_Normal = Region(0,369,554,351)
 monsterRegion_Small = Region(167,336,239,249)
 monsterRegion_Left = Region(4,382,344,345)
 monsterRegion_Up = Region(4,220,550,361)
-monsterRegion_Full = Region(1,167,554,555)
+monsterRegion_Full = Region(3,206,554,611)
 
 
 imageMissionClosed = "te-1.png"
@@ -89,7 +89,7 @@ imageEvpEventFire = [ imageMissionTabs1[0], imageMissionTabs2[1], "1507117532032
 
 imageEvpTask = [ imageMissionTabs1[0], imageMissionTabs2[1],  "1512579269469.png", "1512579277996.png" ]
 imageEvpPumpkin =  [ imageMissionTabs1[0], imageMissionTabs2[1], "1510836807935.png", "1510836861266.png" ]
-
+imageEvpMonster = [ imageMissionTabs1[1], imageMissionTabs2[1], "1515368892874.png", "1515368916449.png"  ]
 
 imageArmorMission = [ 
         imageMissionTabs1[1],

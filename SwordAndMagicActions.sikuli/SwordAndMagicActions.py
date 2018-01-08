@@ -7,7 +7,7 @@ from ControlLib import *
 Settings.MoveMouseDelay = 0.1
 
 lib = GaeeryLib()
-lib.setROI( gameRegion )
+lib.setRoi( gameRegion )
 #lib.setRoiRectangle(0,0,500,500)
 #lib.setRoiRectangle(0,0,1920,1080)
 
