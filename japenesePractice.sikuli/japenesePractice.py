@@ -1,9 +1,10 @@
 import random
+import ControlLib
+from ControlLib import *
+reload(ControlLib)  # make sure global variables are reloaded
 import SwordAndMagicPictures
 reload(SwordAndMagicPictures)  # make sure global variables are reloaded
-import ControlLib
 from SwordAndMagicPictures import *
-from ControlLib import *
 import SwordAndMagicActions
 from SwordAndMagicActions import *
 reload(SwordAndMagicActions) 
@@ -30,12 +31,12 @@ enumArmorMele = 19
 enumArmorWeekend = 17
 enumImageOffset = 21
 #-------------
-enumType = enumPractice
-#enumType = enumPractice
+enumType = enumMoveALittleAndFindFighting
+#enumType = enumMoveThanFind
 #enumType = enumImageOffset
 enumTypeNext = enumImageOffset
 
-locationFixedMoveInMission = Location(28, 456)
+locationFixedMoveInMission =  Location(358, 462)
 locationFixedMoveInMission2 = Location(513, 443)
         
 # 技能使用
@@ -47,21 +48,21 @@ locationFixedMoveInMission2 = Location(513, 443)
 autoKills = [1,4,3,2,5,0,2]  #火範圍
 
 #靈刀 
-#autoKills = [0,1,2,3,4,5,3,4,-1,3,4,1,2,3,4,3,4,1,2,3,4,5,3,4,1,2,3,4,3,4,3,4,1,2,3,4,5,3,4,1,2,3,4,3,4,1,2,3,4,5,3,4,3,4,1,2,3,4,5,3,4,1,2,3,4,3,4]  
+#autoKills = [0,1,2,3,4,5,3,4,-1,3,4,2,3,4,3,4,1,2,3,4,5,3,4,2,3,4,3,4,3,4,1,2,3,4,5,3,4,2,3,4,3,4,1,2,3,4,5,3,4,3,4,2,3,4,5,3,4,1,2,3,4,3,4]  
 
 
-#autoKills = [0,1,2,3,4,1,2,3,4]  #補坦
-autoKills = [0,1,2,0,1,3,4,0,1,0,1,2,0,1,4,0,1,3,0,1,2,0,1,4,0,1,3]  #暗殺(雙獄鬼)
+autoKills = [0,1,2,3, -5, 4]  #風補
+#autoKills = [0,1,2,0,1,3,4,0,1,0,1,2,0,1,4,0,1,3,0,1,2,0,1,4,0,1,3]  #暗殺(雙獄鬼)
 #autoKills = [0,1,2,3,5,-1,4,1,2,3,5,-1,4,1,2,3,5,-1,4,1,2,3,5,-1,4]  #土單 (霸劍
 #autoKills = [0,1,5,4,-1,3,4,1,2,3,4,5,1,2,3,4,5,1,2,3,4,5,1,2,3,4,5,1,2,3,4,5]  #土單EVP
 #autoKills = [0,1,2,4,3,5,1,2,4,3,5]  #土單 (霸劍+血少
 #autoKills = [1,0,2,3,5,1,3,-1,4,0,2,1,3,-1,4]  #土單 (無霸劍
 #autoKills = [0,1,2,3,5,4, 0,4,1,3,5,2,4,0,3,1,5,4,2,3,0,4]  #光evp
-#autoKills = [1,2,0,3,4,2,3,4]
+#autoKills = [0,2,3,1,0,3,1]
 #autoKills = [0, 3, 1, 2, -3, 4]  #光坦
 #autoKills = [3, 1, 2, 0, 4, -7, 5, -7]  #水坦
 #autoKills = [4,3, 1, 0, 2, -3, 4, -8, 5, -8]  #坦2
-#autoKills = [1,4]
+autoKills = [2,0,1,3,2,2,1]
 #autoKills = [3,5,0,2,1]  
 #autoKills = [0, -5, 1, -5, 2]  # 1~3 poison
 
@@ -88,7 +89,7 @@ ironMonster = "1498839906365.png"
 darkMonster = "darkMonster.png"
 #goldenMonster = 
 imageOtherFighting_ = "imageOtherFighting.png"
-imageFightings = [ "1507897726703.png", Pattern("imageOtherFighting.png").similar(0.75), Pattern("imageOtherFighting2.png").similar(0.75), Pattern("imageOtherFighting3.png").similar(0.75), Pattern("1503100614536.png").similar(0.75), Pattern("1503101128026.png").similar(0.75), Pattern("1503101630080.png").similar(0.75), "1503121487310.png", Pattern("1508031407013.png").similar(0.66), "1515246341319.png" ]
+imageFightings = [ Pattern("1507897726703.png").similar(0.90), Pattern("imageOtherFighting.png").similar(0.85), Pattern("imageOtherFighting2.png").similar(0.90), Pattern("imageOtherFighting3.png").similar(0.75), Pattern("1503100614536.png").similar(0.75), Pattern("1503101128026.png").similar(0.75), Pattern("1503101630080.png").similar(0.75), "1503121487310.png", Pattern("1508031407013.png").similar(0.66), "1515246341319.png" ]
 
 
 imageDoubleExp = "imageDoubleExp.png"
@@ -206,10 +207,13 @@ bSkipBeforeAgain = False
 
 bNeedAgree = True
 
+# maximun time to stay in a mission.  (0: disable)
+nMaximunMissionStayTime = 0
+#if reach maximun time, change imagesOffset to imagesOffset_endMission
+imagesOffset_endMission = []
 
 
-
-
+nEnterMissionTime = time.time()
 
 
 
@@ -251,10 +255,13 @@ def refreshSetting():
     global bNeedTransfer 
     global bNeedToEnterEvpRoom
     global imagesOffset
+    global imagesOffset_endMission
+    global nMaximunMissionStayTime
     global enumType
     global bNeedSayThanks
     global monsterPositions
     global bNeedSkip
+    global nMoveDelay
     bNeedSayThanks = False
     
     if enumType==enumPractice:
@@ -280,7 +287,7 @@ def refreshSetting():
                 ImageOffset( "1512648310904.png", 0, 190),            
                 ImageOffset( "1512648362171.png", 0, -230),  
                 ImageOffset( "1515212634098.png", 40, 220),  
-                ImageOffset( "1515329896146.png", 180, 0),  
+                ImageOffset( "1515329896146.png", 200, 15),  
         ] 
         bMoveToFighting = False
         monsterRegion = Region(0,89,560,860)
@@ -466,14 +473,69 @@ def refreshSetting():
         autoKills = [1,2,0]
         bNeedUseOtherBranchServer = False
         bMoveALittleAfterFight = True
+    elif enumType==enumEVP:
+        imageMissions = imageEvpCrab
+        bNeedToEnterEvpRoom = False
+        
+        bFindMonsterBySelf = False
+        imageMonsters = [  ]
+        imagesOffset = [
+                ImageOffset("1515431713946.png", -3, -10),  
+                ImageOffset("1515431741504.png", 0, 0),  
+                ] 
+        # maximun time to stay in a mission
+        nMaximunMissionStayTime = 60
+        #if reach maximun time, change imagesOffset to imagesOffset_endMission
+        imagesOffset_endMission = [
+                ImageOffset("1515456372044.png", 0, 0), 
+                ImageOffset("1515456342067.png", 0, 0), 
+                ImageOffset("1515456410781.png", 0, 0), 
+                ImageOffset("1515456424941.png", 0, 0), 
+                ImageOffset("1515456446359.png", 0, 0), 
+                ImageOffset("1515455039689.png", 263, -32),  
+                ImageOffset("1515455198724.png", 71, -7), 
+
+                ]
+        
+        
+        bMoveToFighting = True
+        #monsterRegion = Region(69,407,385,248)
+        #monsterRegion = monsterRegion_Up
+        bNeedUseOtherBranchServer = False
+        bNeedSkip = False
+        bSkipBeforeAgain = False
+        #autoKills = [0,1,2,3,4,5]
+        #autoKills = [5,5,1,3,0,2,0,2,4,]
+        autoKills = [4, 0, 1, 2, 3, 5, -5,  4, 0, 1, 2, 3, -5]  #坦
+        #autoKills = [1,0,2,3,5,1,3,-1,4,0,2,1,3,-1,4]  #土單 (無霸劍
+        #autoKills = [0,1,2,3,5,4, 0,4,1,3,5,2,4,0,3,1,5,4,2,3,0,4]  #光evp
+        #autoKills = [0,1,2,3,4,5, 1,2,3,4, 1,2,3,4,5, 1,2,3,4, 1,2,3,4,5, 1,2,3,4, 1,2,3,4,5, 1,2,3,4]  #土單 
+        #靈刀 
+        #autoKills = [0,1,2,3,4,5,3,4,-1,3,4,1,2,3,4,3,4,1,2,3,4,5,3,4,1,2,3,4,3,4,3,4,1,2,3,4,5,3,4,1,2,3,4,3,4,1,2,3,4,5,3,4,3,4,1,2,3,4,5,3,4,1,2,3,4,3,4]  
+
+        bMoveOnceInMission = True
+        locationFixedMoveInMission = Location(243, 449)
+        #locationFixedMoveInMission = Location(205, 520)
+        bMoveTwiceInMission = False
+        locationFixedMoveInMission2 = Location(355, 742)
+        nDelayBeforeUsingSkill = 0
+        #monsterRegion = monsterRegion_Small
+        bNeedTransfer = False
+        bMoveALittleAfterFight = False
+        bUseGPS =False
+        imageBonus1 = imageDropIncrease
+        imageBonus2 = imageDoubleExp
+        bNeedSayThanks = False
+        nMoveDelay = 1
     elif enumType==enumEVP_branch:
-        imageMissions = imageEvpEventFire
+        imageMissions = imageEvpEventWind
         bNeedToEnterEvpRoom = True
         
         bFindMonsterBySelf = False
         imageMonsters = [ "1506530623339.png" ]
         bMoveToFighting = False
-        monsterRegion = monsterRegion_Normal
+        #monsterRegion = monsterRegion_Normal
+        monsterRegion = monsterRegion_Small
         bNeedUseOtherBranchServer = True
         bMoveALittleAfterFight = False
         # let second character fly to join
@@ -486,8 +548,9 @@ def refreshSetting():
         #autoKills = [0,1,2,5,4,1,2,3,5,-1,4,1,2,3,5,-1,4,1,2,3,5,-1,4,1,2,3,5,-1,4]  #土單 血多一點
         #autoKills = [0,1,5,4,-1,3,4,1,2,3,4,5,1,2,3,4,5,1,2,3,4,5,1,2,3,4,5,1,2,3,4,5]  #土單 血少的怪
         #autoKills = [0,1,2,3,5,4, 0,4,1,3,5,2,4,0,3,1,5,4,2,3,0,4]  #光evp
+        autoKills = [4,3,2,5,0,2,1]  #火範圍
         #靈刀 
-        autoKills = [0,1,5,3,4,5,3,4,-1,3,4,1,2,3,4,3,4,1,2,3,4,5,3,4,1,2,3,4,3,4,3,4,1,2,3,4,5,3,4,1,2,3,4,3,4,1,2,3,4,5,3,4,3,4,1,2,3,4,5,3,4,1,2,3,4,3,4]  
+        #autoKills = [0,1,5,3,4,5,3,4,-1,3,4,1,2,3,4,3,4,1,2,3,4,5,3,4,1,2,3,4,3,4,3,4,1,2,3,4,5,3,4,1,2,3,4,3,4,1,2,3,4,5,3,4,3,4,1,2,3,4,5,3,4,1,2,3,4,3,4]  
 
         bMoveOnceInMission = False
         locationFixedMoveInMission = Location(450, 391)
@@ -496,44 +559,7 @@ def refreshSetting():
         bUseGPS =False
         nDelayBeforeUsingSkill = 0
         bNeedTransfer = False
-    elif enumType==enumEVP:
-        imageMissions = imageEvpMonster
-        bNeedToEnterEvpRoom = False
-        
-        bFindMonsterBySelf = True
-        imageMonsters = [ "1515368975246.png" ]
-        imagesOffset = [
-                ImageOffset("1508633996360.png", -3, -10),  
-                ImageOffset("1508634039423.png", 0, 0),  
-                ] 
-        bMoveToFighting = True
-        #monsterRegion = Region(69,407,385,248)
-        #monsterRegion = monsterRegion_Up
-        bNeedUseOtherBranchServer = True
-        bNeedSkip = False
-        bSkipBeforeAgain = False
-        #autoKills = [0,1,2,3,4,5]
-        #autoKills = [5,5,1,3,0,2,0,2,4,]
-        #autoKills = [3, 0, 1, 2, 5, 4, -20,      3, 0, 1, 2, 4, 20]  #坦
-        #autoKills = [1,0,2,3,5,1,3,-1,4,0,2,1,3,-1,4]  #土單 (無霸劍
-        #autoKills = [0,1,2,3,5,4, 0,4,1,3,5,2,4,0,3,1,5,4,2,3,0,4]  #光evp
-        #autoKills = [0,1,2,3,4,5, 1,2,3,4, 1,2,3,4,5, 1,2,3,4, 1,2,3,4,5, 1,2,3,4, 1,2,3,4,5, 1,2,3,4]  #土單 
-        #靈刀 
-        autoKills = [0,1,2,3,4,5,3,4,-1,3,4,1,2,3,4,3,4,1,2,3,4,5,3,4,1,2,3,4,3,4,3,4,1,2,3,4,5,3,4,1,2,3,4,3,4,1,2,3,4,5,3,4,3,4,1,2,3,4,5,3,4,1,2,3,4,3,4]  
 
-        bMoveOnceInMission = True
-        locationFixedMoveInMission = Location(417, 265)
-        #locationFixedMoveInMission = Location(205, 520)
-        bMoveTwiceInMission = False
-        locationFixedMoveInMission2 = Location(355, 742)
-        nDelayBeforeUsingSkill = 0
-        #monsterRegion = monsterRegion_Small
-        bNeedTransfer = False
-        bMoveALittleAfterFight = False
-        bUseGPS =False
-        imageBonus1 = imageDropIncrease
-        imageBonus2 = imageDoubleExp
-        bNeedSayThanks = False
     elif enumType==enumAutoSkill:
         #autoKills = [0,1,2,3,4,5]
         #autoKills = [0,1,2,3,5,-1,4,1,2,3,5,-1,4,1,2,3,5,-1,4,1,2,3,5,-1,4,1,2,3,5,-1,4,1,2,3,5,-1,4,1,2,3,5,-1,4]  #土單 (霸劍
@@ -694,12 +720,27 @@ def refreshSetting():
     else:
         Debug.user("error: unknown type");
     Debug.user("mission image length=%d" % len(imageMissions))
+
+
+
+def checkMissionTimeOut():
+    global imagesOffset
+    global nMissionStartTime
+    global nEnterMissionTime
+    global nMaximunMissionStayTime
+
+    if nMaximunMissionStayTime > 0 and nMaximunMissionStayTime < time.time() - nEnterMissionTime:
+        Debug.user("Change imagesOffset to imagesOffset_endMission")        
+        imagesOffset = imagesOffset_endMission 
+        Debug.user("checkMissionTimeOut, in mission time=%d" % (time.time() - nEnterMissionTime))
+
 # ============================
 
 
   
 def main():
     global enumType
+    global nEnterMissionTime
     isTransfered = False
     isMoved = False
     bLeavingFighting = False
@@ -721,12 +762,15 @@ def main():
         if enumPageId == PageId.enumPageId_mission:
             
             if bLeavingFighting:
+                checkMissionTimeOut()
                 bLeavingFighting = False
                 if bMoveALittleAfterFight:
                     moveALitte()
                     continue
             
             if not isMoved:
+                nEnterMissionTime = time.time()
+                refreshSetting()
                 if bMoveOnceInMission:               
                     isMoved = True
                     l("locationFixedMoveInMission", locationFixedMoveInMission )
@@ -909,8 +953,9 @@ def enterMission():
     d( "imageTaskBoard", imageTaskBoard, 10 )
 
     if not gameRegion.exists("1511573781918.png", 10):
-        Debug.user("error: did not enter mission select page.")
-        return False
+        if not gameRegion.exists("1515432205825.png", 10):
+            Debug.user("error: did not enter mission select page.")
+            return False
 
     bFoundMission = False
     nSteps=len(imageMissions)
@@ -934,6 +979,7 @@ def enterMission():
             
             if d("click back", "1503880320458.png"):
                 i = i - 1
+            
         else:
             bFoundMission = True
             sleep(0.5)
@@ -1033,6 +1079,10 @@ def moveToBoss():
 def moveToFighting():
     Debug.user("moveToFighting+")
     i = 0
+
+    Steps("moveToFighting", [monsterRegion, Images([ Pattern("1507897726703.png").similar(0.90).targetOffset(0,10), Pattern("imageOtherFighting.png").similar(0.85).targetOffset(0,7), Pattern("imageOtherFighting2.png").similar(0.90).targetOffset(0,7), Pattern("imageOtherFighting3.png").similar(0.75), Pattern("1503100614536.png").similar(0.75).targetOffset(0,8), Pattern("1503101128026.png").similar(0.75).targetOffset(0,6), Pattern("1503101630080.png").similar(0.75).targetOffset(0,7), "1503121487310.png", Pattern("1508031407013.png").similar(0.66).targetOffset(0,5), Pattern("1515246341319.png").targetOffset(0,4), Pattern("1515825263702.png").similar(0.80).targetOffset(8,5)]) ]).execute()
+    return 
+
     for image in imageFightings:
         try:
             i = i+1
@@ -1452,8 +1502,8 @@ def moveToEvpTarget():
     #return d("start", "1512878613215.png", 5)
      
     
-    #clickImageOffsetOrClickLocation( "1508343277513.png", 130, -110, Location(515, 426) )  
-    clickImageOffsetOrClickLocation( Pattern("1507117402718.png").similar(0.95), 145, -60, Location(35, 394) )  #fire
+    clickImageOffsetOrClickLocation( "1508343277513.png", 130, -110, Location(515, 426) )  #wind
+    #clickImageOffsetOrClickLocation( Pattern("1507117402718.png").similar(0.95), 145, -60, Location(35, 394) )  #fire
     sleep(1)
     
     if isFighting():

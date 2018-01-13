@@ -14,6 +14,66 @@ gameRegion = Region(0,30,557,988)
 
 Settings.MoveMouseDelay = 0.1
 
+# store image and its steps
+class Steps():
+    name = ""
+    steps = []
+    nIntervalMiliseconds = 0.5
+    def __init__(self, name, steps = [], nIntervalMiliseconds = 0.5):
+        self.name = unicode(name, "utf8")
+        self.steps = steps
+        self.setInterval(nIntervalMiliseconds)
+
+    def setInterval(self, nIntervalMiliseconds):
+        self.nIntervalMiliseconds = nIntervalMiliseconds
+
+    def execute(self):
+        Debug.user("execute steps name=" + self.name)
+        lib = GaeeryLib()
+        i = 0
+        for step in self.steps:
+            strStepType = str(step.__class__)
+            if strStepType == "<class 'sikuli.Sikuli.Location'>":
+                Debug.user( "step %d: click location %s" % (i, step) )
+            elif strStepType == "<type 'str'>":
+                lib.clickImage( format("step %d: click image %s" % (i, step)), step)
+                click( step)
+            elif strStepType == "<type 'int'>":
+                Debug.user( "step %d: sleep %d" % (i, step) )
+                sleep(step)
+            elif strStepType == "<class 'sikuli.Region.Region'>":
+                Debug.user( "step %d: Set ROI %s" % (i, step) )
+                lib.setRoi(step)
+            elif strStepType == "<class 'sikuli.Sikuli.Pattern'>":
+                lib.clickImage( format("step %d: click Pattern %s" % (i, step)), step)
+            elif strStepType == "ControlLib.Images":
+                step.setRoi( lib.getRoi() )
+                step.clickMatch()
+            else:
+                Debug.user( "warning: Unsupported type = %s" % strStepType )
+            i = i + 1
+            sleep(self.nIntervalMiliseconds) 
+
+
+class Images():
+    images = []
+    region = SCREEN
+    def __init__(self, images = []):
+        self.images = images
+    def setRoi(self, region):
+        self.region = region
+    def getMatch(self):
+        for image in images:
+            if  region.exists(image, 0):
+                return region.getLastMatch()
+        return None
+    def clickMatch(self):
+        for image in self.images:
+            if self.region.exists(image, 0):
+                click( self.region.getLastMatch() )
+                return self.region.getLastMatch()
+        return None
+
 def clickInRegion(reg, target, timeout = 1):
     try:
         if not reg.exists(target, timeout): 
@@ -104,15 +164,23 @@ class ImageOffset(Automation):
     image = 0
     offsetX = 0
     offsetY = 0
-    #def __init__(image):
-    #    self.image = image
     def __init__(self,image, offsetX, offsetY):
         #super.__init__(self);
         self.image = image
         self.offsetX = offsetX
         self.offsetY = offsetY
 
-
+# store image and its offset
+class ImageOffset2(Automation):
+    image = 0
+    offsetX = 0
+    offsetY = 0
+    def __init__(self, image, offsets):
+        Debug.user( "type offsets = %s" % offsets.__class__ )
+        self.image = image
+        self.offsetX = offsets.x
+        self.offsetY = offsets.y
+        Debug.user( "offset(%d,%d)" % (self.offsetX, self.offsetY) )
 
 from sikuli import *
 import shutil
@@ -134,6 +202,9 @@ class GaeeryLib:
     def setRoi(self, roiRectangle):
         #Debug.user( "setROI = %d, %d, %d, %d" % (roiRectangle.x , roiRectangle.y , roiRectangle.w , roiRectangle.h) )
         self.roiRectangle = roiRectangle
+
+    def getRoi(self):
+        return self.roiRectangle
 
     def setRoiRectangle(self, x, y, w, h):
         self.setROI( Region(x,y,w,h) )

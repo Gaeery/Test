@@ -86,6 +86,66 @@ gameRegion = Region(<span class="dig">0</span>,<span class="dig">30</span>,<span
 
 Settings.MoveMouseDelay = <span class="dig">0.1</span>
 
+<span class="cmt"># store image and its steps</span>
+<span class="kw">class</span> Steps():
+    name = <span class="str">""</span>
+    steps = []
+    nIntervalMiliseconds = <span class="dig">0.5</span>
+    <span class="kw">def</span> __init__(self, name, steps = [], nIntervalMiliseconds = <span class="dig">0.5</span>):
+        self.name = unicode(name, <span class="str">"utf8"</span>)
+        self.steps = steps
+        self.setInterval(nIntervalMiliseconds)
+
+    <span class="kw">def</span> setInterval(self, nIntervalMiliseconds):
+        self.nIntervalMiliseconds = nIntervalMiliseconds
+
+    <span class="kw">def</span> execute(self):
+        Debug.user(<span class="str">"execute steps name="</span> + self.name)
+        lib = GaeeryLib()
+        i = <span class="dig">0</span>
+        <span class="kw">for</span> step <span class="kw">in</span> self.steps:
+            strStepType = str(step.__class__)
+            <span class="kw">if</span> strStepType == <span class="str">"&lt;class 'sikuli.Sikuli.Location'&gt;"</span>:
+                Debug.user( <span class="str">"step %d: click location %s"</span> % (i, step) )
+            <span class="kw">elif</span> strStepType == <span class="str">"&lt;type 'str'&gt;"</span>:
+                lib.clickImage( format(<span class="str">"step %d: click image %s"</span> % (i, step)), step)
+                <span class="skw">click</span>( step)
+            <span class="kw">elif</span> strStepType == <span class="str">"&lt;type 'int'&gt;"</span>:
+                Debug.user( <span class="str">"step %d: sleep %d"</span> % (i, step) )
+                <span class="skw">sleep</span>(step)
+            <span class="kw">elif</span> strStepType == <span class="str">"&lt;class 'sikuli.Region.Region'&gt;"</span>:
+                Debug.user( <span class="str">"step %d: Set ROI %s"</span> % (i, step) )
+                lib.setRoi(step)
+            <span class="kw">elif</span> strStepType == <span class="str">"&lt;class 'sikuli.Sikuli.Pattern'&gt;"</span>:
+                lib.clickImage( format(<span class="str">"step %d: click Pattern %s"</span> % (i, step)), step)
+            <span class="kw">elif</span> strStepType == <span class="str">"ControlLib.Images"</span>:
+                step.setRoi( lib.getRoi() )
+                step.clickMatch()
+            <span class="kw">else</span>:
+                Debug.user( <span class="str">"warning: Unsupported type = %s"</span> % strStepType )
+            i = i + <span class="dig">1</span>
+            <span class="skw">sleep</span>(self.nIntervalMiliseconds)
+
+
+<span class="kw">class</span> Images():
+    images = []
+    region = SCREEN
+    <span class="kw">def</span> __init__(self, images = []):
+        self.images = images
+    <span class="kw">def</span> setRoi(self, region):
+        self.region = region
+    <span class="kw">def</span> getMatch(self):
+        <span class="kw">for</span> image <span class="kw">in</span> images:
+            <span class="kw">if</span>  region.exists(image, <span class="dig">0</span>):
+                <span class="kw">return</span> region.getLastMatch()
+        <span class="kw">return</span> None
+    <span class="kw">def</span> clickMatch(self):
+        <span class="kw">for</span> image <span class="kw">in</span> self.images:
+            <span class="kw">if</span> self.region.exists(image, <span class="dig">0</span>):
+                <span class="skw">click</span>( self.region.getLastMatch() )
+                <span class="kw">return</span> self.region.getLastMatch()
+        <span class="kw">return</span> None
+
 <span class="kw">def</span> clickInRegion(reg, target, timeout = <span class="dig">1</span>):
     <span class="kw">try</span>:
         <span class="kw">if</span> <span class="kw">not</span> reg.exists(target, timeout):
@@ -176,15 +236,23 @@ def findLocation(reg, target, timeout = 1):
     image = <span class="dig">0</span>
     offsetX = <span class="dig">0</span>
     offsetY = <span class="dig">0</span>
-    <span class="cmt">#def __init__(image):</span>
-    <span class="cmt">#    self.image = image</span>
     <span class="kw">def</span> __init__(self,image, offsetX, offsetY):
         <span class="cmt">#super.__init__(self);</span>
         self.image = image
         self.offsetX = offsetX
         self.offsetY = offsetY
 
-
+<span class="cmt"># store image and its offset</span>
+<span class="kw">class</span> ImageOffset2(Automation):
+    image = <span class="dig">0</span>
+    offsetX = <span class="dig">0</span>
+    offsetY = <span class="dig">0</span>
+    <span class="kw">def</span> __init__(self, image, offsets):
+        Debug.user( <span class="str">"type offsets = %s"</span> % offsets.__class__ )
+        self.image = image
+        self.offsetX = offsets.x
+        self.offsetY = offsets.y
+        Debug.user( <span class="str">"offset(%d,%d)"</span> % (self.offsetX, self.offsetY) )
 
 <span class="kw">from</span> sikuli <span class="kw">import</span> *
 <span class="kw">import</span> shutil
@@ -206,6 +274,9 @@ def findLocation(reg, target, timeout = 1):
     <span class="kw">def</span> setRoi(self, roiRectangle):
         <span class="cmt">#Debug.user( "setROI = %d, %d, %d, %d" % (roiRectangle.x , roiRectangle.y , roiRectangle.w , roiRectangle.h) )</span>
         self.roiRectangle = roiRectangle
+
+    <span class="kw">def</span> getRoi(self):
+        <span class="kw">return</span> self.roiRectangle
 
     <span class="kw">def</span> setRoiRectangle(self, x, y, w, h):
         self.setROI( Region(x,y,w,h) )

@@ -5,9 +5,7 @@ from ControlLib import *
 
 gameRegion = Region(0,0,587,1024)
 #imageTaskBoard = "imageTaskBoard.png"  #normal
-imageTaskBoard = "imageTaskBoard.png"
-
-
+imageTaskBoard = Pattern("1515601825642.png").similar(0.96)
 locationIronMonster = Location(112, 555)
 locationFirstOriginalStone = Location(174, 431)
 locationSecondOriginalStone = Location(508, 240)
@@ -83,13 +81,21 @@ target2 = "target2.png"
 
 
 imageEvpEvent = [ imageMissionTabs1[1], imageMissionTabs2[1], "1505315719283.png", "1505315749946.png" ]
-imageEvpEvent2000 = [ imageMissionTabs1[0], imageMissionTabs2[1], "1508342146553.png", "1508342154667.png"]
+imageEvpEventWind = [ imageMissionTabs1[0], imageMissionTabs2[1], "1508342146553.png", "1508342154667.png"]
 imageEvpEventDust = [ imageMissionTabs1[0], imageMissionTabs2[1], "1505924940340.png", "1505924953174.png" ]
 imageEvpEventFire = [ imageMissionTabs1[0], imageMissionTabs2[1], "1507117532032.png", "1507124347810.png" ]
 
 imageEvpTask = [ imageMissionTabs1[0], imageMissionTabs2[1],  "1512579269469.png", "1512579277996.png" ]
 imageEvpPumpkin =  [ imageMissionTabs1[0], imageMissionTabs2[1], "1510836807935.png", "1510836861266.png" ]
 imageEvpMonster = [ imageMissionTabs1[1], imageMissionTabs2[1], "1515368892874.png", "1515368916449.png"  ]
+imageEvpCrab = [ imageMissionTabs1[1], imageMissionTabs2[1], "1515628116808.png", "1515628171242.png"  ]
+
+imageSpecialMission = [ 
+        imageMissionTabs1[0],
+        imageMissionTabs2[1], 
+        "1515431543087.png", 
+        "1515431556157.png"
+         ]
 
 imageArmorMission = [ 
         imageMissionTabs1[1],
