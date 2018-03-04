@@ -20,18 +20,29 @@ def SayThanks():
     return lib.clickImageInRegion("Thanks.", Region(0,91,551,610), "1504395063209.png", 1)
 def SayThanksIfRare():
     
-    if lib.exists( "rare", Pattern("1504308263995.png").similar(0.60), 3):
+    if lib.exists( "rare", Pattern("1519098369074.png").similar(0.60), 3): # Pattern("1504308263995.png").similar(0.60)
         if lib.clickImage( "local talk", Pattern("1504437289796.png").similar(0.80)):
             sleep(0.1)
         return SayThanks()
     return False
 
 '''
-finder = Finder( Screen(0).capture() )
-try:
-    found = finder.find(Pattern("1504627650520.png").exact())
-    print found
-    Debug.user("found")
-except FindFailed:
-    Debug.user("failed")
+#finder = Finder( Screen(0).capture() )
+screen = Screen()
+region =Region(8,387,539,502)
+finder = Finder( screen.capture(region) )
+
+finder.find(Pattern("1518231798070.png").targetOffset(-17,9))
+while finder.hasNext():
+    found = finder.next()
+    print "found 2: ", found.__class__, "  ", found 
+    #found.x = found.x + region.x
+    #found.y = found.y + region.y
+    center = found.getTarget()
+    center.x = center.x + region.x
+    center.y = center.y + region.y
+    print center
+    region.click(center)
+    
+finder.destroy()
 '''

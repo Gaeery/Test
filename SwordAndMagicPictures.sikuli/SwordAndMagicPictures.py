@@ -1,11 +1,13 @@
 
+
 from sikuli import *
 import ControlLib
 from ControlLib import *
 
-gameRegion = Region(0,0,587,1024)
+gameRegion = Region(0,33,545,982)
 #imageTaskBoard = "imageTaskBoard.png"  #normal
-imageTaskBoard = Pattern("1515601825642.png").similar(0.96)
+#imageTaskBoard = Pattern("1515601825642.png").similar(0.90)
+imageTaskBoard = "imageTaskBoard.png"
 locationIronMonster = Location(112, 555)
 locationFirstOriginalStone = Location(174, 431)
 locationSecondOriginalStone = Location(508, 240)
@@ -48,7 +50,8 @@ class PageId():
     enumPageId_openGift = 6
     enumPageId_missionClosed = 7
     enumPageId_skip = 8
-
+    enumPageId_back = 9    
+    enumPageId_login = 10
     escapeRegion = Region(400,932,166,93)
     missionTimerRegion = Region(438,23,110,78)
     imagePages = [
@@ -62,7 +65,10 @@ class PageId():
             [gameRegion, "imagePageSelectingTask.png", enumPageId_selectingTask, "Page: Selecting a task"],
             [gameRegion, "imagePageOpenGift.png", enumPageId_openGift, "Page: open gift"],
             [gameRegion, "1503677033007.png", enumPageId_missionClosed, "Page: imageMissionClosed"],
-            [gameRegion, "1507194420421.png", enumPageId_skip, "Page: skip"]
+            [gameRegion, "1507194420421.png", enumPageId_skip, "Page: skip"],
+            [gameRegion, "1516277174662.png", enumPageId_back, "Page: back"],
+            [gameRegion, "1517104193110.png", enumPageId_login, "Page: Login"],
+            [gameRegion, "1517157729552.png", enumPageId_login, "Page: Login 2"],
         ]
         #enumPageId_mission = 0
         #enumPageId_again = 2
@@ -81,14 +87,25 @@ target2 = "target2.png"
 
 
 imageEvpEvent = [ imageMissionTabs1[1], imageMissionTabs2[1], "1505315719283.png", "1505315749946.png" ]
+imageEvpEventWater = [ imageMissionTabs1[0], imageMissionTabs2[1], "1516799312667.png", "1508342154667.png"]
 imageEvpEventWind = [ imageMissionTabs1[0], imageMissionTabs2[1], "1508342146553.png", "1508342154667.png"]
 imageEvpEventDust = [ imageMissionTabs1[0], imageMissionTabs2[1], "1505924940340.png", "1505924953174.png" ]
 imageEvpEventFire = [ imageMissionTabs1[0], imageMissionTabs2[1], "1507117532032.png", "1507124347810.png" ]
 
 imageEvpTask = [ imageMissionTabs1[0], imageMissionTabs2[1],  "1512579269469.png", "1512579277996.png" ]
-imageEvpPumpkin =  [ imageMissionTabs1[0], imageMissionTabs2[1], "1510836807935.png", "1510836861266.png" ]
+imageEvpMarkup =  [ imageMissionTabs1[0], imageMissionTabs2[1], "1510836807935.png", "1510836861266.png" ]
 imageEvpMonster = [ imageMissionTabs1[1], imageMissionTabs2[1], "1515368892874.png", "1515368916449.png"  ]
 imageEvpCrab = [ imageMissionTabs1[1], imageMissionTabs2[1], "1515628116808.png", "1515628171242.png"  ]
+imageEvpLight = [ imageMissionTabs1[1], imageMissionTabs2[1], "1515628116808.png", Pattern("1515628171242.png").similar(0.87) , Location(283, 397) ]
+imageEvpDark = [ imageMissionTabs1[1], imageMissionTabs2[1], "1515628116808.png", "1517326622995.png" , Location(256, 630) ]
+imageEvpTortoise = [ imageMissionTabs1[1], imageMissionTabs2[1], "1515628116808.png", "1515972299477.png"  ]
+imageEvpOctopus = [ imageMissionTabs1[1], imageMissionTabs2[1], "1515628116808.png", Pattern("1515628171242.png").similar(0.90)  ]
+imageEvpDust2 = [ imageMissionTabs1[1], imageMissionTabs2[1], "1515628116808.png", "1516233308162.png" ]
+imageEvpLion = [ imageMissionTabs1[1], imageMissionTabs2[1], "1515628116808.png", "1516925501465.png", Location(447, 293)  ]
+imageEvpBee = [ imageMissionTabs1[1], imageMissionTabs2[1], "1515628116808.png", "1516926484264.png", Location(298, 283) ]
+
+imageEvpEventSnow = [ imageMissionTabs1[0], imageMissionTabs2[1], "1516120005317.png", "1516120018013.png"]
+imageEvpValentinesDay = [ imageMissionTabs1[0], imageMissionTabs2[1], "1518104823849.png", "1518049781179.png", Location(466, 414)]
 
 imageSpecialMission = [ 
         imageMissionTabs1[0],

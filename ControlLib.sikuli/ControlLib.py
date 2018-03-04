@@ -10,15 +10,19 @@
 
 from sikuli import *
 
-gameRegion = Region(0,30,557,988)
+gameRegion = Region(6,31,532,979)
 
 Settings.MoveMouseDelay = 0.1
+
+
+
 
 # store image and its steps
 class Steps():
     name = ""
     steps = []
     nIntervalMiliseconds = 0.5
+    nWaitTimeout = 2
     def __init__(self, name, steps = [], nIntervalMiliseconds = 0.5):
         self.name = unicode(name, "utf8")
         self.steps = steps
@@ -31,13 +35,19 @@ class Steps():
         Debug.user("execute steps name=" + self.name)
         lib = GaeeryLib()
         i = 0
+        success = True
         for step in self.steps:
+            print i
             strStepType = str(step.__class__)
             if strStepType == "<class 'sikuli.Sikuli.Location'>":
                 Debug.user( "step %d: click location %s" % (i, step) )
+                click(step)
             elif strStepType == "<type 'str'>":
-                lib.clickImage( format("step %d: click image %s" % (i, step)), step)
-                click( step)
+                if lib.exists("Check image exists", step, 2):
+                    print "Found image"
+                if not lib.clickImage( format("step %d: click image %s" % (i, step)), step):
+                    success = False
+                #click( step)
             elif strStepType == "<type 'int'>":
                 Debug.user( "step %d: sleep %d" % (i, step) )
                 sleep(step)
@@ -45,15 +55,21 @@ class Steps():
                 Debug.user( "step %d: Set ROI %s" % (i, step) )
                 lib.setRoi(step)
             elif strStepType == "<class 'sikuli.Sikuli.Pattern'>":
-                lib.clickImage( format("step %d: click Pattern %s" % (i, step)), step)
+                if lib.exists(step, self.nWaitTimeout):
+                    print "Found image"
+                if not lib.clickImage( format("step %d: click Pattern %s" % (i, step)), step):
+                    success = False
             elif strStepType == "ControlLib.Images":
+                Debug.user( "step %d: click one of images" % i )
                 step.setRoi( lib.getRoi() )
-                step.clickMatch()
+                if not step.clickMatch():
+                    success = False
             else:
                 Debug.user( "warning: Unsupported type = %s" % strStepType )
+                success = False
             i = i + 1
             sleep(self.nIntervalMiliseconds) 
-
+        return success
 
 class Images():
     images = []
@@ -61,18 +77,67 @@ class Images():
     def __init__(self, images = []):
         self.images = images
     def setRoi(self, region):
+        print "set region = ", region
         self.region = region
     def getMatch(self):
-        for image in images:
-            if  region.exists(image, 0):
-                return region.getLastMatch()
+        return findOne(self.region, self.images)
+    '''
+        i = 0
+        for image in self.images:
+            if  self.region.exists(image, 0):
+                Debug.user("match index = %d" % i)
+                return self.region.getLastMatch()
+            i = i + 1
         return None
+    '''
     def clickMatch(self):
+        match = findOne(self.region, self.images)
+        if match != None:
+            target = match.getTarget()
+            print "target = ", target
+            if target.x > self.region.x + self.region.w:
+                target.x = self.region.x + self.region.w
+            if target.x < self.region.x:
+                target.x = self.region.x
+            if target.y > self.region.y + self.region.h:
+                target.y = self.region.y + self.region.h
+            if target.y < self.region.y:
+                target.y = self.region.y
+            click( target )
+            return True
+        return False
+        '''
+        i = 0
         for image in self.images:
             if self.region.exists(image, 0):
+                Debug.user("match index = %d" % i)
                 click( self.region.getLastMatch() )
                 return self.region.getLastMatch()
+            i = i + 1
         return None
+        '''
+
+def findOne(region, images):
+    screen = Screen()
+    finder = Finder( screen.capture(region) )
+    i = 0
+    found = None
+    for image in images:
+        finder.find(image)
+        while finder.hasNext():
+            found = finder.next();
+            Debug.user("found image index = %d, %s", i, found)
+            finder.destroy()
+            center = found.getTarget()
+            center.x = center.x + region.x
+            center.y = center.y + region.y
+            print "Change position to ", found
+            return found
+        i = i + 1
+    finder.destroy()
+    return None
+    
+
 
 def clickInRegion(reg, target, timeout = 1):
     try:
@@ -181,6 +246,19 @@ class ImageOffset2(Automation):
         self.offsetX = offsets.x
         self.offsetY = offsets.y
         Debug.user( "offset(%d,%d)" % (self.offsetX, self.offsetY) )
+
+# store image and its offset
+class RegionImageOffset(Automation):
+    region = 0
+    image = 0
+    offsetX = 0
+    offsetY = 0
+    def __init__(self, region, image, offsetX, offsetY):
+        self.region = region
+        self.image = image
+        self.offsetX = offsetX
+        self.offsetY = offsetY
+
 
 from sikuli import *
 import shutil

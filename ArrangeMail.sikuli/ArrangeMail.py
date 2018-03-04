@@ -5,12 +5,14 @@ import ControlLib
 from SwordAndMagicPictures import *
 from ControlLib import *
 Settings.MoveMouseDelay = 0.3
-gameRegion = Region(0,0,587,1024)
+gameRegion = Region(0,30,555,990)
+
+imgMenu = "1519039125806.png"
 
 def ArrangeMail():
     with gameRegion:    
         while True:
-            d("menu", "1503708173412.png",3)
+            d("menu", imgMenu,3)
             d("mailbox", "1503708225124.png", 3)
             if not receiveAllMail():
                 break
@@ -61,9 +63,10 @@ def sellAll():
 
 def gotoEquipPage():
     with gameRegion:  
+        d("menu",  imgMenu, 0)
         d("leave mail", "1503708342988.png", 3)
         sleep(1)
-        d("equip", "1503708374841.png", 3)
+        d("equip", "1519039301576.png", 3)
         sleep(1)
         d("equip list", "1503708432656.png", 3)
         sleep(1)
@@ -76,11 +79,23 @@ def storeAll():
         while True:
             d("select all", "1503708529175.png", 20)
             if d("stored all", "1503708674424.png",1):
-                d("leave store", "1503709049190.png", 3)
+                d("leave store", "1519039546940.png", 3)
                 break
             d("store", Pattern("1505518002795.png").exact(), 5)
             d("store2", Pattern("1503961294687.png").similar(0.94), 5)
                 
             d("store3", Pattern("1505518063648.png").similar(0.95), 5)
 
+def vote():
+    region = Region(382,522,174,83)
+    if region.exists("1516752267331.png", 0):
+        while True:
+            print region.getLastMatch()
+            click( region.getLastMatch() )
+            sleep(0.5)
+        
+vote()
+gotoEquipPage()
+sellAll()
+storeAll()
 ArrangeMail()

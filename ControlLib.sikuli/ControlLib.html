@@ -82,15 +82,19 @@
 
 <span class="kw">from</span> sikuli <span class="kw">import</span> *
 
-gameRegion = Region(<span class="dig">0</span>,<span class="dig">30</span>,<span class="dig">557</span>,<span class="dig">988</span>)
+gameRegion = Region(<span class="dig">6</span>,<span class="dig">31</span>,<span class="dig">532</span>,<span class="dig">979</span>)
 
 Settings.MoveMouseDelay = <span class="dig">0.1</span>
+
+
+
 
 <span class="cmt"># store image and its steps</span>
 <span class="kw">class</span> Steps():
     name = <span class="str">""</span>
     steps = []
     nIntervalMiliseconds = <span class="dig">0.5</span>
+    nWaitTimeout = <span class="dig">2</span>
     <span class="kw">def</span> __init__(self, name, steps = [], nIntervalMiliseconds = <span class="dig">0.5</span>):
         self.name = unicode(name, <span class="str">"utf8"</span>)
         self.steps = steps
@@ -103,13 +107,19 @@ Settings.MoveMouseDelay = <span class="dig">0.1</span>
         Debug.user(<span class="str">"execute steps name="</span> + self.name)
         lib = GaeeryLib()
         i = <span class="dig">0</span>
+        success = True
         <span class="kw">for</span> step <span class="kw">in</span> self.steps:
+            <span class="kw">print</span> i
             strStepType = str(step.__class__)
             <span class="kw">if</span> strStepType == <span class="str">"&lt;class 'sikuli.Sikuli.Location'&gt;"</span>:
                 Debug.user( <span class="str">"step %d: click location %s"</span> % (i, step) )
+                <span class="skw">click</span>(step)
             <span class="kw">elif</span> strStepType == <span class="str">"&lt;type 'str'&gt;"</span>:
-                lib.clickImage( format(<span class="str">"step %d: click image %s"</span> % (i, step)), step)
-                <span class="skw">click</span>( step)
+                <span class="kw">if</span> lib.exists(<span class="str">"Check image exists"</span>, step, <span class="dig">2</span>):
+                    <span class="kw">print</span> <span class="str">"Found image"</span>
+                <span class="kw">if</span> <span class="kw">not</span> lib.clickImage( format(<span class="str">"step %d: click image %s"</span> % (i, step)), step):
+                    success = False
+                <span class="cmt">#click( step)</span>
             <span class="kw">elif</span> strStepType == <span class="str">"&lt;type 'int'&gt;"</span>:
                 Debug.user( <span class="str">"step %d: sleep %d"</span> % (i, step) )
                 <span class="skw">sleep</span>(step)
@@ -117,15 +127,21 @@ Settings.MoveMouseDelay = <span class="dig">0.1</span>
                 Debug.user( <span class="str">"step %d: Set ROI %s"</span> % (i, step) )
                 lib.setRoi(step)
             <span class="kw">elif</span> strStepType == <span class="str">"&lt;class 'sikuli.Sikuli.Pattern'&gt;"</span>:
-                lib.clickImage( format(<span class="str">"step %d: click Pattern %s"</span> % (i, step)), step)
+                <span class="kw">if</span> lib.exists(step, self.nWaitTimeout):
+                    <span class="kw">print</span> <span class="str">"Found image"</span>
+                <span class="kw">if</span> <span class="kw">not</span> lib.clickImage( format(<span class="str">"step %d: click Pattern %s"</span> % (i, step)), step):
+                    success = False
             <span class="kw">elif</span> strStepType == <span class="str">"ControlLib.Images"</span>:
+                Debug.user( <span class="str">"step %d: click one of images"</span> % i )
                 step.setRoi( lib.getRoi() )
-                step.clickMatch()
+                <span class="kw">if</span> <span class="kw">not</span> step.clickMatch():
+                    success = False
             <span class="kw">else</span>:
                 Debug.user( <span class="str">"warning: Unsupported type = %s"</span> % strStepType )
+                success = False
             i = i + <span class="dig">1</span>
             <span class="skw">sleep</span>(self.nIntervalMiliseconds)
-
+        <span class="kw">return</span> success
 
 <span class="kw">class</span> Images():
     images = []
@@ -133,18 +149,67 @@ Settings.MoveMouseDelay = <span class="dig">0.1</span>
     <span class="kw">def</span> __init__(self, images = []):
         self.images = images
     <span class="kw">def</span> setRoi(self, region):
+        <span class="kw">print</span> <span class="str">"set region = "</span>, region
         self.region = region
     <span class="kw">def</span> getMatch(self):
-        <span class="kw">for</span> image <span class="kw">in</span> images:
-            <span class="kw">if</span>  region.exists(image, <span class="dig">0</span>):
-                <span class="kw">return</span> region.getLastMatch()
-        <span class="kw">return</span> None
+        <span class="kw">return</span> findOne(self.region, self.images)
+    <span class="str">'''
+        i = 0
+        for image in self.images:
+            if  self.region.exists(image, 0):
+                Debug.user("match index = %d" % i)
+                return self.region.getLastMatch()
+            i = i + 1
+        return None
+    '''</span>
     <span class="kw">def</span> clickMatch(self):
-        <span class="kw">for</span> image <span class="kw">in</span> self.images:
-            <span class="kw">if</span> self.region.exists(image, <span class="dig">0</span>):
-                <span class="skw">click</span>( self.region.getLastMatch() )
-                <span class="kw">return</span> self.region.getLastMatch()
-        <span class="kw">return</span> None
+        match = findOne(self.region, self.images)
+        <span class="kw">if</span> match != None:
+            target = match.getTarget()
+            <span class="kw">print</span> <span class="str">"target = "</span>, target
+            <span class="kw">if</span> target.x &gt; self.region.x + self.region.w:
+                target.x = self.region.x + self.region.w
+            <span class="kw">if</span> target.x &lt; self.region.x:
+                target.x = self.region.x
+            <span class="kw">if</span> target.y &gt; self.region.y + self.region.h:
+                target.y = self.region.y + self.region.h
+            <span class="kw">if</span> target.y &lt; self.region.y:
+                target.y = self.region.y
+            <span class="skw">click</span>( target )
+            <span class="kw">return</span> True
+        <span class="kw">return</span> False
+        <span class="str">'''
+        i = 0
+        for image in self.images:
+            if self.region.exists(image, 0):
+                Debug.user("match index = %d" % i)
+                click( self.region.getLastMatch() )
+                return self.region.getLastMatch()
+            i = i + 1
+        return None
+        '''</span>
+
+<span class="kw">def</span> findOne(region, images):
+    screen = Screen()
+    finder = Finder( screen.<span class="skw">capture</span>(region) )
+    i = <span class="dig">0</span>
+    found = None
+    <span class="kw">for</span> image <span class="kw">in</span> images:
+        finder.<span class="skw">find</span>(image)
+        <span class="kw">while</span> finder.hasNext():
+            found = finder.next();
+            Debug.user(<span class="str">"found image index = %d, %s"</span>, i, found)
+            finder.destroy()
+            center = found.getTarget()
+            center.x = center.x + region.x
+            center.y = center.y + region.y
+            <span class="kw">print</span> <span class="str">"Change position to "</span>, found
+            <span class="kw">return</span> found
+        i = i + <span class="dig">1</span>
+    finder.destroy()
+    <span class="kw">return</span> None
+
+
 
 <span class="kw">def</span> clickInRegion(reg, target, timeout = <span class="dig">1</span>):
     <span class="kw">try</span>:
@@ -253,6 +318,19 @@ def findLocation(reg, target, timeout = 1):
         self.offsetX = offsets.x
         self.offsetY = offsets.y
         Debug.user( <span class="str">"offset(%d,%d)"</span> % (self.offsetX, self.offsetY) )
+
+<span class="cmt"># store image and its offset</span>
+<span class="kw">class</span> RegionImageOffset(Automation):
+    region = <span class="dig">0</span>
+    image = <span class="dig">0</span>
+    offsetX = <span class="dig">0</span>
+    offsetY = <span class="dig">0</span>
+    <span class="kw">def</span> __init__(self, region, image, offsetX, offsetY):
+        self.region = region
+        self.image = image
+        self.offsetX = offsetX
+        self.offsetY = offsetY
+
 
 <span class="kw">from</span> sikuli <span class="kw">import</span> *
 <span class="kw">import</span> shutil

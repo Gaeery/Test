@@ -77,12 +77,14 @@ reload(SwordAndMagicPictures)  <span class="cmt"># make sure global variables ar
 <span class="kw">from</span> SwordAndMagicPictures <span class="kw">import</span> *
 <span class="kw">from</span> ControlLib <span class="kw">import</span> *
 Settings.MoveMouseDelay = <span class="dig">0.3</span>
-gameRegion = Region(<span class="dig">0</span>,<span class="dig">0</span>,<span class="dig">587</span>,<span class="dig">1024</span>)
+gameRegion = Region(<span class="dig">0</span>,<span class="dig">30</span>,<span class="dig">555</span>,<span class="dig">990</span>)
+
+imgMenu = <img src="1519039125806.png" />
 
 <span class="kw">def</span> ArrangeMail():
     <span class="kw">with</span> gameRegion:
         <span class="kw">while</span> True:
-            d(<span class="str">"menu"</span>, <img src="1503708173412.png" />,<span class="dig">3</span>)
+            d(<span class="str">"menu"</span>, imgMenu,<span class="dig">3</span>)
             d(<span class="str">"mailbox"</span>, <img src="1503708225124.png" />, <span class="dig">3</span>)
             <span class="kw">if</span> <span class="kw">not</span> receiveAllMail():
                 <span class="kw">break</span>
@@ -133,9 +135,10 @@ gameRegion = Region(<span class="dig">0</span>,<span class="dig">0</span>,<span 
 
 <span class="kw">def</span> gotoEquipPage():
     <span class="kw">with</span> gameRegion:
+        d(<span class="str">"menu"</span>,  imgMenu, <span class="dig">0</span>)
         d(<span class="str">"leave mail"</span>, <img src="1503708342988.png" />, <span class="dig">3</span>)
         <span class="skw">sleep</span>(<span class="dig">1</span>)
-        d(<span class="str">"equip"</span>, <img src="1503708374841.png" />, <span class="dig">3</span>)
+        d(<span class="str">"equip"</span>, <img src="1519039301576.png" />, <span class="dig">3</span>)
         <span class="skw">sleep</span>(<span class="dig">1</span>)
         d(<span class="str">"equip list"</span>, <img src="1503708432656.png" />, <span class="dig">3</span>)
         <span class="skw">sleep</span>(<span class="dig">1</span>)
@@ -148,13 +151,25 @@ gameRegion = Region(<span class="dig">0</span>,<span class="dig">0</span>,<span 
         <span class="kw">while</span> True:
             d(<span class="str">"select all"</span>, <img src="1503708529175.png" />, <span class="dig">20</span>)
             <span class="kw">if</span> d(<span class="str">"stored all"</span>, <img src="1503708674424.png" />,<span class="dig">1</span>):
-                d(<span class="str">"leave store"</span>, <img src="1503709049190.png" />, <span class="dig">3</span>)
+                d(<span class="str">"leave store"</span>, <img src="1519039546940.png" />, <span class="dig">3</span>)
                 <span class="kw">break</span>
             d(<span class="str">"store"</span>, Pattern(<img src="1505518002795.png" />).exact(), <span class="dig">5</span>)
             d(<span class="str">"store2"</span>, Pattern(<img src="1503961294687.png" />).similar(<span class="dig">0.94</span>), <span class="dig">5</span>)
 
             d(<span class="str">"store3"</span>, Pattern(<img src="1505518063648.png" />).similar(<span class="dig">0.95</span>), <span class="dig">5</span>)
 
+<span class="kw">def</span> vote():
+    region = Region(<span class="dig">382</span>,<span class="dig">522</span>,<span class="dig">174</span>,<span class="dig">83</span>)
+    <span class="kw">if</span> region.exists(<img src="1516752267331.png" />, <span class="dig">0</span>):
+        <span class="kw">while</span> True:
+            <span class="kw">print</span> region.getLastMatch()
+            <span class="skw">click</span>( region.getLastMatch() )
+            <span class="skw">sleep</span>(<span class="dig">0.5</span>)
+
+vote()
+gotoEquipPage()
+sellAll()
+storeAll()
 ArrangeMail()
 </pre>
 </body>

@@ -79,7 +79,7 @@ reload(SwordAndMagicPictures)  <span class="cmt"># make sure global variables ar
 Settings.MoveMouseDelay = <span class="dig">0.1</span>
 
 lib = GaeeryLib()
-lib.setROI( gameRegion )
+lib.setRoi( gameRegion )
 <span class="cmt">#lib.setRoiRectangle(0,0,500,500)</span>
 <span class="cmt">#lib.setRoiRectangle(0,0,1920,1080)</span>
 
@@ -92,20 +92,31 @@ lib.setROI( gameRegion )
     <span class="kw">return</span> lib.clickImageInRegion(<span class="str">"Thanks."</span>, Region(<span class="dig">0</span>,<span class="dig">91</span>,<span class="dig">551</span>,<span class="dig">610</span>), <img src="1504395063209.png" />, <span class="dig">1</span>)
 <span class="kw">def</span> SayThanksIfRare():
 
-    <span class="kw">if</span> lib.exists( <span class="str">"rare"</span>, Pattern(<img src="1504308263995.png" />).similar(<span class="dig">0.60</span>), <span class="dig">3</span>):
+    <span class="kw">if</span> lib.exists( <span class="str">"rare"</span>, Pattern(<img src="1519098369074.png" />).similar(<span class="dig">0.60</span>), <span class="dig">3</span>): <span class="cmt"># Pattern("1504308263995.png").similar(0.60)</span>
         <span class="kw">if</span> lib.clickImage( <span class="str">"local talk"</span>, Pattern(<img src="1504437289796.png" />).similar(<span class="dig">0.80</span>)):
             <span class="skw">sleep</span>(<span class="dig">0.1</span>)
         <span class="kw">return</span> SayThanks()
     <span class="kw">return</span> False
 
 <span class="str">'''
-finder = Finder( Screen(0).capture() )
-try:
-    found = finder.find(Pattern("1504627650520.png").exact())
-    print found
-    Debug.user("found")
-except FindFailed:
-    Debug.user("failed")
+#finder = Finder( Screen(0).capture() )
+screen = Screen()
+region =Region(8,387,539,502)
+finder = Finder( screen.capture(region) )
+
+finder.find(Pattern("1518231798070.png").targetOffset(-17,9))
+while finder.hasNext():
+    found = finder.next()
+    print "found 2: ", found.__class__, "  ", found 
+    #found.x = found.x + region.x
+    #found.y = found.y + region.y
+    center = found.getTarget()
+    center.x = center.x + region.x
+    center.y = center.y + region.y
+    print center
+    region.click(center)
+    
+finder.destroy()
 '''</span>
 </pre>
 </body>
